@@ -1,0 +1,18 @@
+services:
+  database:
+    container_name: urlShortener
+    image: postgres # https://hub.docker.com/_/postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: todoChangePassword
+      POSTGRES_USER: todoChangeUser
+      POSTGRES_DB: urlShortener
+  app:
+    # run backend server
+    # need to build this image using "docker build -t url-shorten-backend ."
+    image: url-shorten-backend
+    ports:
+      # Map outsidePort:insidePort, making request to outsidePort will call container insidePort
+      # e.g. if backend is listening on port 3000, => <somePort>:3000
+      - 13000:3000
