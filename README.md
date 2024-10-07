@@ -16,6 +16,8 @@ API should allow users to perform the following operations:
 
 You can optionally setup a minimal frontend to interact with the API and setup redirects for the short URLs to the original URLs
 
+**For this project, the backend endpoints have been appended with /api** (e.g. `POST /shorten` becomes `POST /api/shorten`)
+
 # API Endpoints
 
 ## Create Short URL
@@ -23,7 +25,7 @@ You can optionally setup a minimal frontend to interact with the API and setup r
 Create a new short URL using the `POST` method
 
 ```
-POST /shorten
+POST /api/shorten
 {
   "url": "https://www.example.com/some/long/url"
 }
@@ -48,7 +50,7 @@ Or a `400 Bad Request` status code with error messages in case of validation err
 Retrieve the original URL from a short URL using the `GET` method
 
 ```
-GET /shorten/abc123
+GET /api/shorten/abc123
 ```
 
 The endpoint should return a `200 OK` status code with the original URL
@@ -70,7 +72,7 @@ Or a `404 Not Found` status code if the short URL was not found. Your frontend s
 Update an existing short URL using the `PUT` method
 
 ```
-PUT /shorten/abc123
+PUT /api/shorten/abc123
 {
   "url": "https://www.example.com/some/updated/url"
 }
@@ -95,7 +97,7 @@ or a `400 Bad Request` status code with error messages in case of validation err
 Delete an existing short URL using the `DELETE` method
 
 ```
-DELETE /shorten/abc123
+DELETE /api/shorten/abc123
 ```
 
 The endpoint should return a `204 No Content` status code if the short URL was successfully deleted or a `404 Not Found` status code if the short URL was not found
@@ -105,7 +107,7 @@ The endpoint should return a `204 No Content` status code if the short URL was s
 Get statistics for a short URL using the `GET` method
 
 ```
-GET /shorten/abc123/stats
+GET /api/shorten/abc123/stats
 ```
 
 The endpoint should return a `200 OK` status code with the statistics
