@@ -1,20 +1,23 @@
 import express, { Request, Response } from "express"
-import pool, { setupDatabase } from "./database"
+import pool, { setupDatabase } from "./database.js"
+import { generateId } from "./id.js"
 
-const app = express()
-app.use(express.json()) // middleware to parse json request body
 const PORT = 3000 // port need to match docker compose setup for app
 
 async function setupServer() {
   await setupDatabase(pool)
+  setupRoutes()
+}
 
+function setupRoutes() {
+  const app = express()
+  app.use(express.json()) // middleware to parse json request body
   app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
   })
   app.post("/api/shorten", async (req: Request, res: Response) => {
     const { url }: { url: string } = req.body
-    // TODO generate a unique shortCode (char 7)
-    const shortCode = "123456" + ((Math.random() * 10) | 0)
+    const shortCode = generateId(7)
     const client = await pool.connect()
     try {
       const insertedRow = await client.query(

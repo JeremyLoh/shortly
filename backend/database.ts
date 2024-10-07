@@ -1,6 +1,7 @@
-import { Pool } from "pg"
+import pg from "pg"
 
-const pool = new Pool({
+// https://github.com/brianc/node-postgres/issues/3060
+const pool = new pg.Pool({
   host: "urlShortener", // name of postgresql container (in docker compose)
   port: 5432,
   user: process.env.POSTGRES_USER || "todoChangeUser",
@@ -8,7 +9,7 @@ const pool = new Pool({
   database: "urlShortener",
 })
 
-async function setupDatabase(pool: Pool) {
+async function setupDatabase(pool: pg.Pool) {
   try {
     await pool.query(`CREATE TABLE IF NOT EXISTS "urls" (
       id BIGSERIAL PRIMARY KEY,
