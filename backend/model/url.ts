@@ -69,7 +69,6 @@ async function isExistingShortCode(shortCode: string) {
 async function updateUrl(shortCode: string, url: string) {
   const client = await pool.connect()
   try {
-    // TODO SHOULD RESET THE access_count in stats table for this url to ZERO
     await client.query("BEGIN")
     const response = await client.query(
       `UPDATE urls SET url = $1 WHERE short_code = $2 RETURNING id, url, short_code AS "shortCode", created_at AS "createdAt", updated_at AS "updatedAt"`,
@@ -79,6 +78,9 @@ async function updateUrl(shortCode: string, url: string) {
       `UPDATE urls SET updated_at = now() WHERE short_code = $1 RETURNING updated_at AS "updatedAt"`,
       [shortCode]
     )
+    await client.query(`UPDATE stats SET access_count = 0 WHERE url_id = $1`, [
+      response.rows[0]["id"],
+    ])
     await client.query("COMMIT")
     const updatedTimestamp = updateTimestampResponse.rows[0]["updatedAt"]
     return { ...response.rows[0], updatedAt: updatedTimestamp }
