@@ -1,7 +1,12 @@
 import express, { Request, Response } from "express"
 import pool, { setupDatabase } from "./database.js"
 import { isValidHttpUrl } from "./validation/url.js"
-import { createNewUrl, getOriginalUrl } from "./model/url.js"
+import {
+  createNewUrl,
+  getOriginalUrl,
+  isExistingShortCode,
+  updateUrl,
+} from "./model/url.js"
 
 const PORT = 3000 // port need to match docker compose setup for app
 
@@ -29,15 +34,14 @@ function setupRoutes() {
       res.status(500).send({ error: error.message || "Could not create url" })
     }
   })
-
-  app.get("/api/shorten/:shortUrl", async (req: Request, res: Response) => {
-    const { shortUrl } = req.params
-    if (shortUrl.length !== 7) {
+  app.get("/api/shorten/:shortCode", async (req: Request, res: Response) => {
+    const { shortCode } = req.params
+    if (shortCode.length !== 7) {
       res.sendStatus(404)
       return
     }
     try {
-      const entry = await getOriginalUrl(shortUrl)
+      const entry = await getOriginalUrl(shortCode)
       if (entry == null) {
         res.sendStatus(404)
       } else {
@@ -45,6 +49,24 @@ function setupRoutes() {
       }
     } catch (error: any) {
       res.status(500).send("Could not retrieve url information")
+    }
+  })
+  app.put("/api/shorten/:shortCode", async (req: Request, res: Response) => {
+    const { shortCode } = req.params
+    const { url }: { url: string } = req.body
+    if (!isValidHttpUrl(url) || shortCode.length !== 7) {
+      res.status(400)
+      return
+    }
+    if (!(await isExistingShortCode(shortCode))) {
+      res.sendStatus(404)
+      return
+    }
+    try {
+      const entry = await updateUrl(shortCode, url)
+      res.status(200).send(entry)
+    } catch (error: any) {
+      res.status(500).send("Could not update existing url")
     }
   })
 }

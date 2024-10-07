@@ -40,4 +40,40 @@ async function getOriginalUrl(shortCode: string) {
   }
 }
 
-export { createNewUrl, getOriginalUrl }
+async function isExistingShortCode(shortCode: string) {
+  const client = await pool.connect()
+  try {
+    const response = await client.query(
+      `SELECT EXISTS(SELECT 1 FROM urls WHERE short_code = $1)`,
+      [shortCode]
+    )
+    return response.rows[0].exists
+  } finally {
+    client.release()
+  }
+}
+
+async function updateUrl(shortCode: string, url: string) {
+  const client = await pool.connect()
+  try {
+    await client.query("BEGIN")
+    const response = await client.query(
+      `UPDATE urls SET url = $1 WHERE short_code = $2 RETURNING id, url, short_code AS "shortCode", created_at AS "createdAt", updated_at AS "updatedAt"`,
+      [url, shortCode]
+    )
+    const updateTimestampResponse = await client.query(
+      `UPDATE urls SET updated_at = now() WHERE short_code = $1 RETURNING updated_at AS "updatedAt"`,
+      [shortCode]
+    )
+    await client.query("COMMIT")
+    const updatedTimestamp = updateTimestampResponse.rows[0]["updatedAt"]
+    return { ...response.rows[0], updatedAt: updatedTimestamp }
+  } catch (error) {
+    await client.query("ROLLBACK")
+    throw error
+  } finally {
+    client.release()
+  }
+}
+
+export { createNewUrl, getOriginalUrl, isExistingShortCode, updateUrl }
