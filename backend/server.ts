@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express"
 import pool, { setupDatabase } from "./database.js"
-import { generateId } from "./id.js"
+import { isValidHttpUrl } from "./validation/url.js"
+import { createNewUrl } from "./model/url.js"
 
 const PORT = 3000 // port need to match docker compose setup for app
 
@@ -17,29 +18,15 @@ function setupRoutes() {
   })
   app.post("/api/shorten", async (req: Request, res: Response) => {
     const { url }: { url: string } = req.body
-    const shortCode = generateId(7)
-    const client = await pool.connect()
+    if (!isValidHttpUrl(url)) {
+      res.status(400).send({ error: "Please provide a valid http / https url" })
+      return
+    }
     try {
-      const insertedRow = await client.query(
-        `INSERT INTO urls (url, short_code) VALUES ($1, $2) RETURNING id, created_at, updated_at`,
-        [url, shortCode]
-      )
-      if (!insertedRow || insertedRow.rowCount !== 1) {
-        res.sendStatus(500)
-        return
-      }
-      const { id, created_at, updated_at } = insertedRow.rows[0]
-      res.status(201).send({
-        id,
-        url,
-        shortCode,
-        createdAt: created_at,
-        updatedAt: updated_at,
-      })
-    } catch (error) {
-      res.sendStatus(500)
-    } finally {
-      client.release()
+      const entry = await createNewUrl(url)
+      res.status(201).send(entry)
+    } catch (error: any) {
+      res.status(500).send({ error: error.message || "Could not create url" })
     }
   })
 
