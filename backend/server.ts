@@ -55,7 +55,7 @@ function setupRoutes() {
     const { shortCode } = req.params
     const { url }: { url: string } = req.body
     if (!isValidHttpUrl(url) || shortCode.length !== 7) {
-      res.status(400)
+      res.sendStatus(400)
       return
     }
     if (!(await isExistingShortCode(shortCode))) {
