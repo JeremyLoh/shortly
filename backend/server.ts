@@ -6,6 +6,7 @@ import {
   getOriginalUrl,
   isExistingShortCode,
   updateUrl,
+  deleteUrl,
 } from "./model/url.js"
 
 const PORT = 3000 // port need to match docker compose setup for app
@@ -67,6 +68,19 @@ function setupRoutes() {
       res.status(200).send(entry)
     } catch (error: any) {
       res.status(500).send("Could not update existing url")
+    }
+  })
+  app.delete("/api/shorten/:shortCode", async (req: Request, res: Response) => {
+    const { shortCode } = req.params
+    if (shortCode.length !== 7 || !(await isExistingShortCode(shortCode))) {
+      res.sendStatus(404)
+      return
+    }
+    try {
+      const isDeleted = await deleteUrl(shortCode)
+      isDeleted ? res.sendStatus(204) : res.sendStatus(404)
+    } catch (error: any) {
+      res.status(500).send("Could not delete short url")
     }
   })
 }

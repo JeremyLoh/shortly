@@ -70,4 +70,23 @@ async function updateUrl(shortCode: string, url: string) {
   }
 }
 
-export { createNewUrl, getOriginalUrl, isExistingShortCode, updateUrl }
+async function deleteUrl(shortCode: string) {
+  const client = await pool.connect()
+  try {
+    const response = await client.query(
+      `DELETE FROM urls WHERE short_code = $1`,
+      [shortCode]
+    )
+    return response.rowCount === 1
+  } finally {
+    client.release()
+  }
+}
+
+export {
+  createNewUrl,
+  getOriginalUrl,
+  isExistingShortCode,
+  updateUrl,
+  deleteUrl,
+}
