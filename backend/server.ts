@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import pool, { setupDatabase } from "./database.js"
 import { isValidHttpUrl } from "./validation/url.js"
-import { createNewUrl } from "./model/url.js"
+import { createNewUrl, getOriginalUrl } from "./model/url.js"
 
 const PORT = 3000 // port need to match docker compose setup for app
 
@@ -30,10 +30,22 @@ function setupRoutes() {
     }
   })
 
-  app.get("/api/shorten/:id", (req: Request, res: Response) => {
-    const { id } = req.params
-    // TODO get original url details
-    res.status(200).send("Hello" + id)
+  app.get("/api/shorten/:shortUrl", async (req: Request, res: Response) => {
+    const { shortUrl } = req.params
+    if (shortUrl.length !== 7) {
+      res.sendStatus(404)
+      return
+    }
+    try {
+      const entry = await getOriginalUrl(shortUrl)
+      if (entry == null) {
+        res.sendStatus(404)
+      } else {
+        res.status(200).send(entry)
+      }
+    } catch (error: any) {
+      res.status(500).send("Could not retrieve url information")
+    }
   })
 }
 

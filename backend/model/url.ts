@@ -20,11 +20,24 @@ async function createNewUrl(url: string) {
       createdAt: created_at,
       updatedAt: updated_at,
     }
-  } catch (error) {
-    throw error
   } finally {
     client.release()
   }
 }
 
-export { createNewUrl }
+async function getOriginalUrl(shortCode: string) {
+  const client = await pool.connect()
+  try {
+    const response = await client.query(
+      `SELECT id, url, short_code AS "shortCode", created_at AS "createdAt", updated_at AS "updatedAt"
+      FROM urls
+      WHERE short_code = $1`,
+      [shortCode]
+    )
+    return response.rows[0] || null
+  } finally {
+    client.release()
+  }
+}
+
+export { createNewUrl, getOriginalUrl }
