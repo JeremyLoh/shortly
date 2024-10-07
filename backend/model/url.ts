@@ -6,20 +6,14 @@ async function createNewUrl(url: string) {
   const client = await pool.connect()
   try {
     const insertedRow = await client.query(
-      `INSERT INTO urls (url, short_code) VALUES ($1, $2) RETURNING id, created_at, updated_at`,
+      `INSERT INTO urls (url, short_code) VALUES ($1, $2)
+      RETURNING id, url, short_code AS "shortCode", created_at AS "createdAt", updated_at AS "updatedAt"`,
       [url, shortCode]
     )
     if (!insertedRow || insertedRow.rowCount !== 1) {
       throw new Error("Could not create new url entry")
     }
-    const { id, created_at, updated_at } = insertedRow.rows[0]
-    return {
-      id,
-      url,
-      shortCode,
-      createdAt: created_at,
-      updatedAt: updated_at,
-    }
+    return insertedRow.rows[0]
   } finally {
     client.release()
   }
