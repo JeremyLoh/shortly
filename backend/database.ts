@@ -14,9 +14,15 @@ async function setupDatabase(pool: pg.Pool) {
     await pool.query(`CREATE TABLE IF NOT EXISTS "urls" (
       id BIGSERIAL PRIMARY KEY,
       url VARCHAR(2048),
-      short_code CHAR(7),
+      short_code CHAR(7) UNIQUE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at TIMESTAMPTZ
+    )`)
+    await pool.query(`CREATE TABLE IF NOT EXISTS "stats" (
+      id BIGSERIAL PRIMARY KEY,
+      url_id BIGSERIAL,
+      access_count INTEGER NOT NULL DEFAULT 0,
+      FOREIGN KEY (url_id) REFERENCES "urls"(id)
     )`)
   } catch (error) {}
 }

@@ -7,6 +7,7 @@ import {
   isExistingShortCode,
   updateUrl,
   deleteUrl,
+  getUrlStats,
 } from "./model/url.js"
 
 const PORT = 3000 // port need to match docker compose setup for app
@@ -83,6 +84,22 @@ function setupRoutes() {
       res.status(500).send("Could not delete short url")
     }
   })
+  app.get(
+    "/api/shorten/:shortCode/stats",
+    async (req: Request, res: Response) => {
+      const { shortCode } = req.params
+      if (shortCode.length !== 7 || !(await isExistingShortCode(shortCode))) {
+        res.sendStatus(404)
+        return
+      }
+      try {
+        const entry = await getUrlStats(shortCode)
+        res.status(200).send(entry)
+      } catch (error: any) {
+        res.status(500).send("Could not get statistics for short url")
+      }
+    }
+  )
 }
 
 setupServer()
