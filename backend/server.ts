@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express"
+import { param, validationResult } from "express-validator"
 import pool, { setupDatabase } from "./database.js"
 import { isValidHttpUrl } from "./validation/url.js"
 import {
@@ -36,23 +37,30 @@ function setupRoutes() {
       res.status(500).send({ error: error.message || "Could not create url" })
     }
   })
-  app.get("/api/shorten/:shortCode", async (req: Request, res: Response) => {
-    const { shortCode } = req.params
-    if (shortCode.length !== 7) {
-      res.sendStatus(404)
-      return
-    }
-    try {
-      const entry = await getOriginalUrl(shortCode)
-      if (entry == null) {
-        res.sendStatus(404)
-      } else {
-        res.status(200).send(entry)
+  app.get(
+    "/api/shorten/:shortCode",
+    param("shortCode")
+      .isLength({ min: 7, max: 7 })
+      .withMessage("Please provide a valid short code"),
+    async (req: Request, res: Response) => {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        res.status(404).send({ error: errors.array().map((e) => e.msg) })
+        return
       }
-    } catch (error: any) {
-      res.status(500).send("Could not retrieve url information")
+      const { shortCode } = req.params
+      try {
+        const entry = await getOriginalUrl(shortCode)
+        if (entry == null) {
+          res.sendStatus(404)
+        } else {
+          res.status(200).send(entry)
+        }
+      } catch (error: any) {
+        res.status(500).send("Could not retrieve url information")
+      }
     }
-  })
+  )
   app.put("/api/shorten/:shortCode", async (req: Request, res: Response) => {
     const { shortCode } = req.params
     const { url }: { url: string } = req.body
