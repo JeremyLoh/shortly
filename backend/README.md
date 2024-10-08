@@ -1,6 +1,7 @@
 # Backend for url shortener
 
-Made using TypeScript, Express, PostgreSQL, nanoid package to generate shortUrl.
+Made using TypeScript, Express, PostgreSQL, `nanoid` package to generate shortUrl.
+`express-validator` package for validating requests using schemas
 Run using Docker
 
 Structure backend using Controller and Model (MV in MVC pattern - https://www.youtube.com/watch?v=DUg2SWWK18I)
