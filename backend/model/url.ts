@@ -37,6 +37,10 @@ async function getOriginalUrl(shortCode: string) {
       WHERE short_code = $1`,
       [shortCode]
     )
+    if (response.rows[0] == null) {
+      await client.query("ROLLBACK")
+      return null
+    }
     const id = response.rows[0]["id"]
     await client.query(
       `UPDATE stats SET access_count = (SELECT access_count FROM stats WHERE url_id = $1) + 1
@@ -44,7 +48,7 @@ async function getOriginalUrl(shortCode: string) {
       [id]
     )
     await client.query("COMMIT")
-    return response.rows[0] || null
+    return response.rows[0]
   } catch (error) {
     await client.query("ROLLBACK")
     throw error
