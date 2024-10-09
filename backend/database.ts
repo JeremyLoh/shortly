@@ -24,6 +24,7 @@ async function setupDatabase(pool: pg.Pool) {
       access_count INTEGER NOT NULL DEFAULT 0,
       FOREIGN KEY (url_id) REFERENCES "urls"(id)
     )`)
+    await pool.query(`CREATE INDEX urls_short_code_idx ON urls (short_code)`)
   } catch (error) {}
 }
 
