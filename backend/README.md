@@ -6,30 +6,17 @@ Run using Docker
 
 Structure backend using Controller and Model (MV in MVC pattern - https://www.youtube.com/watch?v=DUg2SWWK18I)
 
-# Running Backend Application
+# Running Backend Application (using Docker)
 
-1. Navigate to the `backend` directory where the `Dockerfile` and `docker-compose.yaml` file are present
-2. Install docker on your system
-3. Build docker image for backend using `docker build -t url-shorten-backend .` (defined in `docker-compose.yaml`)
-4. Run `docker compose up`
-5. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
-
-```docker
-  app:
-    # run backend server
-    # need to build this image using "docker build -t url-shorten-backend ."
-    image: url-shorten-backend
-    ports:
-      # Map outsidePort:insidePort, making request to outsidePort will call container insidePort
-      # e.g. if backend is listening on port 3000, => <somePort>:3000
-      - 13000:3000
-```
+1. Install docker on your system
+2. Navigate to the project root directory where the `docker-compose.yaml` file is present
+3. Run `docker compose up`
+4. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
 
 You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
 
 ```shell
 docker system prune
-docker build -t url-shorten-backend .
 docker compose up
 ```
 
