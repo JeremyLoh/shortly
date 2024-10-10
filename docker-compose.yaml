@@ -1,4 +1,16 @@
 services:
+  reverse-proxy:
+    # proxy outside requests to internal services
+    image: nginx:stable
+    container_name: reverse_proxy
+    depends_on:
+      - database
+      - backend
+      - frontend
+    volumes:
+      - ./reverseProxy/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:8080
   database:
     container_name: urlShortener
     image: postgres # https://hub.docker.com/_/postgres
@@ -24,8 +36,7 @@ services:
       - ./backend:/usr/url-shorten/backend
     ports:
       # Map outsidePort:insidePort, making request to outsidePort will call container insidePort
-      # e.g. if backend is listening on port 3000, => <somePort>:3000
-      - 13000:3000
+      - 3000:3000
     depends_on:
       database:
         condition: service_healthy

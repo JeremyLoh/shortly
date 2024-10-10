@@ -12,8 +12,11 @@ function ShortUrlForm() {
     formState: { errors },
   } = useForm<FormFields>()
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    // TODO call backend to get short url
+    // TODO call backend to get short url using relative path "/api"
     console.log(data)
+    // const response = await fetch("/api/shorten/CaOdHlM")
+    // const json = await response.json()
+    // console.log(JSON.stringify(json))
   }
   function isValidUrl(value: string) {
     const errorMessage =
