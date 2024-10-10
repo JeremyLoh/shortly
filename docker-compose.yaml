@@ -1,0 +1,40 @@
+services:
+  database:
+    container_name: urlShortener
+    image: postgres # https://hub.docker.com/_/postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: todoChangePassword
+      POSTGRES_USER: todoChangeUser
+      POSTGRES_DB: urlShortener
+    # https://stackoverflow.com/questions/37259584/postgres-shuts-down-immediately-when-started-with-docker-compose
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready --port=5432 --username=$${POSTGRES_USER} --dbname=$${POSTGRES_DB}",
+        ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/usr/url-shorten/backend
+    ports:
+      # Map outsidePort:insidePort, making request to outsidePort will call container insidePort
+      # e.g. if backend is listening on port 3000, => <somePort>:3000
+      - 13000:3000
+    depends_on:
+      database:
+        condition: service_healthy
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/usr/url-shorten/frontend
+    ports:
+      - 5173:5173
+    depends_on:
+      database:
+        condition: service_healthy

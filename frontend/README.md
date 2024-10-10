@@ -1,3 +1,17 @@
+# Running Frontend Application (using Docker)
+
+1. Install docker on your system
+2. Navigate to the project root directory where the `docker-compose.yaml` file is present
+3. Run `docker compose up`
+4. To access the frontend app, it is running on the port defined in `docker-compose.yaml`. A request can be made to this port on localhost (for local testing)
+
+You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
+
+```shell
+docker system prune
+docker compose up
+```
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -18,7 +32,7 @@ export default tseslint.config({
   languageOptions: {
     // other options...
     parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
       tsconfigRootDir: import.meta.dirname,
     },
   },
@@ -31,11 +45,11 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from "eslint-plugin-react"
 
 export default tseslint.config({
   // Set the react version
-  settings: { react: { version: '18.3' } },
+  settings: { react: { version: "18.3" } },
   plugins: {
     // Add the react plugin
     react,
@@ -44,7 +58,7 @@ export default tseslint.config({
     // other rules...
     // Enable its recommended rules
     ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
+    ...react.configs["jsx-runtime"].rules,
   },
 })
 ```
