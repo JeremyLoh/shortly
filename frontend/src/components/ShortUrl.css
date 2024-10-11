@@ -1,0 +1,19 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #bae6fd;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-bottom: 1mm solid #38bdf8;
+}
+
+.card p {
+  text-wrap: wrap;
+  word-wrap: break-all;
+}
+
+.text-right {
+  text-align: end;
+}
