@@ -1,12 +1,11 @@
 .card {
   display: flex;
   flex-direction: column;
-  background-color: #bae6fd;
+  background-color: #e2e8f0;
   padding: 1rem;
   margin-top: 1rem;
   border-radius: 8px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border-bottom: 1mm solid #38bdf8;
 }
 
 .card p {
@@ -14,6 +13,22 @@
   word-wrap: break-all;
 }
 
+.text-center {
+  text-align: center;
+}
 .text-right {
   text-align: end;
+}
+
+.copy-short-url-btn {
+  margin-top: 1rem;
+  background-color: #fafafa;
+}
+.copy-short-url-btn:hover {
+  background-color: #e5e5e5;
+}
+
+.divider {
+  border: 1px solid #0369a1;
+  width: 100%;
 }
