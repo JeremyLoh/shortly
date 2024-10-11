@@ -5,7 +5,12 @@ function App() {
   return (
     <>
       <h1>Url Shortener</h1>
-      <ShortUrlForm />
+      <ShortUrlForm
+        handleCreateUrl={(url) => {
+          // TODO display create url to user
+          console.log(url)
+        }}
+      />
     </>
   )
 }
