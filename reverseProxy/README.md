@@ -21,3 +21,19 @@ If you do this, then e.g. http://localhost:8900 is the front-end and http://loca
 ```
 
 - Docker and Nginx Reverse Proxy - https://www.youtube.com/watch?v=hxngRDmHTM0
+
+- How to Fix WebSocket Connection Error in Nginx and React on Docker - https://dev.to/ndohjapan/how-to-fix-websocket-connection-error-in-nginx-and-react-on-docker-3405
+
+  - Web app is trying to access ws://localhost:3000/ws, which does not exist, and Nginx is running on a different port.
+  - Add the location /ws into the Nginx configuration file and route it to the React client running in the Docker container.
+
+  ```
+  location /ws {
+    proxy_pass http://localhost:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+  }
+  ```
+
+  The location block defines the URL path that should be routed to the React app running on port 3000. The proxy_pass directive sets the URL to which the request should be forwarded, and the proxy_http_version and proxy_set_header directives configure the connection between Nginx and the React app.
