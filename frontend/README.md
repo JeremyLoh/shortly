@@ -3,7 +3,7 @@
 1. Install docker on your system
 2. Navigate to the project root directory where the `docker-compose.yaml` file is present
 3. Run `docker compose up`
-4. To access the frontend app, it is running on the port defined in `docker-compose.yaml`. A request can be made to this port on localhost (for local testing)
+4. To access the frontend app, you can visit the reverse proxy port e.g. `localhost:8080/`. The reverse proxy port is running on the port defined in `docker-compose.yaml`. A request can be made to this port on localhost (for local testing)
 
 You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
 
