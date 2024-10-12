@@ -1,22 +1,31 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import "./ShortUrlForm.css"
+import { createNewUrl, Url } from "../endpoints/createUrl"
 
 type FormFields = {
   url: string
 }
 
-function ShortUrlForm() {
+function ShortUrlForm({
+  handleCreateUrl,
+}: {
+  handleCreateUrl: (url: Url) => void
+}) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm<FormFields>()
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    // TODO call backend to get short url using relative path "/api"
-    console.log(data)
-    // const response = await fetch("/api/shorten/CaOdHlM")
-    // const json = await response.json()
-    // console.log(JSON.stringify(json))
+    try {
+      const json = await createNewUrl(data.url)
+      handleCreateUrl(json)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error.message)
+      setError("root", { message: "Could not create short url" })
+    }
   }
   function isValidUrl(value: string) {
     const errorMessage =
@@ -51,7 +60,14 @@ function ShortUrlForm() {
           {errors.url.message}
         </p>
       )}
-      <button type="submit">Submit</button>
+      <button disabled={isSubmitting} type="submit">
+        {isSubmitting ? "Loading" : "Submit"}
+      </button>
+      {errors.root && (
+        <p role="alert" className="error-text">
+          {errors.root.message}
+        </p>
+      )}
     </form>
   )
 }

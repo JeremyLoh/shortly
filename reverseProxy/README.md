@@ -23,17 +23,22 @@ If you do this, then e.g. http://localhost:8900 is the front-end and http://loca
 - Docker and Nginx Reverse Proxy - https://www.youtube.com/watch?v=hxngRDmHTM0
 
 - How to Fix WebSocket Connection Error in Nginx and React on Docker - https://dev.to/ndohjapan/how-to-fix-websocket-connection-error-in-nginx-and-react-on-docker-3405
+  **https://stackoverflow.com/questions/75365388/websocket-connection-to-wss-react-apps-raphe-localhost3000-ws-failed**
 
   - Web app is trying to access ws://localhost:3000/ws, which does not exist, and Nginx is running on a different port.
-  - Add the location /ws into the Nginx configuration file and route it to the React client running in the Docker container.
 
-  ```
-  location /ws {
-    proxy_pass http://localhost:3000;
+  The location block defines the URL path that should be routed to the React app running on port 3000. The proxy_pass directive sets the URL to which the request should be forwarded, and the proxy_http_version and proxy_set_header directives configure the connection between Nginx and the React app.
+
+  ```nginx
+  location / {
+    # use docker compose created network to access service name
+    proxy_pass http://frontend:5173/;
+    proxy_set_header Forwarded $remote_addr;
+    # https://stackoverflow.com/questions/75365388/websocket-connection-to-wss-react-apps-raphe-localhost3000-ws-failed
+    # https://github.com/gradio-app/gradio/issues/4493
+    # https://dev.to/ndohjapan/how-to-fix-websocket-connection-error-in-nginx-and-react-on-docker-3405
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "Upgrade";
   }
   ```
-
-  The location block defines the URL path that should be routed to the React app running on port 3000. The proxy_pass directive sets the URL to which the request should be forwarded, and the proxy_http_version and proxy_set_header directives configure the connection between Nginx and the React app.

@@ -1,7 +1,7 @@
 .short-url-form {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
   width: 100%;
 }
 
@@ -17,10 +17,11 @@
 .short-url-form button[type="submit"] {
   padding: 1rem;
   border-radius: 8px;
-  background-color: #38bdf8;
+  background-color: #0ea5e9;
+  color: white;
 }
 .short-url-form button[type="submit"]:hover {
-  background-color: #0ea5e9;
+  background-color: #0284c7;
 }
 
 .error-border {
@@ -28,4 +29,5 @@
 }
 .error-text {
   color: #ef4444;
+  margin: 0;
 }

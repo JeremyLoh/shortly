@@ -10,7 +10,7 @@ Create a RESTful API that allows users to shorten long URLs. The API should prov
 2. Navigate to the project root directory where the `docker-compose.yaml` file is present
 3. Run `docker compose up`
 4. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
-5. To access the frontend app, it is running on the port defined in `docker-compose.yaml`
+5. To access the frontend app, you should visit the reverseProxy (e.g. `localhost:8080/`. The reverse proxy port defined in `docker-compose.yaml`
 
 You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
 
