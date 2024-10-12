@@ -1,5 +1,6 @@
-import { Request, Response, Router } from "express"
+import { NextFunction, Request, Response, Router } from "express"
 import { checkSchema, validationResult } from "express-validator"
+import rateLimit, { Options } from "express-rate-limit"
 import {
   createShortCodeValidationSchema,
   createUrlValidationSchema,
@@ -15,6 +16,20 @@ import {
 } from "../model/url.js"
 
 const router = Router()
+const readLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  limit: 10, // Limit each IP to "X" requests per window
+  standardHeaders: "draft-7",
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  handler: (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    options: Options
+  ) => {
+    res.status(options.statusCode).send(options.message)
+  },
+})
 
 router.post(
   "/api/shorten",
@@ -41,6 +56,7 @@ router.post(
 
 router.get(
   "/api/shorten/:shortCode",
+  readLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
@@ -115,6 +131,7 @@ router.delete(
 
 router.get(
   "/api/shorten/:shortCode/stats",
+  readLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
