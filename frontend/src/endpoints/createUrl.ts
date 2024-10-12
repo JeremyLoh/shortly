@@ -11,6 +11,7 @@ interface Url {
 async function createNewUrl(url: string): Promise<Url> {
   const response = await ky.post("/api/shorten", {
     json: { url },
+    retry: { limit: 0 },
   })
   if (!response.ok || response.status !== 201) {
     throw new Error("Could not create short url")

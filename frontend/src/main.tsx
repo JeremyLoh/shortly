@@ -12,18 +12,26 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <NotFoundPage />,
+    errorElement: <NotFoundPage errorMessage="404 Not Found" />,
+  },
+  {
+    path: "/error/too-many-requests",
+    element: <NotFoundPage errorMessage="429 Too Many Requests" />,
+  },
+  {
+    path: "/error",
+    element: <NotFoundPage errorMessage="404 Not Found" />,
   },
   {
     path: "/:shortCode",
     element: <RedirectUrlPage />,
     loader: redirectLoader,
-    errorElement: <NotFoundPage />,
+    errorElement: <NotFoundPage errorMessage="404 Not Found" />,
   },
   {
     path: "/stats",
     element: <UrlStatsPage />,
-    errorElement: <NotFoundPage />,
+    errorElement: <NotFoundPage errorMessage="404 Not Found" />,
   },
 ])
 

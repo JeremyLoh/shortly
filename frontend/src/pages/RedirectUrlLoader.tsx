@@ -1,5 +1,5 @@
 import ky from "ky"
-import { Params } from "react-router-dom"
+import { Params, redirect } from "react-router-dom"
 
 type UrlResponse = {
   id: string
@@ -15,10 +15,20 @@ export async function redirectLoader({
 }: {
   params: Params<"shortCode">
 }) {
-  const response = await ky.get("/api/shorten/" + params.shortCode)
-  if (!response.ok) {
-    return { url: `${window.location.href}/error` }
+  try {
+    const response = await ky.get("/api/shorten/" + params.shortCode, {
+      retry: { limit: 0 },
+    })
+    if (!response.ok) {
+      return redirect("/error")
+    }
+    const data: UrlResponse = await response.json()
+    return { url: data.url }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response.status === 429) {
+      return redirect("/error/too-many-requests")
+    }
+    return redirect("/error")
   }
-  const data: UrlResponse = await response.json()
-  return { url: data.url }
 }
