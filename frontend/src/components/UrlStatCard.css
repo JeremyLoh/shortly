@@ -1,0 +1,21 @@
+.url-stat-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f5f9;
+  margin: 1rem;
+  padding: 1rem;
+  width: 80%;
+  max-width: 70ch;
+  box-shadow: 0px 5px 10px -4px #555;
+}
+
+.url-stat-card hr {
+  border: 1px solid #888;
+  width: 100%;
+  margin: 0;
+}
+
+.url-stat-card p {
+  margin: 0.4rem 0;
+  word-break: break-all;
+}

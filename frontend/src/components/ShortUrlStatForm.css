@@ -1,0 +1,20 @@
+#link-stat-form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#link-stat-form input {
+  font-size: 1rem;
+  padding: 0.4rem;
+}
+
+#link-stat-form button[type="submit"] {
+  background-color: #7dd3fc;
+}
+
+#link-stat-form button[type="submit"]:hover {
+  background-color: #38bdf8;
+}
