@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import "./ShortUrl.css"
 import { Url } from "../endpoints/createUrl"
 
@@ -8,9 +9,13 @@ function ShortUrl({ url }: { url: Url }) {
         <h2 className="text-center">Your New Short Url 🎯</h2>
         <p className="text-center">
           Short Url{" "}
-          <a href={`/${url.shortCode}`} target="_blank">
+          <Link
+            to={`/${url.shortCode}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {`${window.location.href}${url.shortCode}`}
-          </a>
+          </Link>
           <br />
           <button
             className="copy-short-url-btn"
@@ -27,9 +32,9 @@ function ShortUrl({ url }: { url: Url }) {
       <hr className="divider" />
       <p className="text-right">
         Redirect Url{" "}
-        <a href={url.url} target="_blank">
+        <Link to={url.url} target="_blank" rel="noopener noreferrer">
           {url.url}
-        </a>
+        </Link>
       </p>
       <p className="text-right">
         Created At {new Date(url.createdAt).toString()}
