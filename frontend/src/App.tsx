@@ -4,6 +4,7 @@ import ShortUrlForm from "./components/ShortUrlForm"
 import { Url } from "./endpoints/createUrl"
 import ShortUrl from "./components/ShortUrl"
 import Header from "./components/Header"
+import Footer from "./components/Footer"
 
 function App() {
   const [url, setUrl] = useState<Url | null>(null)
@@ -19,6 +20,7 @@ function App() {
         />
         {url && <ShortUrl url={url} />}
       </div>
+      <Footer />
     </div>
   )
 }

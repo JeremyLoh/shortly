@@ -1,3 +1,13 @@
+*,
+*:before,
+*:after {
+  /* https://stackoverflow.com/questions/21621584/padding-causes-horizontal-scroll-it-increases-the-width */
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+
 :root {
   box-sizing: border-box;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
