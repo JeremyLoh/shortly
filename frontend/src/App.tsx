@@ -8,15 +8,17 @@ import Header from "./components/Header"
 function App() {
   const [url, setUrl] = useState<Url | null>(null)
   return (
-    <>
+    <div className="app-container">
       <Header />
-      <ShortUrlForm
-        handleCreateUrl={(url) => {
-          setUrl(url)
-        }}
-      />
-      {url && <ShortUrl url={url} />}
-    </>
+      <div className="content">
+        <ShortUrlForm
+          handleCreateUrl={(url) => {
+            setUrl(url)
+          }}
+        />
+        {url && <ShortUrl url={url} />}
+      </div>
+    </div>
   )
 }
 

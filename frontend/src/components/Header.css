@@ -4,6 +4,8 @@ header {
   align-items: center;
   border-bottom: 1mm dotted #888;
   margin: 1rem 0;
+  width: 100%;
+  max-width: 70ch;
 }
 
 nav {

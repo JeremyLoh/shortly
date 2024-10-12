@@ -1,4 +1,12 @@
-#root {
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+}
+
+.content {
   max-width: 70ch;
   width: 80%;
 }
