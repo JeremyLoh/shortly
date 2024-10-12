@@ -18,10 +18,12 @@ const router = createBrowserRouter([
     path: "/:shortCode",
     element: <RedirectUrlPage />,
     loader: redirectLoader,
+    errorElement: <NotFoundPage />,
   },
   {
     path: "/stats",
     element: <UrlStatsPage />,
+    errorElement: <NotFoundPage />,
   },
 ])
 
