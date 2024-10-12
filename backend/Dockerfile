@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:lts-slim
 WORKDIR /usr/url-shorten/backend
 
 # copy everything from source to docker container

@@ -19,6 +19,10 @@ docker system prune
 docker compose up
 ```
 
+# References
+
+1. https://snyk.io/blog/choosing-the-best-node-js-docker-image/
+
 # Requirements
 
 API should allow users to perform the following operations:

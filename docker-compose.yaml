@@ -1,7 +1,7 @@
 services:
   reverse-proxy:
     # proxy outside requests to internal services
-    image: nginx:stable
+    image: nginx:stable-alpine-slim
     container_name: reverse_proxy
     depends_on:
       - database
