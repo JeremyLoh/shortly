@@ -44,6 +44,7 @@ function ShortUrlForm({
       <label htmlFor="url">Url</label>
       <input
         id="url"
+        placeholder="Your long URL..."
         aria-invalid={errors.url ? "true" : "false"}
         className={errors.url ? `error-border` : ""}
         {...register("url", {

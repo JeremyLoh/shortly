@@ -1,0 +1,40 @@
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0414a7;
+  font-family: monospace, Inter, sans-serif;
+  color: #e0e2f4;
+}
+
+.not-found-title {
+  background-color: #e0e2f4;
+  color: #0414a7;
+  padding: 0.4rem;
+  font-size: 1.5rem;
+}
+
+.not-found-container a {
+  color: #e0e2f4;
+  font-family: monospace, Inter, sans-serif;
+  padding: 0.1rem 0.2rem;
+}
+.not-found-container a:hover {
+  background-color: #e0e2f4;
+  color: #0414a7;
+}
+
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 80%;
+  max-width: 500px;
+}
+.not-found-content p {
+  margin: 0.3rem;
+}

@@ -1,0 +1,19 @@
+#footer {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 0.3rem;
+  margin-top: auto;
+  padding: 0.4rem 1rem;
+  width: 100%;
+  background-color: #0414a7;
+  color: #e0e2f4;
+}
+
+#footer a {
+  color: #e0e2f4;
+  padding: 0 0.2rem;
+}
+#footer a:hover {
+  background-color: #e0e2f4;
+  color: #0414a7;
+}

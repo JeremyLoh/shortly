@@ -6,6 +6,7 @@ import "./index.css"
 import NotFoundPage from "./pages/NotFoundPage.tsx"
 import RedirectUrlPage from "./pages/RedirectUrlPage.tsx"
 import { redirectLoader } from "./pages/RedirectUrlLoader.tsx"
+import UrlStatsPage from "./pages/UrlStatsPage.tsx"
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
     path: "/:shortCode",
     element: <RedirectUrlPage />,
     loader: redirectLoader,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/stats",
+    element: <UrlStatsPage />,
+    errorElement: <NotFoundPage />,
   },
 ])
 

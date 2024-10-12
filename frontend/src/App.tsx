@@ -3,19 +3,25 @@ import "./App.css"
 import ShortUrlForm from "./components/ShortUrlForm"
 import { Url } from "./endpoints/createUrl"
 import ShortUrl from "./components/ShortUrl"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
 
 function App() {
   const [url, setUrl] = useState<Url | null>(null)
   return (
-    <>
-      <h1>Url Shortener</h1>
-      <ShortUrlForm
-        handleCreateUrl={(url) => {
-          setUrl(url)
-        }}
-      />
-      {url && <ShortUrl url={url} />}
-    </>
+    <div className="app-container">
+      <Header />
+      <div className="content">
+        <h3>Create a new short URL</h3>
+        <ShortUrlForm
+          handleCreateUrl={(url) => {
+            setUrl(url)
+          }}
+        />
+        {url && <ShortUrl url={url} />}
+      </div>
+      <Footer />
+    </div>
   )
 }
 
