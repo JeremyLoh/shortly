@@ -9,13 +9,25 @@ interface Url {
 }
 
 async function createNewUrl(url: string): Promise<Url> {
-  const response = await ky.post("/api/shorten", {
-    json: { url },
-  })
-  if (!response.ok || response.status !== 201) {
-    throw new Error("Could not create short url")
+  try {
+    const response = await ky.post("/api/shorten", {
+      json: { url },
+      retry: { limit: 0 },
+    })
+    if (!response.ok || response.status !== 201) {
+      throw new Error("Could not create short url")
+    }
+    return await response.json()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.response.status === 429) {
+      const timeoutInSeconds = error.response.headers.get("retry-after")
+      throw new Error(
+        `Rate Limit Exceeded, please try again after ${timeoutInSeconds} seconds`
+      )
+    }
+    throw error
   }
-  return await response.json()
 }
 
 export type { Url }

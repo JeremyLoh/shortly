@@ -14,8 +14,9 @@ async function getUrlStat(shortCode: string): Promise<UrlStat> {
     throw new Error("Short Code cannot be blank")
   }
   try {
-    const response = await ky.get(`/api/shorten/${shortCode}/stats`)
-    console.log({ response })
+    const response = await ky.get(`/api/shorten/${shortCode}/stats`, {
+      retry: { limit: 0 },
+    })
     if (!response.ok) {
       throw new Error("Could not get url information")
     }
@@ -23,6 +24,12 @@ async function getUrlStat(shortCode: string): Promise<UrlStat> {
     return json
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
+    if (error.response.status === 429) {
+      const retryAfterInSeconds = error.response.headers.get("retry-after")
+      throw new Error(
+        `Too Many Requests, try again after ${retryAfterInSeconds} seconds`
+      )
+    }
     if (error.name === "HTTPError") {
       throw new Error(error.response.statusText)
     }
