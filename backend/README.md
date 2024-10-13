@@ -1,11 +1,12 @@
 # Backend for url shortener
 
-Made using TypeScript, Express, PostgreSQL, `nanoid` package to generate shortUrl.
+Made using `TypeScript`, `Express`, `PostgreSQL`, `nanoid` package to generate shortUrl. Run using `Docker`
 
-`express-validator` package for validating requests using schemas
-Run using Docker
-
-`express-rate-limit` package to rate limit API endpoints (https://www.npmjs.com/package/express-rate-limit)
+- `express-validator` package for validating requests using schemas
+- `express-rate-limit` package to rate limit API endpoints (https://www.npmjs.com/package/express-rate-limit)
+- `express-session` package for managing sessions (to have state for HTTP using cookies) (https://www.npmjs.com/package/express-session)
+- `passport` package for managing local authentication with username and password (https://www.npmjs.com/package/passport)
+- `argon2` package for hashing passwords (https://www.npmjs.com/package/argon2)
 
 Structure backend using Controller and Model (MV in MVC pattern - https://www.youtube.com/watch?v=DUg2SWWK18I)
 
@@ -42,3 +43,5 @@ Column naming convention (lowercase with underscores)
 9. Postgres Identifiers (including column names) that are not double quoted will be folded to lower case - https://stackoverflow.com/questions/20878932/are-postgresql-column-names-case-sensitive
 10. PostgreSQL naming conventions - https://stackoverflow.com/questions/2878248/postgresql-naming-conventions
 11. Nano ID Collision Calculator - https://zelark.github.io/nano-id-cc/
+12. https://express-rate-limit.mintlify.app/reference/configuration#keygenerator
+13. Understanding Passport Serialize Deserialize - https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
