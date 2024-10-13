@@ -30,9 +30,16 @@ const readLimiter = rateLimit({
     res.status(options.statusCode).send(options.message)
   },
 })
+const createLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 2,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
 
 router.post(
   "/api/shorten",
+  createLimiter,
   checkSchema(createUrlValidationSchema(), ["body"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)

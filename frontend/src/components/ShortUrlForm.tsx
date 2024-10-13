@@ -23,8 +23,9 @@ function ShortUrlForm({
       handleCreateUrl(json)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error(error.message)
-      setError("root", { message: "Could not create short url" })
+      setError("root", {
+        message: `Could not create short url. ${error.message}`,
+      })
     }
   }
   function isValidUrl(value: string) {
