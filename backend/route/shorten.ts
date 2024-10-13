@@ -36,6 +36,18 @@ const createLimiter = rateLimit({
   standardHeaders: "draft-7",
   legacyHeaders: false,
 })
+const updateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 1,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
+const deleteLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 1,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
 
 router.post(
   "/api/shorten",
@@ -87,6 +99,7 @@ router.get(
 
 router.put(
   "/api/shorten/:shortCode",
+  updateLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
@@ -115,6 +128,7 @@ router.put(
 
 router.delete(
   "/api/shorten/:shortCode",
+  deleteLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
