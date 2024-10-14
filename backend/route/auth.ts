@@ -9,8 +9,8 @@ const router = Router()
 
 // TODO Rate limit endpoints
 
-router.post("/api/auth", passport.authenticate("local"), (req, res) => {
-  // TODO login if auth is proper (username and password)
+router.post("/api/auth/login", passport.authenticate("local"), (req, res) => {
+  // login and get cookie if auth is proper (username and password)
   res.sendStatus(200)
 })
 
