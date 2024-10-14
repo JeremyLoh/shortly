@@ -1,7 +1,6 @@
 import express from "express"
 import session from "express-session"
 import passport from "passport"
-import "./auth/strategy/local-strategy.js"
 import pool, { setupDatabase } from "./database.js"
 import router from "./route/index.js"
 
@@ -34,11 +33,6 @@ function setupRoutes() {
     console.log(`Server started on port ${PORT}`)
   })
   app.use(router)
-
-  // TODO create auth router instead of this temporary testing of passport auth
-  app.post("/api/auth", passport.authenticate("local"), (req, res) => {
-    res.sendStatus(200)
-  })
 }
 
 setupServer()
