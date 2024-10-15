@@ -14,9 +14,10 @@ passport.deserializeUser(async (id: string, done) => {
   try {
     const user = await findUserById(id)
     if (!user || user.id !== id) {
-      throw new Error("User not found")
+      done(null, false)
+    } else {
+      done(null, user)
     }
-    done(null, user)
   } catch (error) {
     done(error, null)
   }
@@ -28,9 +29,10 @@ export default passport.use(
     try {
       const user = await findUserBasedOnCredential(username, password)
       if (!user) {
-        throw new Error("Invalid Credentials")
+        done(null, false)
+      } else {
+        done(null, user)
       }
-      done(null, user)
     } catch (error) {
       done(error)
     }
