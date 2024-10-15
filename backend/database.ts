@@ -13,8 +13,8 @@ async function setupDatabase(pool: pg.Pool) {
   try {
     await pool.query(`CREATE TABLE IF NOT EXISTS "urls" (
       id BIGSERIAL PRIMARY KEY,
-      url VARCHAR(2048),
-      short_code CHAR(7) UNIQUE,
+      url VARCHAR(2048) NOT NULL,
+      short_code CHAR(7) UNIQUE NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at TIMESTAMPTZ
     )`)
@@ -24,7 +24,16 @@ async function setupDatabase(pool: pg.Pool) {
       access_count INTEGER NOT NULL DEFAULT 0,
       FOREIGN KEY (url_id) REFERENCES "urls"(id)
     )`)
+    await pool.query(`CREATE TABLE IF NOT EXISTS "users" (
+      id BIGSERIAL PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      hashed_password TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )`)
     await pool.query(`CREATE INDEX urls_short_code_idx ON urls (short_code)`)
+    await pool.query(
+      `CREATE INDEX users_find_user_by_credential_idx ON users (username, hashed_password)`
+    )
   } catch (error) {}
 }
 

@@ -6,11 +6,17 @@ Create a RESTful API that allows users to shorten long URLs. The API should prov
 
 # Running Application (using Docker) (frontend, backend and database)
 
-1. Install docker on your system
-2. Navigate to the project root directory where the `docker-compose.yaml` file is present
-3. Run `docker compose up`
-4. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
-5. To access the frontend app, you should visit the reverseProxy (e.g. `localhost:8080/`. The reverse proxy port defined in `docker-compose.yaml`
+1. Create `.env` file in `backend/` directory. Replace `???` with a random value with at least 32 bytes of entropy - https://expressjs.com/en/resources/middleware/session.html
+
+   ```
+   BACKEND_SESSION_SECRET="???"
+   ```
+
+2. Install docker on your system
+3. Navigate to the project root directory where the `docker-compose.yaml` file is present
+4. Run `docker compose up`
+5. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
+6. To access the frontend app, you should visit the reverseProxy (e.g. `localhost:8080/`. The reverse proxy port defined in `docker-compose.yaml`
 
 You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
 
@@ -143,3 +149,35 @@ The endpoint should return a `200 OK` status code with the statistics
 ```
 
 or a `404 Not Found` status code if the short URL was not found
+
+# Authentication Endpoints
+
+## Login with existing account
+
+Request login for an existing account
+
+```
+POST /api/auth/login
+```
+
+The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
+
+## Logout of signed in account
+
+Request logout for current account
+
+```
+POST /api/auth/logout
+```
+
+The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
+
+## Create new account
+
+Create a new account for authentication
+
+```
+POST /api/auth/users
+```
+
+The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
