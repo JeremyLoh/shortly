@@ -12,10 +12,16 @@ Structure backend using Controller and Model (MV in MVC pattern - https://www.yo
 
 # Running Backend Application (using Docker)
 
-1. Install docker on your system
-2. Navigate to the project root directory where the `docker-compose.yaml` file is present
-3. Run `docker compose up`
-4. To access the backend app, you can visit the reverse proxy port with `/api` endpoint. e.g. `localhost:8080/api`. The reverse proxy is running on the port defined in `docker-compose.yaml`. A request can be made to this port on localhost (for local testing)
+1. Create `.env` file in `backend/` directory. Replace `???` with a random value with at least 32 bytes of entropy - https://expressjs.com/en/resources/middleware/session.html
+
+   ```
+   BACKEND_SESSION_SECRET="???"
+   ```
+
+2. Install docker on your system
+3. Navigate to the project root directory where the `docker-compose.yaml` file is present
+4. Run `docker compose up`
+5. To access the backend app, you can visit the reverse proxy port with `/api` endpoint. e.g. `localhost:8080/api`. The reverse proxy is running on the port defined in `docker-compose.yaml`. A request can be made to this port on localhost (for local testing)
 
 You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
 

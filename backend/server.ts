@@ -1,15 +1,22 @@
+import "dotenv/config"
 import express from "express"
 import session from "express-session"
 import passport from "passport"
 import pool, { setupDatabase } from "./database.js"
 import router from "./route/index.js"
 
+if (process.env.BACKEND_SESSION_SECRET == undefined) {
+  throw new Error(
+    `Please provide a value for .env secret property "BACKEND_SESSION_SECRET"`
+  )
+}
+
 const PORT = 3000 // port need to match docker compose setup for app
 const app = express()
 app.use(
   session({
-    // TODO CHANGE TO ENV variable
-    secret: "TODO-sign-cookie-secret-need-to-change-for-prod",
+    // @ts-ignore require .env file with this property
+    secret: process.env.BACKEND_SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: {
