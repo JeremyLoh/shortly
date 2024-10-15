@@ -143,3 +143,35 @@ The endpoint should return a `200 OK` status code with the statistics
 ```
 
 or a `404 Not Found` status code if the short URL was not found
+
+# Authentication Endpoints
+
+## Login with existing account
+
+Request login for an existing account
+
+```
+POST /api/auth/login
+```
+
+The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
+
+## Logout of signed in account
+
+Request logout for current account
+
+```
+POST /api/auth/logout
+```
+
+The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
+
+## Create new account
+
+Create a new account for authentication
+
+```
+POST /api/auth/users
+```
+
+The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
