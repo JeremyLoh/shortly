@@ -1,6 +1,7 @@
 import "dotenv/config"
 import express from "express"
 import session from "express-session"
+import connectPgSimple from "connect-pg-simple"
 import passport from "passport"
 import pool, { setupDatabase } from "./database.js"
 import router from "./route/index.js"
@@ -12,15 +13,21 @@ if (process.env.BACKEND_SESSION_SECRET == undefined) {
 }
 
 const PORT = 3000 // port need to match docker compose setup for app
+const pgSession = connectPgSimple(session)
 const app = express()
 app.use(
   session({
+    store: new pgSession({
+      pool: pool,
+      createTableIfMissing: true,
+      tableName: "session",
+    }),
     // @ts-ignore require .env file with this property
     secret: process.env.BACKEND_SESSION_SECRET,
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: 2 * 60 * 60 * 1000, // time in ms
+      maxAge: 24 * 60 * 60 * 1000, // time in ms
     },
   })
 )
