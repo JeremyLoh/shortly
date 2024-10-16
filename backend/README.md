@@ -7,6 +7,7 @@ Made using `TypeScript`, `Express`, `PostgreSQL`, `nanoid` package to generate s
 - `express-session` package for managing sessions (to have state for HTTP using cookies) (https://www.npmjs.com/package/express-session)
 - `passport` package for managing local authentication with username and password (https://www.npmjs.com/package/passport)
 - `argon2` package for hashing passwords (https://www.npmjs.com/package/argon2)
+- `connect-pg-simple` package for session store (to save session to postgresql database) - https://www.npmjs.com/package/connect-pg-simple
 
 Structure backend using Controller and Model (MV in MVC pattern - https://www.youtube.com/watch?v=DUg2SWWK18I)
 
