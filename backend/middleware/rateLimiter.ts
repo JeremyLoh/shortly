@@ -58,7 +58,7 @@ const createAccountLimiter = rateLimit({
   legacyHeaders: false,
 })
 
-export {
+export default {
   readShortUrlLimiter,
   createShortUrlLimiter,
   updateShortUrlLimiter,

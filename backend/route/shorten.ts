@@ -13,18 +13,13 @@ import {
   isExistingShortCode,
   updateUrl,
 } from "../model/url.js"
-import {
-  createShortUrlLimiter,
-  deleteShortUrlLimiter,
-  readShortUrlLimiter,
-  updateShortUrlLimiter,
-} from "../middleware/rateLimiter.js"
+import rateLimiter from "../middleware/rateLimiter.js"
 
 const router = Router()
 
 router.post(
   "/api/shorten",
-  createShortUrlLimiter,
+  rateLimiter.createShortUrlLimiter,
   checkSchema(createUrlValidationSchema(), ["body"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
@@ -48,7 +43,7 @@ router.post(
 
 router.get(
   "/api/shorten/:shortCode",
-  readShortUrlLimiter,
+  rateLimiter.readShortUrlLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
@@ -72,7 +67,7 @@ router.get(
 
 router.put(
   "/api/shorten/:shortCode",
-  updateShortUrlLimiter,
+  rateLimiter.updateShortUrlLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
@@ -101,7 +96,7 @@ router.put(
 
 router.delete(
   "/api/shorten/:shortCode",
-  deleteShortUrlLimiter,
+  rateLimiter.deleteShortUrlLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
@@ -125,7 +120,7 @@ router.delete(
 
 router.get(
   "/api/shorten/:shortCode/stats",
-  readShortUrlLimiter,
+  rateLimiter.readShortUrlLimiter,
   checkSchema(createShortCodeValidationSchema(), ["params"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)
