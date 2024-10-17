@@ -4,32 +4,17 @@ import { Request, Response, Router } from "express"
 import { checkSchema, matchedData, validationResult } from "express-validator"
 import { createUserValidationSchema } from "../validation/schema.js"
 import { createUser } from "../model/user.js"
-import rateLimit from "express-rate-limit"
+import {
+  createAccountLimiter,
+  loginAccountLimiter,
+  logoutAccountLimiter,
+} from "../middleware/rateLimiter.js"
 
 const router = Router()
 
-const loginLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  limit: 3,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-})
-const logoutLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  limit: 3,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-})
-const createUserLimiter = rateLimit({
-  windowMs: 24 * 60 * 60 * 1000, // 1 day
-  limit: 2,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-})
-
 router.post(
   "/api/auth/login",
-  loginLimiter,
+  loginAccountLimiter,
   passport.authenticate("local"),
   (req, res) => {
     // login and get cookie if auth is proper (username and password)
@@ -39,7 +24,7 @@ router.post(
 
 router.post(
   "/api/auth/logout",
-  logoutLimiter,
+  logoutAccountLimiter,
   // @ts-ignore
   (req: Request, res: Response) => {
     if (!req.user) {
@@ -57,7 +42,7 @@ router.post(
 
 router.post(
   "/api/auth/users",
-  createUserLimiter,
+  createAccountLimiter,
   checkSchema(createUserValidationSchema(), ["body"]),
   async (req: Request, res: Response) => {
     const errors = validationResult(req)

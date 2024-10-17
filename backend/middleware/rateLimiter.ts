@@ -37,9 +37,33 @@ const deleteShortUrlLimiter = rateLimit({
   legacyHeaders: false,
 })
 
+const loginAccountLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 3,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
+
+const logoutAccountLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 3,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
+
+const createAccountLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000, // 1 day
+  limit: 2,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
+
 export {
   readShortUrlLimiter,
   createShortUrlLimiter,
   updateShortUrlLimiter,
   deleteShortUrlLimiter,
+  loginAccountLimiter,
+  logoutAccountLimiter,
+  createAccountLimiter,
 }
