@@ -130,4 +130,84 @@ describe("Shorten Url API", () => {
       )
     })
   })
+
+  describe("GET /api/shorten/:shortCode", () => {
+    test("should retrieve created short url", async () => {
+      const expectedUrl = "https://example.com"
+      const createShortUrlResponse = await request(app)
+        .post("/api/shorten")
+        .send({ url: expectedUrl })
+        .set("Accept", "application/json")
+      const { id, shortCode, createdAt, updatedAt, url } =
+        createShortUrlResponse.body
+      expect(shortCode).toHaveLength(7)
+
+      const retrieveResponse = await request(app).get(
+        `/api/shorten/${shortCode}`
+      )
+      expect(retrieveResponse.body).toEqual(
+        expect.objectContaining({
+          id: id,
+          shortCode: shortCode,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          url: url,
+        })
+      )
+    })
+
+    test("should not retrieve short url that does not exist", async () => {
+      const invalidShortCode = "1234567"
+      const response = await request(app).get(
+        `/api/shorten/${invalidShortCode}`
+      )
+      expect(response.status).toBe(404)
+    })
+  })
+
+  describe("PUT /api/shorten/:shortCode", () => {
+    test("should update existing short url", async () => {
+      const originalUrl = "https://example.com"
+      const updatedUrl = "http://updatedUrl.com"
+      const createShortUrlResponse = await request(app)
+        .post("/api/shorten")
+        .send({ url: originalUrl })
+        .set("Accept", "application/json")
+      const { id, shortCode, createdAt } = createShortUrlResponse.body
+      expect(shortCode).toHaveLength(7)
+
+      const updateResponse = await request(app)
+        .put(`/api/shorten/${shortCode}`)
+        .send({ url: updatedUrl })
+        .set("Accept", "application/json")
+      expect(updateResponse.status).toBe(200)
+      expect(updateResponse.body).toEqual(
+        expect.objectContaining({
+          id: id,
+          shortCode: shortCode,
+          createdAt: createdAt,
+          updatedAt: expect.any(String),
+          url: updatedUrl,
+        })
+      )
+      expect(new Date(updateResponse.body.updatedAt).getTime()).not.toBeNaN()
+    })
+
+    test("should not update existing short url with invalid url protocol", async () => {
+      const originalUrl = "https://example.com"
+      const invalidUpdateUrl = "ht://invalidUpdateUrl.com"
+      const createShortUrlResponse = await request(app)
+        .post("/api/shorten")
+        .send({ url: originalUrl })
+        .set("Accept", "application/json")
+      const { shortCode } = createShortUrlResponse.body
+      expect(shortCode).toHaveLength(7)
+
+      const updateResponse = await request(app)
+        .put(`/api/shorten/${shortCode}`)
+        .send({ url: invalidUpdateUrl })
+        .set("Accept", "application/json")
+      expect(updateResponse.status).toBe(400)
+    })
+  })
 })
