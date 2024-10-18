@@ -54,7 +54,7 @@ describe("Auth API", () => {
 
     test("should accept login with account that exists with correct credentials", async () => {
       const username = "test_username"
-      const password = "userpassword"
+      const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
         .send({ username: username, password: password })
@@ -69,6 +69,55 @@ describe("Auth API", () => {
           expect.stringMatching("connect.sid=.+Expires=.+"),
         ])
       )
+    })
+
+    test("should reject login with account with incorrect credentials", async () => {
+      const username = "test_username"
+      const password = "12345678"
+      const incorrectPassword = "incorrectPassword"
+      const createAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: password })
+      expect(createAccountResponse.status).toBe(201)
+
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ username: username, password: incorrectPassword })
+      expect(loginResponse.status).toBe(401)
+      expect(loginResponse.body).toEqual({})
+      expect(loginResponse.headers["set-cookie"]).toBeUndefined()
+    })
+
+    test("should reject login with account with missing password", async () => {
+      const username = "test_username"
+      const password = "12345678"
+      const createAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: password })
+      expect(createAccountResponse.status).toBe(201)
+
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ username: username })
+      expect(loginResponse.status).toBe(400)
+      expect(loginResponse.headers["set-cookie"]).toBeUndefined()
+      expect(loginResponse.body).toEqual({})
+    })
+
+    test("should reject login with missing username and password", async () => {
+      const loginResponse = await request(app).post("/api/auth/login").send({})
+      expect(loginResponse.status).toBe(400)
+      expect(loginResponse.headers["set-cookie"]).toBeUndefined()
+      expect(loginResponse.body).toEqual({})
+    })
+
+    test("should reject login with missing account username", async () => {
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ password: "12345678" })
+      expect(loginResponse.status).toBe(400)
+      expect(loginResponse.headers["set-cookie"]).toBeUndefined()
+      expect(loginResponse.body).toEqual({})
     })
   })
 })
