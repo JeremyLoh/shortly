@@ -210,4 +210,22 @@ describe("Shorten Url API", () => {
       expect(updateResponse.status).toBe(400)
     })
   })
+
+  describe("DELETE /api/shorten/:shortCode", () => {
+    test("should delete existing short url", async () => {
+      const originalUrl = "https://example.com"
+      const createShortUrlResponse = await request(app)
+        .post("/api/shorten")
+        .send({ url: originalUrl })
+        .set("Accept", "application/json")
+      const { shortCode } = createShortUrlResponse.body
+      expect(shortCode).toHaveLength(7)
+
+      const deleteResponse = await request(app)
+        .delete(`/api/shorten/${shortCode}`)
+        .set("Accept", "application/json")
+      expect(deleteResponse.status).toBe(204)
+      expect(deleteResponse.body).toEqual({})
+    })
+  })
 })
