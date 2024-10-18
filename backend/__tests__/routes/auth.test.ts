@@ -121,6 +121,35 @@ describe("Auth API", () => {
     })
   })
 
+  describe("POST /api/auth/logout", () => {
+    // https://github.com/ladjs/supertest/issues/665
+    test("should logout user that is currently logged in", async () => {
+      const username = "test_username"
+      const password = "12345678"
+      const createAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: password })
+      expect(createAccountResponse.status).toBe(201)
+
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ username, password })
+      expect(loginResponse.status).toBe(200)
+
+      const logoutResponse = await request(app)
+        .post("/api/auth/logout")
+        .set("Cookie", loginResponse.headers["set-cookie"])
+      expect(logoutResponse.status).toBe(200)
+      expect(logoutResponse.body).toEqual({})
+    })
+
+    test("should return authorization error for no login cookie", async () => {
+      const logoutResponse = await request(app).post("/api/auth/logout")
+      expect(logoutResponse.status).toBe(401)
+      expect(logoutResponse.body).toEqual({})
+    })
+  })
+
   describe("POST /api/auth/users", () => {
     test("should create new account with username that does not exist", async () => {
       const username = "test_username"
