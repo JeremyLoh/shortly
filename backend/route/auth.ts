@@ -48,8 +48,8 @@ router.post(
     }
     const { username, password } = matchedData(req)
     try {
-      const newUser = await createUser(username, password)
-      res.status(201).send(newUser)
+      await createUser(username, password)
+      res.sendStatus(201)
     } catch (error: any) {
       res.status(400).send({ error: error.message })
     }

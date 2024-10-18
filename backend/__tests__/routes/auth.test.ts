@@ -120,4 +120,34 @@ describe("Auth API", () => {
       expect(loginResponse.body).toEqual({})
     })
   })
+
+  describe("POST /api/auth/users", () => {
+    test("should create new account with username that does not exist", async () => {
+      const username = "test_username"
+      const password = "12345678"
+      const createAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: password })
+      expect(createAccountResponse.status).toBe(201)
+    })
+
+    test("should not create account with username that already exists", async () => {
+      const username = "test_username"
+      const password = "12345678"
+      const createAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: password })
+      expect(createAccountResponse.status).toBe(201)
+
+      const createDuplicateAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: "secondAccountPassword" })
+      expect(createDuplicateAccountResponse.status).toBe(400)
+      expect(createDuplicateAccountResponse.body).toEqual(
+        expect.objectContaining({
+          error: "Could not create user",
+        })
+      )
+    })
+  })
 })
