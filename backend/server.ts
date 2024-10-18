@@ -3,7 +3,7 @@ import express from "express"
 import session from "express-session"
 import connectPgSimple from "connect-pg-simple"
 import passport from "passport"
-import pool, { setupDatabase } from "./database.js"
+import pool from "./database.js"
 import router from "./route/index.js"
 
 if (process.env.BACKEND_SESSION_SECRET == undefined) {
@@ -36,13 +36,7 @@ async function setupApp() {
   app.use(passport.session())
   app.use(express.json()) // middleware to parse json request body
 
-  await setupDatabase(pool)
   app.use(router)
-
-  // let server = app.listen(port, () => {
-  //   console.log(`Server started on port ${port}`)
-  //   app.emit("serverStarted")
-  // })
   return app
 }
 

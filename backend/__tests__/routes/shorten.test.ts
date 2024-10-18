@@ -10,6 +10,7 @@ import {
 } from "vitest"
 import request from "supertest"
 import { NextFunction, Request, Response, Express } from "express"
+import pool, { setupDatabase } from "../../database.js"
 
 function getMockMiddleware() {
   return (req: Request, res: Response, next: NextFunction) => next()
@@ -20,9 +21,12 @@ describe("Shorten Url API", () => {
 
   beforeAll(async () => {
     app = await setupApp()
+    await setupDatabase(pool)
   })
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await pool.query("DELETE FROM stats")
+    await pool.query("DELETE FROM urls")
     vi.mock("../../middleware/rateLimiter.js", () => {
       return {
         default: {
@@ -38,7 +42,9 @@ describe("Shorten Url API", () => {
     })
   })
 
-  afterEach(() => {
+  afterEach(async () => {
+    await pool.query("DELETE FROM stats")
+    await pool.query("DELETE FROM urls")
     vi.restoreAllMocks()
   })
 
