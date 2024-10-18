@@ -65,3 +65,5 @@ Column naming convention (lowercase with underscores)
 1. Mocking express-rate-limit for unit testing - https://stackoverflow.com/questions/63160152/mocking-express-rate-limit-for-unit-testing
 2. NodeJS Express Test-Driven API Development (TDD) - https://www.youtube.com/watch?v=M44umyYPiuo
 3. Ensure Express App has started before running Mocha/Supertest tests - https://mrvautin.com/ensure-express-app-started-before-tests/
+4. Multiple test file port 3000 already in use - https://stackoverflow.com/questions/54422849/jest-testing-multiple-test-file-port-3000-already-in-use
+   - Put `app.listen` in a different file (run listen for each test file instead)

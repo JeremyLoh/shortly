@@ -1,4 +1,4 @@
-import app from "../../server.js"
+import setupApp from "../../server.js"
 import {
   vi,
   describe,
@@ -9,17 +9,17 @@ import {
   afterEach,
 } from "vitest"
 import request from "supertest"
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, Response, Express } from "express"
 
 function getMockMiddleware() {
   return (req: Request, res: Response, next: NextFunction) => next()
 }
 
 describe("Shorten Url API", () => {
-  beforeAll(() => {
-    // https://mrvautin.com/ensure-express-app-started-before-tests/
-    // wait for server to emit this event
-    return new Promise((done) => app.on("serverStarted", () => done(true)))
+  let app: Express
+
+  beforeAll(async () => {
+    app = await setupApp()
   })
 
   beforeEach(() => {

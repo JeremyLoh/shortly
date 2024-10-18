@@ -11,11 +11,11 @@ if (process.env.BACKEND_SESSION_SECRET == undefined) {
     `Please provide a value for .env secret property "BACKEND_SESSION_SECRET"`
   )
 }
-const PORT = 3000 // port need to match docker compose setup for app
-const pgSession = connectPgSimple(session)
-const app = express()
-
 async function setupApp() {
+  const app = express()
+  // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
+  app.set("trust proxy", 1) // Trust first proxy (reverse proxy)
+  const pgSession = connectPgSimple(session)
   app.use(
     session({
       store: new pgSession({
@@ -34,25 +34,16 @@ async function setupApp() {
   )
   app.use(passport.initialize())
   app.use(passport.session())
-  await setupServer()
-}
-
-async function setupServer() {
-  // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
-  app.set("trust proxy", 1) // Trust first proxy (reverse proxy)
-  await setupDatabase(pool)
-  setupRoutes()
-}
-
-function setupRoutes() {
   app.use(express.json()) // middleware to parse json request body
-  app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`)
-    app.emit("serverStarted")
-  })
+
+  await setupDatabase(pool)
   app.use(router)
+
+  // let server = app.listen(port, () => {
+  //   console.log(`Server started on port ${port}`)
+  //   app.emit("serverStarted")
+  // })
+  return app
 }
 
-setupApp()
-
-export default app
+export default setupApp
