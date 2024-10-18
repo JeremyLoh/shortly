@@ -31,6 +31,12 @@ docker system prune
 docker compose up
 ```
 
+# Running Tests
+
+- Navigate to project root (where docker-compose.yaml is located) and run `docker compose run backend npm run test`
+
+- https://docs.docker.com/guides/nodejs/run-tests/
+
 # Database (PostgreSQL)
 
 Column naming convention (lowercase with underscores)
@@ -53,3 +59,11 @@ Column naming convention (lowercase with underscores)
 12. https://express-rate-limit.mintlify.app/reference/configuration#keygenerator
 13. Understanding Passport Serialize Deserialize - https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 14. Passport js always returning 500 internal error - https://stackoverflow.com/questions/29580522/passport-js-always-returning-500-internal-error
+
+# References (Testing)
+
+1. Mocking express-rate-limit for unit testing - https://stackoverflow.com/questions/63160152/mocking-express-rate-limit-for-unit-testing
+2. NodeJS Express Test-Driven API Development (TDD) - https://www.youtube.com/watch?v=M44umyYPiuo
+3. Ensure Express App has started before running Mocha/Supertest tests - https://mrvautin.com/ensure-express-app-started-before-tests/
+4. Multiple test file port 3000 already in use - https://stackoverflow.com/questions/54422849/jest-testing-multiple-test-file-port-3000-already-in-use
+   - Put `app.listen` in a different file (run listen for each test file instead)

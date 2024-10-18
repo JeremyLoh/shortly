@@ -99,11 +99,23 @@ async function updateUrl(shortCode: string, url: string) {
 async function deleteUrl(shortCode: string) {
   const client = await pool.connect()
   try {
-    const response = await client.query(
+    await client.query("BEGIN")
+    await client.query(
+      `DELETE FROM stats WHERE url_id = (SELECT id FROM urls WHERE short_code = $1)`,
+      [shortCode]
+    )
+    const deleteUrlresponse = await client.query(
       `DELETE FROM urls WHERE short_code = $1`,
       [shortCode]
     )
-    return response.rowCount === 1
+    if (deleteUrlresponse.rowCount !== 1) {
+      throw new Error("Could not delete short url")
+    }
+    await client.query("COMMIT")
+    return true
+  } catch (error) {
+    await client.query("ROLLBACK")
+    throw error
   } finally {
     client.release()
   }
