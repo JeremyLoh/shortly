@@ -45,6 +45,7 @@ function ShortUrlForm({
       <label htmlFor="url">Url</label>
       <input
         id="url"
+        data-testid="create-new-url-input"
         placeholder="Your long URL..."
         aria-invalid={errors.url ? "true" : "false"}
         className={errors.url ? `error-border` : ""}
@@ -62,7 +63,11 @@ function ShortUrlForm({
           {errors.url.message}
         </p>
       )}
-      <button disabled={isSubmitting} type="submit">
+      <button
+        disabled={isSubmitting}
+        type="submit"
+        data-testid="create-new-url-submit-btn"
+      >
         {isSubmitting ? "Loading" : "Submit"}
       </button>
       {errors.root && (
