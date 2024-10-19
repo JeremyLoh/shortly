@@ -48,7 +48,11 @@ function ShortUrlStatForm({
             maxLength: { value: 2048, message: "Max length is 2048" },
           })}
         />
-        <button disabled={isSubmitting} type="submit">
+        <button
+          disabled={isSubmitting}
+          type="submit"
+          data-testid="short-url-stat-submit-btn"
+        >
           {isSubmitting ? "Loading" : "Search"}
         </button>
       </form>

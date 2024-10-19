@@ -12,6 +12,16 @@ docker system prune
 docker compose up
 ```
 
+# Running Tests
+
+1. In `frontend/` directory, perform install of dependencies using `npm install`
+2. Run `npm run test` (Playwright ui will be launched, the frontend will be automatically launched using `playwright.config.ts` as a web server - https://playwright.dev/docs/test-webserver)
+
+# References
+
+1. Fixing playwright.config.ts, add to `tsconfig.app.json` and `tsconfig.json` - https://stackoverflow.com/questions/53529521/typescript-error-cannot-find-name-process
+   https://stackoverflow.com/a/78626067
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
