@@ -35,7 +35,7 @@ test("create new short url with mocked backend API", async ({ page }) => {
       id: "1",
       url: url,
       shortCode: shortCode,
-      createdAt: new Date(),
+      createdAt: "2024-10-19T09:49:24.027Z",
       updatedAt: null,
     }
     await route.fulfill({
