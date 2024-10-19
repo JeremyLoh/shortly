@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test"
-
-const HOMEPAGE_URL = "localhost:5173"
+import { HOMEPAGE_URL } from "./constants"
 
 function assertErrorPageShown(page) {
   expect(page.getByText("Error - 404 Not Found")).toBeVisible()

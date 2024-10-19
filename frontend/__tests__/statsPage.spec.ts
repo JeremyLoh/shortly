@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test"
-
-const HOMEPAGE_URL = "localhost:5173"
+import { HOMEPAGE_URL } from "./constants"
 
 async function mockStatsResponse(page, { shortCode, url, accessCount }) {
   await page.route(`*/**/api/shorten/${shortCode}/stats`, async (route) => {
