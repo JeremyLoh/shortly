@@ -6,8 +6,12 @@ function Header() {
     <header>
       <h1>Url Shortener</h1>
       <nav>
-        <Link to="/">Home</Link>
-        <Link to="/stats">Stats</Link>
+        <Link to="/" data-testid="header-homepage-link">
+          Home
+        </Link>
+        <Link to="/stats" data-testid="header-stats-link">
+          Stats
+        </Link>
       </nav>
     </header>
   )
