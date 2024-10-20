@@ -1,6 +1,7 @@
-import { SubmitHandler, useForm } from "react-hook-form"
 import "./LoginForm.css"
 import { useNavigate } from "react-router-dom"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { login } from "../endpoints/user"
 
 type FormFields = {
   username: string
@@ -12,11 +13,19 @@ function LoginForm() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>()
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(JSON.stringify(data))
-    navigate("/")
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    try {
+      await login(data.username, data.password)
+      navigate("/")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setError("root", {
+        message: `Could not check login credentials. ${error.message}`,
+      })
+    }
   }
   return (
     <form id="login-form" onSubmit={handleSubmit(onSubmit)}>
@@ -53,6 +62,13 @@ function LoginForm() {
         <div>
           <p role="alert" className="error-text">
             {errors.password.message}
+          </p>
+        </div>
+      )}
+      {errors.root && (
+        <div>
+          <p role="alert" className="error-text">
+            {errors.root.message}
           </p>
         </div>
       )}

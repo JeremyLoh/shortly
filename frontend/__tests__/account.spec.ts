@@ -49,3 +49,87 @@ test("login password cannot be empty during form submit", async ({ page }) => {
   await page.getByRole("button", { name: "Sign in" }).click()
   await expect(page.getByText("Password is required")).toBeVisible()
 })
+
+test("login to existing account and redirect to homepage", async ({
+  page,
+  browser,
+}) => {
+  const browserContext = await browser.newContext()
+  await page.route("*/**/api/auth/login", async (route) => {
+    const request = route.request()
+    expect(request.method()).toBe("POST")
+    const mockCookieHeader =
+      "connect.sid=s%2testCookie123456789abcdefyaac22033.97sirrrarrdseewreerrjtt3tteeeaabbbggiedefabc; Path=/; Expires=Mon, 21 Oct 2024 06:40:22 GMT; HttpOnly"
+    await route.fulfill({
+      status: 200,
+      headers: { "set-cookie": mockCookieHeader },
+    })
+    await browserContext.addCookies([
+      {
+        name: "connect.sid",
+        value:
+          "s%2testCookie123456789abcdefyaac22033.97sirrrarrdseewreerrjtt3tteeeaabbbggiedefabc",
+        domain: "localhost",
+        path: "/",
+      },
+    ])
+  })
+  expect(page.url()).toContain("/login")
+  await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
+  await page.getByLabel("username").fill("test_username")
+  await page.getByLabel("password").fill("test_password")
+  await page.getByRole("button", { name: "Sign in" }).click()
+
+  await expect(page.getByRole("heading", { name: "Login" })).not.toBeVisible()
+  expect(page.url()).not.toContain("/login")
+})
+
+test("login with invalid account credentials shows error message", async ({
+  page,
+}) => {
+  await page.route("*/**/api/auth/login", async (route) => {
+    const request = route.request()
+    expect(request.method()).toBe("POST")
+    await route.fulfill({
+      status: 401,
+      body: "Unauthorized",
+    })
+  })
+  expect(page.url()).toContain("/login")
+  await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
+  await page.getByLabel("username").fill("test_username")
+  await page.getByLabel("password").fill("test_password")
+  await page.getByRole("button", { name: "Sign in" }).click()
+  await expect(
+    page.getByText(
+      "Could not check login credentials. Invalid username / password"
+    )
+  ).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
+})
+
+test("login with rate limit exceeded shows error message", async ({ page }) => {
+  const retryAfterSeconds = "59"
+  await page.route("*/**/api/auth/login", async (route) => {
+    const request = route.request()
+    expect(request.method()).toBe("POST")
+    await route.fulfill({
+      status: 429,
+      body: "Too many requests, please try again later.",
+      headers: {
+        "retry-after": retryAfterSeconds,
+      },
+    })
+  })
+  expect(page.url()).toContain("/login")
+  await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
+  await page.getByLabel("username").fill("test_username")
+  await page.getByLabel("password").fill("test_password")
+  await page.getByRole("button", { name: "Sign in" }).click()
+  await expect(
+    page.getByText(
+      `Could not check login credentials. Rate Limit Exceeded, please try again after ${retryAfterSeconds} seconds`
+    )
+  ).toBeVisible()
+  await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
+})
