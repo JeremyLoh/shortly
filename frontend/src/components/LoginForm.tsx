@@ -43,8 +43,19 @@ function LoginForm() {
       )}
       <div className="input-row">
         <label htmlFor="password">Password</label>
-        <input id="password" type="password" {...register("password")} />
+        <input
+          id="password"
+          type="password"
+          {...register("password", { required: "Password is required" })}
+        />
       </div>
+      {errors.password && (
+        <div>
+          <p role="alert" className="error-text">
+            {errors.password.message}
+          </p>
+        </div>
+      )}
       <button type="submit" disabled={isSubmitting}>
         Sign in
       </button>

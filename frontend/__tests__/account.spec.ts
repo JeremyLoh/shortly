@@ -36,4 +36,16 @@ test("login username cannot be longer than 255 characters during form submit", a
   await expect(
     page.getByText("Username cannot be longer than 255 characters")
   ).toBeVisible()
+
+  await page.getByLabel("username").clear()
+  await page.getByLabel("username").fill("a".repeat(255))
+  await expect(
+    page.getByText("Username cannot be longer than 255 characters")
+  ).not.toBeVisible()
+})
+
+test("login password cannot be empty during form submit", async ({ page }) => {
+  await page.getByLabel("password").clear()
+  await page.getByRole("button", { name: "Sign in" }).click()
+  await expect(page.getByText("Password is required")).toBeVisible()
 })
