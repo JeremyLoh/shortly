@@ -12,6 +12,9 @@ function Header() {
         <Link to="/stats" data-testid="header-stats-link">
           Stats
         </Link>
+        <Link to="/login" data-testid="header-login-link">
+          Login
+        </Link>
       </nav>
     </header>
   )
