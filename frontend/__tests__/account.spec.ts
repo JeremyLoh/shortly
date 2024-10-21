@@ -50,7 +50,7 @@ test("login password cannot be empty during form submit", async ({ page }) => {
   await expect(page.getByText("Password is required")).toBeVisible()
 })
 
-test("login to existing account and redirect to homepage", async ({
+test("login to existing account, redirect to homepage and header login link should change to logout", async ({
   page,
   browser,
 }) => {
@@ -58,10 +58,14 @@ test("login to existing account and redirect to homepage", async ({
   await page.route("*/**/api/auth/login", async (route) => {
     const request = route.request()
     expect(request.method()).toBe("POST")
+    const mockUserResponseJson = {
+      id: "12",
+    }
     const mockCookieHeader =
       "connect.sid=s%2testCookie123456789abcdefyaac22033.97sirrrarrdseewreerrjtt3tteeeaabbbggiedefabc; Path=/; Expires=Mon, 21 Oct 2024 06:40:22 GMT; HttpOnly"
     await route.fulfill({
       status: 200,
+      json: mockUserResponseJson,
       headers: { "set-cookie": mockCookieHeader },
     })
     await browserContext.addCookies([
@@ -82,6 +86,9 @@ test("login to existing account and redirect to homepage", async ({
 
   await expect(page.getByRole("heading", { name: "Login" })).not.toBeVisible()
   expect(page.url()).not.toContain("/login")
+  await expect(page.getByRole("link", { name: "Login" })).not.toBeVisible()
+  // TODO create logout page
+  // await expect(page.getByRole("link", { name: "Logout" })).toBeVisible()
 })
 
 test("login with invalid account credentials shows error message", async ({
@@ -133,3 +140,8 @@ test("login with rate limit exceeded shows error message", async ({ page }) => {
   ).toBeVisible()
   await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
 })
+
+// test("should create a new account", async ({ page }) => {
+//  await navigateToLoginPage(page)
+//   // TODO create new account, login page => create new account link => submit form => redirect to login page
+// })

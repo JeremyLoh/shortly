@@ -1,14 +1,17 @@
 import "./LoginForm.css"
 import { useNavigate } from "react-router-dom"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { login } from "../endpoints/user"
+
+type LoginProps = {
+  handleLogin: (username: string, password: string) => Promise<void>
+}
 
 type FormFields = {
   username: string
   password: string
 }
 
-function LoginForm() {
+function LoginForm({ handleLogin }: LoginProps) {
   const navigate = useNavigate()
   const {
     register,
@@ -18,12 +21,12 @@ function LoginForm() {
   } = useForm<FormFields>()
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await login(data.username, data.password)
+      await handleLogin(data.username, data.password)
       navigate("/")
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError("root", {
-        message: `Could not check login credentials. ${error.message}`,
+        message: error.message,
       })
     }
   }

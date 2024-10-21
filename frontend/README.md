@@ -22,6 +22,9 @@ docker compose up
 1. Fixing playwright.config.ts, add to `tsconfig.app.json` and `tsconfig.json` - https://stackoverflow.com/questions/53529521/typescript-error-cannot-find-name-process
    https://stackoverflow.com/a/78626067
 
+2. Authentication with React Router v6: A complete guide - https://blog.logrocket.com/authentication-react-router-v6/
+3. How should the createBrowserRouter and RouterProvider be use with application context - https://stackoverflow.com/questions/75652431/how-should-the-createbrowserrouter-and-routerprovider-be-use-with-application-co
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

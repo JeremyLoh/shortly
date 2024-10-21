@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom"
 import "./Header.css"
+import { useAuth } from "../hooks/useAuth"
 
 function Header() {
+  const auth = useAuth()
   return (
     <header>
       <h1>Url Shortener</h1>
@@ -12,9 +14,14 @@ function Header() {
         <Link to="/stats" data-testid="header-stats-link">
           Stats
         </Link>
-        <Link to="/login" data-testid="header-login-link">
-          Login
-        </Link>
+        {auth && auth.user ? (
+          // TODO MAKE LOGOUT PAGE
+          <p>Logout</p>
+        ) : (
+          <Link to="/login" data-testid="header-login-link">
+            Login
+          </Link>
+        )}
       </nav>
     </header>
   )

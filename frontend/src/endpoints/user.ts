@@ -1,6 +1,10 @@
 import ky from "ky"
 
-async function login(username: string, password: string) {
+interface User {
+  id: string
+}
+
+async function login(username: string, password: string): Promise<User> {
   try {
     const response = await ky.post("/api/auth/login", {
       json: { username, password },
@@ -9,6 +13,7 @@ async function login(username: string, password: string) {
     if (response.status !== 200) {
       throw new Error("Invalid username / password")
     }
+    return response.json()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response.status === 401) {
@@ -25,3 +30,4 @@ async function login(username: string, password: string) {
 }
 
 export { login }
+export type { User }
