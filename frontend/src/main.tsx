@@ -8,7 +8,7 @@ import RedirectUrlPage from "./pages/RedirectUrlPage.tsx"
 import { redirectLoader } from "./pages/RedirectUrlLoader.tsx"
 import UrlStatsPage from "./pages/UrlStatsPage.tsx"
 import LoginPage from "./pages/LoginPage.tsx"
-import { AuthProvider } from "./hooks/useAuth.tsx"
+import AuthProvider from "./hooks/AuthProvider.tsx"
 
 const router = createBrowserRouter([
   {
