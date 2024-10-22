@@ -181,3 +181,13 @@ POST /api/auth/users
 ```
 
 The endpoint returns a `200 OK` status code when successful. `401` status code is returned during failure
+
+## Get status of account based on token (TODO maybe not needed)
+
+Check auth status of an existing cookie
+
+```
+GET /api/auth/status
+```
+
+The endpoint returns a `200 OK` status code when cookie is valid. `404` status is returned during failure or cookie is invalid

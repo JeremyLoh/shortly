@@ -8,13 +8,25 @@ import rateLimiter from "../middleware/rateLimiter.js"
 
 const router = Router()
 
+router.get(
+  "/api/auth/status",
+  rateLimiter.checkLoginStatusLimiter,
+  // @ts-ignore
+  (req, res) => {
+    // check passportjs user object for cookie expiry (req.user)
+    return req.user && req.session.cookie
+      ? res.sendStatus(200)
+      : res.sendStatus(404)
+  }
+)
+
 router.post(
   "/api/auth/login",
   rateLimiter.loginAccountLimiter,
   passport.authenticate("local"),
   (req, res) => {
     // login and get cookie if auth is proper (username and password)
-    res.sendStatus(200)
+    res.status(200).json(req.user)
   }
 )
 

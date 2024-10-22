@@ -58,6 +58,13 @@ const createAccountLimiter = rateLimit({
   legacyHeaders: false,
 })
 
+const checkLoginStatusLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 30,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
+
 export default {
   readShortUrlLimiter,
   createShortUrlLimiter,
@@ -66,4 +73,5 @@ export default {
   loginAccountLimiter,
   logoutAccountLimiter,
   createAccountLimiter,
+  checkLoginStatusLimiter,
 }
