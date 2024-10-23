@@ -142,6 +142,7 @@ describe("Auth API", () => {
         .set("Cookie", loginResponse.headers["set-cookie"])
       expect(logoutResponse.status).toBe(200)
       expect(logoutResponse.body).toEqual({})
+      expect(logoutResponse.headers["set-cookie"]).toBeUndefined()
     })
 
     test("should return authorization error for no login cookie", async () => {

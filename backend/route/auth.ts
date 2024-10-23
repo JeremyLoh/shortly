@@ -35,15 +35,22 @@ router.post(
   rateLimiter.logoutAccountLimiter,
   // @ts-ignore
   (req: Request, res: Response) => {
+    // https://stackoverflow.com/questions/31641884/does-passports-logout-function-remove-the-cookie-if-not-how-does-it-work
     if (!req.user) {
       return res.sendStatus(401)
     }
     req.logout((error) => {
       if (error) {
         res.sendStatus(400)
-      } else {
-        res.sendStatus(200)
+        return
       }
+      req.session.destroy((error) => {
+        if (error) {
+          res.sendStatus(400)
+        } else {
+          res.sendStatus(200)
+        }
+      })
     })
   }
 )
