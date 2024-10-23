@@ -65,6 +65,9 @@ describe("Auth API", () => {
         .post("/api/auth/login")
         .send({ username: username, password: password })
       expect(loginResponse.status).toBe(200)
+      expect(loginResponse.body).toEqual(
+        expect.objectContaining({ id: expect.any(String) })
+      )
       expect(loginResponse.headers["set-cookie"]).toEqual(
         expect.arrayContaining([
           expect.stringMatching("connect.sid=.+Expires=.+"),
