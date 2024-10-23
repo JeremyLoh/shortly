@@ -19,6 +19,8 @@ docker compose up
 
 # References
 
+Favicon generated from https://favicon.io/emoji-favicons/robot
+
 1. Fixing playwright.config.ts, add to `tsconfig.app.json` and `tsconfig.json` - https://stackoverflow.com/questions/53529521/typescript-error-cannot-find-name-process
    https://stackoverflow.com/a/78626067
 
