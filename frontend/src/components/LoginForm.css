@@ -1,0 +1,35 @@
+#login-form {
+  display: flex;
+  flex-direction: column;
+  column-gap: 0.3rem;
+  width: 80%;
+  max-width: 70ch;
+}
+
+#login-form button[type="submit"] {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #0ea5e9;
+  color: white;
+}
+#login-form button[type="submit"]:hover {
+  background-color: #0284c7;
+}
+
+.input-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0.4rem 0;
+}
+
+.input-row label {
+  flex: 1;
+}
+
+.input-row input {
+  flex: 6;
+  font-size: 1rem;
+  padding: 0.2em;
+}

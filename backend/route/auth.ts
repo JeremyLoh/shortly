@@ -8,13 +8,25 @@ import rateLimiter from "../middleware/rateLimiter.js"
 
 const router = Router()
 
+router.get(
+  "/api/auth/status",
+  rateLimiter.checkLoginStatusLimiter,
+  // @ts-ignore
+  (req, res) => {
+    // check passportjs user object for cookie expiry (req.user)
+    return req.user && req.session.cookie
+      ? res.sendStatus(200)
+      : res.sendStatus(404)
+  }
+)
+
 router.post(
   "/api/auth/login",
   rateLimiter.loginAccountLimiter,
   passport.authenticate("local"),
   (req, res) => {
     // login and get cookie if auth is proper (username and password)
-    res.sendStatus(200)
+    res.status(200).json(req.user)
   }
 )
 
@@ -23,15 +35,22 @@ router.post(
   rateLimiter.logoutAccountLimiter,
   // @ts-ignore
   (req: Request, res: Response) => {
+    // https://stackoverflow.com/questions/31641884/does-passports-logout-function-remove-the-cookie-if-not-how-does-it-work
     if (!req.user) {
       return res.sendStatus(401)
     }
     req.logout((error) => {
       if (error) {
         res.sendStatus(400)
-      } else {
-        res.sendStatus(200)
+        return
       }
+      req.session.destroy((error) => {
+        if (error) {
+          res.sendStatus(400)
+        } else {
+          res.sendStatus(200)
+        }
+      })
     })
   }
 )

@@ -36,6 +36,7 @@ describe("Auth API", () => {
           loginAccountLimiter: getMockMiddleware(),
           logoutAccountLimiter: getMockMiddleware(),
           createAccountLimiter: getMockMiddleware(),
+          checkLoginStatusLimiter: getMockMiddleware(),
         },
       }
     })
@@ -64,6 +65,9 @@ describe("Auth API", () => {
         .post("/api/auth/login")
         .send({ username: username, password: password })
       expect(loginResponse.status).toBe(200)
+      expect(loginResponse.body).toEqual(
+        expect.objectContaining({ id: expect.any(String) })
+      )
       expect(loginResponse.headers["set-cookie"]).toEqual(
         expect.arrayContaining([
           expect.stringMatching("connect.sid=.+Expires=.+"),
@@ -141,6 +145,7 @@ describe("Auth API", () => {
         .set("Cookie", loginResponse.headers["set-cookie"])
       expect(logoutResponse.status).toBe(200)
       expect(logoutResponse.body).toEqual({})
+      expect(logoutResponse.headers["set-cookie"]).toBeUndefined()
     })
 
     test("should return authorization error for no login cookie", async () => {
@@ -177,6 +182,36 @@ describe("Auth API", () => {
           error: "Could not create user",
         })
       )
+    })
+  })
+
+  describe("GET /api/auth/status", () => {
+    test("should receive user auth status of HTTP 200 based on given valid cookie", async () => {
+      const username = "test_username"
+      const password = "123456789"
+      const createAccountResponse = await request(app)
+        .post("/api/auth/users")
+        .send({ username: username, password: password })
+      expect(createAccountResponse.status).toBe(201)
+
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ username, password })
+      expect(loginResponse.status).toBe(200)
+
+      const { header } = loginResponse
+      // Setting cookie in request - https://github.com/ladjs/supertest/issues/665
+      const checkAuthStatusResponse = await request(app)
+        .get("/api/auth/status")
+        .set("Cookie", [...header["set-cookie"]])
+
+      expect(checkAuthStatusResponse.status).toBe(200)
+    })
+
+    test("should receive user auth status of HTTP 404 based on given invalid cookie", async () => {
+      // No cookie sent
+      const checkAuthStatusResponse = await request(app).get("/api/auth/status")
+      expect(checkAuthStatusResponse.status).toBe(404)
     })
   })
 })

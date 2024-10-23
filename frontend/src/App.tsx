@@ -9,7 +9,7 @@ import Footer from "./components/Footer"
 function App() {
   const [url, setUrl] = useState<Url | null>(null)
   return (
-    <div className="app-container">
+    <>
       <Header />
       <div className="content">
         <h3>Create a new short URL</h3>
@@ -21,7 +21,7 @@ function App() {
         {url && <ShortUrl url={url} />}
       </div>
       <Footer />
-    </div>
+    </>
   )
 }
 

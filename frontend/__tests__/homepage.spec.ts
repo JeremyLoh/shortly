@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test"
-
-const HOMEPAGE_URL = "localhost:5173"
+import { HOMEPAGE_URL } from "./constants"
 
 test("has title", async ({ page }) => {
   await page.goto(HOMEPAGE_URL)
