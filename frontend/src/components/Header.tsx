@@ -15,8 +15,9 @@ function Header() {
           Stats
         </Link>
         {auth && auth.user ? (
-          // TODO MAKE LOGOUT PAGE
-          <p>Logout</p>
+          <Link to="/logout" data-testid="header-logout-link">
+            Logout
+          </Link>
         ) : (
           <Link to="/login" data-testid="header-login-link">
             Login

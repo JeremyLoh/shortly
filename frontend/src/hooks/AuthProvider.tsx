@@ -1,13 +1,19 @@
 import { createContext, useMemo, useCallback } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 import useLocalStorage from "./useLocalStorage"
-import { login, User } from "../endpoints/user"
+import { login, logout, User } from "../endpoints/user"
+
+type LogoutResponseType = {
+  error: string
+}
 
 // https://stackoverflow.com/questions/38744159/in-typescript-how-to-define-type-of-async-function
 type AuthUser = {
   user: User | null
   performLogin: (username: string, password: string) => Promise<void>
-  performLogout: () => Promise<void>
+  performLogout: (
+    abortController: AbortController
+  ) => Promise<LogoutResponseType>
 }
 
 // https://stackoverflow.com/questions/75652431/how-should-the-createbrowserrouter-and-routerprovider-be-use-with-application-co
@@ -30,14 +36,22 @@ const AuthProvider = () => {
     },
     [setUser, navigate]
   )
-  const performLogout = useCallback(async () => {
-    if (!user) {
-      return
-    }
-    // TODO logout user account on server https://stackoverflow.com/questions/31641884/does-passports-logout-function-remove-the-cookie-if-not-how-does-it-work
-    // setUser(null)
-    // navigate("/", { replace: true })
-  }, [user])
+  const performLogout = useCallback(
+    async (abortController: AbortController) => {
+      if (!user) {
+        return { error: "Could not perform logout as user is not logged in" }
+      }
+      try {
+        await logout(abortController)
+        setUser(null)
+        return { error: null }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        return { error: error.message }
+      }
+    },
+    [user, setUser]
+  )
   const value = useMemo(() => {
     return {
       user,
