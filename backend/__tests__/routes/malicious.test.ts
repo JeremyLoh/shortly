@@ -48,6 +48,56 @@ describe("Malicious API to check urls", () => {
   })
 
   describe("POST /api/malicious/check-url", () => {
+    test("should reject missing url", async () => {
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({})
+      expect(response.status).toBe(400)
+      expect(response.body).toEqual(
+        expect.objectContaining({ error: "Please provide a url" })
+      )
+    })
+
+    test("should reject invalid url with missing HTTP protocol", async () => {
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({ url: "invalid.com" })
+      expect(response.status).toBe(400)
+      expect(response.body).toEqual(
+        expect.objectContaining({ error: "Please provide a valid url" })
+      )
+    })
+
+    test("should reject invalid url with missing domain", async () => {
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({ url: "http://invalid" })
+      expect(response.status).toBe(400)
+      expect(response.body).toEqual(
+        expect.objectContaining({ error: "Please provide a valid url" })
+      )
+    })
+
+    test("should reject invalid url with two urls separated by space", async () => {
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({ url: "http://test.com http://test.co" })
+      expect(response.status).toBe(400)
+      expect(response.body).toEqual(
+        expect.objectContaining({ error: "Please provide a valid url" })
+      )
+    })
+
+    test("should reject invalid url consisting of protocol and only dots", async () => {
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({ url: "http://.." })
+      expect(response.status).toBe(400)
+      expect(response.body).toEqual(
+        expect.objectContaining({ error: "Please provide a valid url" })
+      )
+    })
+
     test("should detect safe url", async () => {
       const response = await request(app)
         .post("/api/malicious/check-url")

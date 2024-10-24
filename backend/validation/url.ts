@@ -7,10 +7,10 @@ function isValidHttpUrl(url: string): boolean {
   const protocols = ["http:", "https:"]
   try {
     new URL(url)
-    return (
-      protocols.filter((protocol) => url.toLowerCase().startsWith(protocol))
-        .length > 0
+    const foundProtocols = protocols.filter((protocol) =>
+      url.toLowerCase().startsWith(protocol)
     )
+    return foundProtocols.length > 0 && url.includes(".") && !url.includes("..")
   } catch (error) {
     return false
   }
