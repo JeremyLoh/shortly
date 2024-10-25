@@ -1,5 +1,6 @@
 import {
   afterEach,
+  assert,
   beforeAll,
   beforeEach,
   describe,
@@ -19,6 +20,7 @@ function getMockMiddleware() {
 
 describe("Malicious API to check urls", () => {
   let app: Express
+  let maliciousUrls: string[]
 
   beforeAll(async () => {
     app = await setupApp()
@@ -27,6 +29,7 @@ describe("Malicious API to check urls", () => {
   })
 
   beforeEach(async () => {
+    maliciousUrls = []
     await pool.query("DELETE FROM users")
     vi.mock("../../middleware/rateLimiter.js", () => {
       return {
@@ -42,12 +45,36 @@ describe("Malicious API to check urls", () => {
         },
       }
     })
+    maliciousUrls.forEach(async (url) => await removeMockMaliciousUrl(url))
   })
 
   afterEach(async () => {
     await pool.query("DELETE FROM users")
     vi.restoreAllMocks()
+    maliciousUrls.forEach(async (url) => await removeMockMaliciousUrl(url))
   })
+
+  async function addMockMaliciousUrl(url: string) {
+    const client = await pool.connect()
+    try {
+      await client.query(`INSERT INTO malicious_urls (url) VALUES ($1)`, [url])
+    } catch (error) {
+      console.error(error)
+    } finally {
+      client.release()
+    }
+  }
+
+  async function removeMockMaliciousUrl(url: string) {
+    const client = await pool.connect()
+    try {
+      await client.query(`DELETE FROM malicious_urls WHERE url = $1`, [url])
+    } catch (error) {
+      assert.fail("Could not delete mock malicious url " + url)
+    } finally {
+      client.release()
+    }
+  }
 
   describe("POST /api/malicious/check-url", () => {
     test("should reject missing url", async () => {
@@ -104,7 +131,7 @@ describe("Malicious API to check urls", () => {
       const spy = vi.spyOn(maliciousModel, "isMaliciousUrl")
       spy.mockImplementationOnce(() => new Promise((resolve) => resolve(false)))
 
-      const expectedSafeUrl = "https://github.com/"
+      const expectedSafeUrl = "https://github.com"
       const response = await request(app)
         .post("/api/malicious/check-url")
         .send({
@@ -115,14 +142,12 @@ describe("Malicious API to check urls", () => {
         expect.objectContaining({ verdict: "safe" })
       )
       expect(spy).toHaveBeenCalledOnce()
-      expect(spy).toHaveBeenCalledWith(expectedSafeUrl)
     })
 
-    test("should reject malicious url", async () => {
-      const spy = vi.spyOn(maliciousModel, "isMaliciousUrl")
-      spy.mockImplementationOnce(() => new Promise((resolve) => resolve(true)))
-
-      const expectedMaliciousUrl = "https://test.com"
+    test("should reject malicious url with exact match", async () => {
+      const expectedMaliciousUrl = "https://test.com/"
+      maliciousUrls.push(expectedMaliciousUrl)
+      await addMockMaliciousUrl(expectedMaliciousUrl)
       const response = await request(app)
         .post("/api/malicious/check-url")
         .send({
@@ -132,8 +157,51 @@ describe("Malicious API to check urls", () => {
       expect(response.body).toEqual(
         expect.objectContaining({ verdict: "malicious" })
       )
-      expect(spy).toHaveBeenCalledOnce()
-      expect(spy).toHaveBeenCalledWith(expectedMaliciousUrl)
+    })
+
+    test("should reject malicious url with nested route path", async () => {
+      const expectedMaliciousUrl = "https://test.com"
+      maliciousUrls.push(expectedMaliciousUrl)
+      await addMockMaliciousUrl(expectedMaliciousUrl)
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({
+          url: expectedMaliciousUrl + "/nested/route",
+        })
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(
+        expect.objectContaining({ verdict: "malicious" })
+      )
+    })
+
+    test("should reject malicious url with path parameters", async () => {
+      const expectedMaliciousUrl = "https://test.com/product"
+      maliciousUrls.push(expectedMaliciousUrl)
+      await addMockMaliciousUrl(expectedMaliciousUrl)
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({
+          url: expectedMaliciousUrl + "?category=car",
+        })
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(
+        expect.objectContaining({ verdict: "malicious" })
+      )
+    })
+
+    test("should reject malicious url with explicit port", async () => {
+      const expectedMaliciousUrl = "https://test.com/product"
+      maliciousUrls.push(expectedMaliciousUrl)
+      await addMockMaliciousUrl(expectedMaliciousUrl)
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({
+          url: "https://test.com:803",
+        })
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(
+        expect.objectContaining({ verdict: "malicious" })
+      )
     })
   })
 })

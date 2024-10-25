@@ -14,7 +14,9 @@ router.post("/api/malicious/check-url", async (req, res) => {
     res.status(400).json({ error: "Please provide a valid url" })
     return
   }
-  if (await malicious.isMaliciousUrl(url)) {
+  const convertedUrl = new URL(url)
+  const isMalicious = await malicious.isMaliciousUrl(convertedUrl.hostname)
+  if (isMalicious) {
     res.status(200).json({ verdict: "malicious" })
     return
   }
