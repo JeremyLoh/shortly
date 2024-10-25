@@ -101,15 +101,21 @@ describe("Malicious API to check urls", () => {
     })
 
     test("should detect safe url", async () => {
+      const spy = vi.spyOn(maliciousModel, "isMaliciousUrl")
+      spy.mockImplementationOnce(() => new Promise((resolve) => resolve(false)))
+
+      const expectedSafeUrl = "https://github.com/"
       const response = await request(app)
         .post("/api/malicious/check-url")
         .send({
-          url: "https://github.com/",
+          url: expectedSafeUrl,
         })
       expect(response.status).toBe(200)
       expect(response.body).toEqual(
         expect.objectContaining({ verdict: "safe" })
       )
+      expect(spy).toHaveBeenCalledOnce()
+      expect(spy).toHaveBeenCalledWith(expectedSafeUrl)
     })
 
     test("should reject malicious url", async () => {
