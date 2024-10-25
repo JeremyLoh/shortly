@@ -15,9 +15,11 @@ Structure backend using Controller and Model (MV in MVC pattern - https://www.yo
 
 1. Create `.env` file in `backend/` directory. Replace `???` with a random value with at least 32 bytes of entropy - https://expressjs.com/en/resources/middleware/session.html
 
-   ```
-   BACKEND_SESSION_SECRET="???"
-   ```
+It should be quoted in single quotes - https://forums.docker.com/t/warn-0000-the-he-variable-is-not-set-defaulting-to-a-blank-string/137212
+
+```
+BACKEND_SESSION_SECRET='???'
+```
 
 2. Install docker on your system
 3. Navigate to the project root directory where the `docker-compose.yaml` file is present
@@ -59,6 +61,7 @@ Column naming convention (lowercase with underscores)
 12. https://express-rate-limit.mintlify.app/reference/configuration#keygenerator
 13. Understanding Passport Serialize Deserialize - https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 14. Passport js always returning 500 internal error - https://stackoverflow.com/questions/29580522/passport-js-always-returning-500-internal-error
+15. node-postgres: how to execute "WHERE col IN (<dynamic value list>)" query? - https://stackoverflow.com/questions/10720420/node-postgres-how-to-execute-where-col-in-dynamic-value-list-query
 
 # References (Testing)
 

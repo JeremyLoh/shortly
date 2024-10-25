@@ -1,4 +1,4 @@
-import pool, { setupDatabase } from "./database.js"
+import pool, { populateMaliciousFeeds, setupDatabase } from "./database.js"
 import setupApp from "./server.js"
 
 // port need to match docker compose setup for app
@@ -11,6 +11,7 @@ async function startBackend() {
     app.emit("serverStarted")
   })
   await setupDatabase(pool)
+  await populateMaliciousFeeds()
 }
 
 startBackend()

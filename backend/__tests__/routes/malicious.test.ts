@@ -10,7 +10,8 @@ import {
 import request from "supertest"
 import { Express, NextFunction, Request, Response } from "express"
 import setupApp from "../../server.js"
-import pool, { setupDatabase } from "../../database.js"
+import pool, { populateMaliciousFeeds, setupDatabase } from "../../database.js"
+import maliciousModel from "../../model/malicious.js"
 
 function getMockMiddleware() {
   return (req: Request, res: Response, next: NextFunction) => next()
@@ -22,6 +23,7 @@ describe("Malicious API to check urls", () => {
   beforeAll(async () => {
     app = await setupApp()
     await setupDatabase(pool)
+    await populateMaliciousFeeds()
   })
 
   beforeEach(async () => {
@@ -108,6 +110,24 @@ describe("Malicious API to check urls", () => {
       expect(response.body).toEqual(
         expect.objectContaining({ verdict: "safe" })
       )
+    })
+
+    test("should reject malicious url", async () => {
+      const spy = vi.spyOn(maliciousModel, "isMaliciousUrl")
+      spy.mockImplementationOnce(() => new Promise((resolve) => resolve(true)))
+
+      const expectedMaliciousUrl = "https://test.com"
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({
+          url: expectedMaliciousUrl,
+        })
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(
+        expect.objectContaining({ verdict: "malicious" })
+      )
+      expect(spy).toHaveBeenCalledOnce()
+      expect(spy).toHaveBeenCalledWith(expectedMaliciousUrl)
     })
   })
 })
