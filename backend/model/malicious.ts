@@ -21,10 +21,11 @@ async function storeMaliciousUrlsToDatabase(fileName: string) {
   }
 }
 
-async function isMaliciousUrl(hostname: string): Promise<boolean> {
-  // https://nodejs.org/api/url.html#urlhostname
+async function isMaliciousUrl(url: string): Promise<boolean> {
   const client = await pool.connect()
   try {
+    // https://nodejs.org/api/url.html#urlhostname
+    const hostname = new URL(url).hostname
     const response = await client.query(
       `SELECT url FROM malicious_urls WHERE url LIKE $1`,
       ["%" + hostname + "%"]
