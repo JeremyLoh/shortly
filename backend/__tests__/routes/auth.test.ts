@@ -37,6 +37,7 @@ describe("Auth API", () => {
           logoutAccountLimiter: getMockMiddleware(),
           createAccountLimiter: getMockMiddleware(),
           checkLoginStatusLimiter: getMockMiddleware(),
+          checkMaliciousUrlLimiter: getMockMiddleware(),
         },
       }
     })
@@ -54,7 +55,7 @@ describe("Auth API", () => {
     })
 
     test("should accept login with account that exists with correct credentials", async () => {
-      const username = "test_username"
+      const username = "test_username00"
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
@@ -76,7 +77,7 @@ describe("Auth API", () => {
     })
 
     test("should reject login with account with incorrect credentials", async () => {
-      const username = "test_username"
+      const username = "test_username0"
       const password = "12345678"
       const incorrectPassword = "incorrectPassword"
       const createAccountResponse = await request(app)
@@ -93,7 +94,7 @@ describe("Auth API", () => {
     })
 
     test("should reject login with account with missing password", async () => {
-      const username = "test_username"
+      const username = "test_username2"
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")

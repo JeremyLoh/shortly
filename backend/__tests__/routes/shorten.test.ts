@@ -11,6 +11,7 @@ import {
 import request from "supertest"
 import { NextFunction, Request, Response, Express } from "express"
 import pool, { setupDatabase } from "../../database.js"
+import maliciousModel from "../../model/malicious.js"
 
 function getMockMiddleware() {
   return (req: Request, res: Response, next: NextFunction) => next()
@@ -38,6 +39,7 @@ describe("Shorten Url API", () => {
           logoutAccountLimiter: getMockMiddleware(),
           createAccountLimiter: getMockMiddleware(),
           checkLoginStatusLimiter: getMockMiddleware(),
+          checkMaliciousUrlLimiter: getMockMiddleware(),
         },
       }
     })
@@ -135,6 +137,24 @@ describe("Shorten Url API", () => {
           ]),
         })
       )
+    })
+
+    test("malicious url should not be shortened", async () => {
+      const spy = vi.spyOn(maliciousModel, "isMaliciousUrl")
+      spy.mockImplementationOnce(() => new Promise((resolve) => resolve(true)))
+
+      const maliciousUrl = "https://test.com"
+      const response = await request(app)
+        .post("/api/shorten")
+        .send({ url: maliciousUrl })
+        .set("Accept", "application/json")
+      expect(response.status).toBe(400)
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          error: "Url is malicious",
+        })
+      )
+      expect(spy).toHaveBeenCalledOnce()
     })
   })
 

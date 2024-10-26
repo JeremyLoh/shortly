@@ -1,1 +1,2 @@
 .env
+malicious_urls/*.csv

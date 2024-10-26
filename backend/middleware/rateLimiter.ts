@@ -65,6 +65,13 @@ const checkLoginStatusLimiter = rateLimit({
   legacyHeaders: false,
 })
 
+const checkMaliciousUrlLimiter = rateLimit({
+  windowMs: 30 * 60 * 1000,
+  limit: 1,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+})
+
 export default {
   readShortUrlLimiter,
   createShortUrlLimiter,
@@ -74,4 +81,5 @@ export default {
   logoutAccountLimiter,
   createAccountLimiter,
   checkLoginStatusLimiter,
+  checkMaliciousUrlLimiter,
 }
