@@ -62,6 +62,7 @@ Column naming convention (lowercase with underscores)
 13. Understanding Passport Serialize Deserialize - https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 14. Passport js always returning 500 internal error - https://stackoverflow.com/questions/29580522/passport-js-always-returning-500-internal-error
 15. node-postgres: how to execute "WHERE col IN (<dynamic value list>)" query? - https://stackoverflow.com/questions/10720420/node-postgres-how-to-execute-where-col-in-dynamic-value-list-query
+16. For url LIKE query matching https://www.postgresql.org/docs/current/indexes-opclass.html - https://stackoverflow.com/questions/1566717/postgresql-like-query-performance-variations/13452528#13452528
 
 # References (Testing)
 

@@ -27,8 +27,8 @@ async function isMaliciousUrl(url: string): Promise<boolean> {
     // https://nodejs.org/api/url.html#urlhostname
     const hostname = new URL(url).hostname
     const response = await client.query(
-      `SELECT url FROM malicious_urls WHERE url LIKE $1`,
-      ["%" + hostname + "%"]
+      `SELECT url FROM malicious_urls WHERE url LIKE $1 OR url LIKE $2 OR url LIKE $3`,
+      ["http://" + hostname + "%", "https://" + hostname + "%", hostname + "%"]
     )
     return response.rowCount === 1
   } catch (error) {

@@ -37,11 +37,20 @@ async function setupDatabase(pool: pg.Pool) {
       hashed_password TEXT NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`)
-    await pool.query(`CREATE INDEX urls_short_code_idx ON urls (short_code)`)
-    await pool.query(
-      `CREATE INDEX users_find_user_by_credential_idx ON users (username, hashed_password)`
-    )
+    await setupIndexes(pool)
   } catch (error) {}
+}
+
+async function setupIndexes(pool: pg.Pool) {
+  await pool.query(`CREATE INDEX urls_short_code_idx ON urls (short_code)`)
+  await pool.query(
+    `CREATE INDEX users_find_user_by_credential_idx ON users (username, hashed_password)`
+  )
+  // For url LIKE query matching https://www.postgresql.org/docs/current/indexes-opclass.html
+  // https://stackoverflow.com/questions/1566717/postgresql-like-query-performance-variations/13452528#13452528
+  await pool.query(
+    `CREATE INDEX malicious_url_LIKE_varchar_pattern_idx ON malicious_urls(url varchar_pattern_ops)`
+  )
 }
 
 async function removeDuplicateMaliciousUrls(urls: string[]): Promise<string[]> {

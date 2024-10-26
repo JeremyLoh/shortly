@@ -144,6 +144,22 @@ describe("Malicious API to check urls", () => {
       expect(spy).toHaveBeenCalledOnce()
     })
 
+    test("should reject malicious url with uppercase", async () => {
+      const uppercaseMaliciousUrl = "HTTPS://TEST.COM"
+      const expectedMaliciousUrl = "https://test.com/"
+      maliciousUrls.push(expectedMaliciousUrl)
+      await addMockMaliciousUrl(expectedMaliciousUrl)
+      const response = await request(app)
+        .post("/api/malicious/check-url")
+        .send({
+          url: uppercaseMaliciousUrl,
+        })
+      expect(response.status).toBe(200)
+      expect(response.body).toEqual(
+        expect.objectContaining({ verdict: "malicious" })
+      )
+    })
+
     test("should reject malicious url with exact match", async () => {
       const expectedMaliciousUrl = "https://test.com/"
       maliciousUrls.push(expectedMaliciousUrl)
