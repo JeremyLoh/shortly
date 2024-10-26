@@ -42,6 +42,7 @@ describe("Malicious API to check urls", () => {
           logoutAccountLimiter: getMockMiddleware(),
           createAccountLimiter: getMockMiddleware(),
           checkLoginStatusLimiter: getMockMiddleware(),
+          checkMaliciousUrlLimiter: getMockMiddleware(),
         },
       }
     })

@@ -37,6 +37,7 @@ describe("Auth API", () => {
           logoutAccountLimiter: getMockMiddleware(),
           createAccountLimiter: getMockMiddleware(),
           checkLoginStatusLimiter: getMockMiddleware(),
+          checkMaliciousUrlLimiter: getMockMiddleware(),
         },
       }
     })

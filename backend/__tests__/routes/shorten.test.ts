@@ -39,6 +39,7 @@ describe("Shorten Url API", () => {
           logoutAccountLimiter: getMockMiddleware(),
           createAccountLimiter: getMockMiddleware(),
           checkLoginStatusLimiter: getMockMiddleware(),
+          checkMaliciousUrlLimiter: getMockMiddleware(),
         },
       }
     })
