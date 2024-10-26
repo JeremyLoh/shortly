@@ -150,6 +150,16 @@ The endpoint should return a `200 OK` status code with the statistics
 
 or a `404 Not Found` status code if the short URL was not found
 
+## Check whether url is malicious
+
+```
+POST /api/malicious/check-url
+```
+
+The endpoint returns a `200 OK` with JSON body `{ verdict: "safe" }` or `{ verdict: "malicious" }`
+
+If the request is invalid (e.g. missing url in request body), HTTP `400` will be returned
+
 # Authentication Endpoints
 
 ## Login with existing account

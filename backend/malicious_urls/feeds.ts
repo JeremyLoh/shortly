@@ -32,7 +32,7 @@ async function getBlackbookFeed(): Promise<string[]> {
 function saveFeedToCsv(feed: string[], fileName: string) {
   const content = feed.join(EOL)
   try {
-    writeFileSync(`./malicious_urls/${fileName}.csv`, content)
+    writeFileSync(`./malicious_urls/${fileName}.csv`, content, { flag: "w" })
     console.log(`Successful write of malicious feed to file ${fileName}.csv`)
   } catch (error) {
     console.error(error)

@@ -1,3 +1,4 @@
+import startCronJobs from "./cron/index.js"
 import pool, { populateMaliciousFeeds, setupDatabase } from "./database.js"
 import setupApp from "./server.js"
 
@@ -12,6 +13,7 @@ async function startBackend() {
   })
   await setupDatabase(pool)
   await populateMaliciousFeeds()
+  startCronJobs()
 }
 
 startBackend()

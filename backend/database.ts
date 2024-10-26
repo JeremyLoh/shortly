@@ -93,24 +93,14 @@ async function populateMaliciousFeeds() {
   ).flatMap((result) => (result.status === "fulfilled" ? result.value : []))
   // remove duplicate urls found in database to prevent DB COPY failure
   const uniqueUrls = await removeDuplicateMaliciousUrls(urls)
-  console.log({ uniqueUrlCount: uniqueUrls.length })
+  console.log(
+    `populateMaliciousFeeds(): Unique url count = ${uniqueUrls.length}`
+  )
   if (uniqueUrls.length === 0) {
     return
   }
   saveFeedToCsv(uniqueUrls, "dangerous_urls")
   malicious.storeMaliciousUrlsToDatabase("dangerous_urls")
-  // const openPhishUrls = await getOpenPhishFeed()
-  // if (openPhishUrls.length === 0) {
-  //   return
-  // }
-  // remove duplicate urls found in database to prevent DB COPY failure
-  // const uniqueUrls = await removeDuplicateMaliciousUrls(openPhishUrls)
-  // console.log({ uniqueUrlCount: uniqueUrls.length })
-  // if (uniqueUrls.length === 0) {
-  // return
-  // }
-  // saveFeedToCsv(uniqueUrls, "OpenPhish")
-  // malicious.storeMaliciousUrlsToDatabase("OpenPhish")
 }
 
 export default pool
