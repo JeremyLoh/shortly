@@ -16,14 +16,27 @@ async function getOpenPhishFeed(): Promise<string[]> {
   }
 }
 
+async function getBlackbookFeed(): Promise<string[]> {
+  const url =
+    "https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt"
+  try {
+    const response = await ky.get(url, { retry: { limit: 0 } })
+    const text = await response.text()
+    return text.split("\n")
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
 function saveFeedToCsv(feed: string[], fileName: string) {
   const content = feed.join(EOL)
   try {
     writeFileSync(`./malicious_urls/${fileName}.csv`, content)
-    console.log(`Successful write of malicious feed to file ${fileName}`)
+    console.log(`Successful write of malicious feed to file ${fileName}.csv`)
   } catch (error) {
     console.error(error)
   }
 }
 
-export { getOpenPhishFeed, saveFeedToCsv }
+export { getOpenPhishFeed, getBlackbookFeed, saveFeedToCsv }

@@ -1,5 +1,9 @@
 import pg from "pg"
-import { getOpenPhishFeed, saveFeedToCsv } from "./malicious_urls/feeds.js"
+import {
+  getBlackbookFeed,
+  getOpenPhishFeed,
+  saveFeedToCsv,
+} from "./malicious_urls/feeds.js"
 import malicious from "./model/malicious.js"
 
 // https://github.com/brianc/node-postgres/issues/3060
@@ -54,16 +58,27 @@ async function setupIndexes(pool: pg.Pool) {
 }
 
 async function removeDuplicateMaliciousUrls(urls: string[]): Promise<string[]> {
+  const chunkSize = 5000
+  const size = urls.length
+  const duplicates = new Set<string>()
   const client = await pool.connect()
   try {
-    // https://stackoverflow.com/questions/10720420/node-postgres-how-to-execute-where-col-in-dynamic-value-list-query
-    // https://github.com/brianc/node-postgres/wiki/FAQ#11-how-do-i-build-a-where-foo-in--query-to-find-rows-matching-an-array-of-values
-    const response = await client.query(
-      `SELECT url FROM malicious_urls WHERE url = ANY ($1)`,
-      [urls]
+    for (let i = 0; i < size; i += chunkSize) {
+      const chunk = urls.slice(i, i + chunkSize)
+      // https://stackoverflow.com/questions/10720420/node-postgres-how-to-execute-where-col-in-dynamic-value-list-query
+      // https://github.com/brianc/node-postgres/wiki/FAQ#11-how-do-i-build-a-where-foo-in--query-to-find-rows-matching-an-array-of-values
+      const response = await client.query(
+        `SELECT url FROM malicious_urls WHERE url = ANY ($1)`,
+        [chunk]
+      )
+      response.rows.forEach((row) => duplicates.add(row.url))
+    }
+    // remove duplicate entries that might be present in function parameter urls
+    return Array.from(
+      new Set(
+        urls.filter((url) => url && url.trim() !== "" && !duplicates.has(url))
+      )
     )
-    const duplicates = new Set(response.rows.map((row) => row.url))
-    return urls.filter((url) => !duplicates.has(url))
   } catch (error) {
     console.error("Could not retrieve duplicate malicious urls")
   } finally {
@@ -73,17 +88,29 @@ async function removeDuplicateMaliciousUrls(urls: string[]): Promise<string[]> {
 }
 
 async function populateMaliciousFeeds() {
-  const openPhishUrls = await getOpenPhishFeed()
-  if (openPhishUrls.length === 0) {
-    return
-  }
+  const urls = (
+    await Promise.allSettled([getBlackbookFeed(), getOpenPhishFeed()])
+  ).flatMap((result) => (result.status === "fulfilled" ? result.value : []))
   // remove duplicate urls found in database to prevent DB COPY failure
-  const uniqueUrls = await removeDuplicateMaliciousUrls(openPhishUrls)
+  const uniqueUrls = await removeDuplicateMaliciousUrls(urls)
+  console.log({ uniqueUrlCount: uniqueUrls.length })
   if (uniqueUrls.length === 0) {
     return
   }
-  saveFeedToCsv(uniqueUrls, "OpenPhish")
-  malicious.storeMaliciousUrlsToDatabase("OpenPhish")
+  saveFeedToCsv(uniqueUrls, "dangerous_urls")
+  malicious.storeMaliciousUrlsToDatabase("dangerous_urls")
+  // const openPhishUrls = await getOpenPhishFeed()
+  // if (openPhishUrls.length === 0) {
+  //   return
+  // }
+  // remove duplicate urls found in database to prevent DB COPY failure
+  // const uniqueUrls = await removeDuplicateMaliciousUrls(openPhishUrls)
+  // console.log({ uniqueUrlCount: uniqueUrls.length })
+  // if (uniqueUrls.length === 0) {
+  // return
+  // }
+  // saveFeedToCsv(uniqueUrls, "OpenPhish")
+  // malicious.storeMaliciousUrlsToDatabase("OpenPhish")
 }
 
 export default pool
