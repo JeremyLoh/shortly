@@ -66,8 +66,8 @@ const checkLoginStatusLimiter = rateLimit({
 })
 
 const checkMaliciousUrlLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000,
-  limit: 20,
+  windowMs: 30 * 60 * 1000,
+  limit: 1,
   standardHeaders: "draft-7",
   legacyHeaders: false,
 })
