@@ -14,6 +14,7 @@ import {
   updateUrl,
 } from "../model/url.js"
 import rateLimiter from "../middleware/rateLimiter.js"
+import malicious from "../model/malicious.js"
 
 const router = Router()
 
@@ -30,6 +31,10 @@ router.post(
     const { url }: { url: string } = req.body
     if (!isValidHttpUrl(url)) {
       res.status(400).send({ error: "Please provide a valid http / https url" })
+      return
+    }
+    if (await malicious.isMaliciousUrl(url)) {
+      res.status(400).send({ error: "Url is malicious" })
       return
     }
     try {
