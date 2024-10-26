@@ -90,6 +90,10 @@ router.put(
       res.sendStatus(404)
       return
     }
+    if (await malicious.isMaliciousUrl(url)) {
+      res.status(400).json({ error: ["Could not update due to malicious url"] })
+      return
+    }
     try {
       const entry = await updateUrl(shortCode, url)
       res.status(200).send(entry)

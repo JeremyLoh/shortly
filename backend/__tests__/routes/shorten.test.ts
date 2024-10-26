@@ -236,6 +236,35 @@ describe("Shorten Url API", () => {
         .set("Accept", "application/json")
       expect(updateResponse.status).toBe(400)
     })
+
+    test("should not update existing short url with malicious url", async () => {
+      const spy = vi.spyOn(maliciousModel, "isMaliciousUrl")
+      spy
+        .mockImplementationOnce(() => new Promise((resolve) => resolve(false)))
+        .mockImplementationOnce(() => new Promise((resolve) => resolve(true)))
+
+      const originalUrl = "https://example.com"
+      const invalidUpdateMaliciousUrl = "http://invalidUpdateUrl.com"
+      const createShortUrlResponse = await request(app)
+        .post("/api/shorten")
+        .send({ url: originalUrl })
+        .set("Accept", "application/json")
+      const { shortCode } = createShortUrlResponse.body
+      expect(shortCode).toHaveLength(7)
+
+      const updateResponse = await request(app)
+        .put(`/api/shorten/${shortCode}`)
+        .send({ url: invalidUpdateMaliciousUrl })
+        .set("Accept", "application/json")
+      expect(updateResponse.status).toBe(400)
+      expect(updateResponse.body).toEqual(
+        expect.objectContaining({
+          error: expect.arrayContaining([
+            "Could not update due to malicious url",
+          ]),
+        })
+      )
+    })
   })
 
   describe("DELETE /api/shorten/:shortCode", () => {
