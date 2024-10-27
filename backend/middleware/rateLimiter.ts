@@ -1,6 +1,11 @@
 import rateLimit, { Options } from "express-rate-limit"
 import { NextFunction, Request, Response } from "express"
 
+function isLoggedIn(req: Request) {
+  // @ts-ignore
+  return req.user && req.user.id
+}
+
 const readShortUrlLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   limit: 10, // Limit each IP to "X" requests per window
@@ -17,8 +22,10 @@ const readShortUrlLimiter = rateLimit({
 })
 
 const createShortUrlLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 2,
+  windowMs: 60 * 60 * 1000, // 60 minutes
+  limit: (req, res) => (isLoggedIn(req) ? 10 : 2),
+  // @ts-ignore
+  keyGenerator: (req, res) => (isLoggedIn(req) ? req.user.id : req.ip),
   standardHeaders: "draft-7",
   legacyHeaders: false,
 })
