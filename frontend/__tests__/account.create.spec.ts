@@ -61,13 +61,13 @@ test("should create new account", async ({ page }) => {
   expect(page.url()).toContain("/login")
 })
 
-test("should display error when username is blank", async ({ page }) => {
+test("username is blank should display error", async ({ page }) => {
   await page.getByLabel("Username").clear()
   await page.getByRole("button", { name: "Create Account" }).click()
   await expect(page.getByText("Username is required")).toBeVisible()
 })
 
-test("should display error when username is more than 255 characters", async ({
+test("username is more than 255 characters should display error", async ({
   page,
 }) => {
   const username = "a".repeat(256)
@@ -84,7 +84,7 @@ test("should display error when username is more than 255 characters", async ({
   ).not.toBeVisible()
 })
 
-test("should display root error message when submission fails with rate limit exception", async ({
+test("submission fails with rate limit exception should display root error message", async ({
   page,
 }) => {
   const timeoutInSeconds = 30
@@ -99,4 +99,27 @@ test("should display root error message when submission fails with rate limit ex
       `Rate Limit Exceeded, please try again after ${timeoutInSeconds} seconds`
     )
   ).toBeVisible()
+})
+
+test("password is blank should display password error", async ({ page }) => {
+  await page.getByLabel("Password", { exact: true }).clear()
+  await page.getByRole("button", { name: "Create Account" }).click()
+  await expect(page.getByText("Password is required")).toBeVisible()
+})
+
+test("invalid password min length should display password error", async ({
+  page,
+}) => {
+  const password = "1234567"
+  await page.getByLabel("Password", { exact: true }).fill(password)
+  await page.getByRole("button", { name: "Create Account" }).click()
+  await expect(
+    page.getByText("Password needs to have min length of 8 characters")
+  ).toBeVisible()
+
+  await page.getByLabel("Password", { exact: true }).clear()
+  await page.getByLabel("Password", { exact: true }).fill("12345678")
+  await expect(
+    page.getByText("Password needs to have min length of 8 characters")
+  ).not.toBeVisible()
 })

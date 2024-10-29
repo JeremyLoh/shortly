@@ -50,8 +50,24 @@ function CreateAccountForm({ handleCreateAccount }: CreateAccountProps) {
         </div>
       )}
       <label htmlFor="password">Password</label>
-      <input id="password" type="password" {...register("password")} />
-
+      <input
+        id="password"
+        type="password"
+        {...register("password", {
+          required: "Password is required",
+          minLength: {
+            value: 8,
+            message: "Password needs to have min length of 8 characters",
+          },
+        })}
+      />
+      {errors.password && (
+        <div>
+          <p role="alert" className="error-text">
+            {errors.password.message}
+          </p>
+        </div>
+      )}
       <label htmlFor="confirm-password">Confirm Password</label>
       <input
         id="confirm-password"
