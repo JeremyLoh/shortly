@@ -1,0 +1,23 @@
+#create-account-form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.4rem;
+  width: 100%;
+  max-width: 70ch;
+}
+
+#create-account-form input {
+  font-size: 1rem;
+  padding: 0.2em;
+}
+
+#create-account-form button[type="submit"] {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #0ea5e9;
+  color: white;
+}
+#create-account-form button[type="submit"]:hover {
+  background-color: #0284c7;
+}

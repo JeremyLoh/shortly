@@ -10,6 +10,7 @@ import UrlStatsPage from "./pages/UrlStatsPage.tsx"
 import LoginPage from "./pages/LoginPage.tsx"
 import LogoutPage from "./pages/LogoutPage.tsx"
 import AuthProvider from "./hooks/AuthProvider.tsx"
+import CreateAccountPage from "./pages/CreateAccountPage.tsx"
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,11 @@ const router = createBrowserRouter([
       {
         path: "/logout",
         element: <LogoutPage />,
+        errorElement: <NotFoundPage errorMessage="404 Not Found" />,
+      },
+      {
+        path: "/register",
+        element: <CreateAccountPage />,
         errorElement: <NotFoundPage errorMessage="404 Not Found" />,
       },
     ],

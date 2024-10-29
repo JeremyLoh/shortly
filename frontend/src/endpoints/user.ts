@@ -60,5 +60,37 @@ async function logout(
   }
 }
 
-export { login, logout }
+async function createAccount(
+  username: string,
+  password: string,
+  abortController: AbortController
+) {
+  const signalParam = abortController?.signal
+    ? { signal: abortController.signal }
+    : {}
+  try {
+    const response = await ky.post("/api/auth/users", {
+      json: { username, password },
+      retry: { limit: 0 },
+      ...signalParam,
+    })
+    const text = await response.text()
+    return text
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.name === "AbortError") {
+      console.log("Aborted logout request")
+      return
+    }
+    if (error.response && error.response.status === 429) {
+      const timeoutInSeconds = error.response.headers.get("retry-after")
+      throw new Error(
+        `Rate Limit Exceeded, please try again after ${timeoutInSeconds} seconds`
+      )
+    }
+    throw error
+  }
+}
+
+export { login, logout, createAccount }
 export type { User }

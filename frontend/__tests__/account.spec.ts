@@ -177,7 +177,11 @@ test("login with rate limit exceeded shows error message", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
 })
 
-// test("should create a new account", async ({ page }) => {
-//  await navigateToLoginPage(page)
-//   // TODO create new account, login page => create new account link => submit form => redirect to login page
-// })
+test("should navigate to create new account page from login page", async ({
+  page,
+}) => {
+  await navigateToLoginPage(page)
+  expect(page.url()).toContain("/login")
+  await page.getByRole("link", { name: "Register" }).click()
+  expect(page.url()).toContain("/register")
+})
