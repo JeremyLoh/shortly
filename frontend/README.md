@@ -29,6 +29,7 @@ Favicon generated from https://favicon.io/emoji-favicons/robot
 4. Data Fetching and Aborting requests - https://www.youtube.com/watch?v=00lxm_doFYw
    - https://github.com/sindresorhus/ky?tab=readme-ov-file#cancellation
 5. Handling React useEffect firing twice due to Strict Mode - https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
+6. check two TextField have the same value with react-hook-form - https://stackoverflow.com/questions/63096634/check-two-textfield-have-the-same-value-with-react-hook-form
 
 # React + TypeScript + Vite
 

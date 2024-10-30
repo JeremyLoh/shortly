@@ -14,6 +14,7 @@ type FormFields = {
 function CreateAccountForm({ handleCreateAccount }: CreateAccountProps) {
   const {
     register,
+    getValues,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
@@ -72,8 +73,22 @@ function CreateAccountForm({ handleCreateAccount }: CreateAccountProps) {
       <input
         id="confirm-password"
         type="password"
-        {...register("confirmPassword")}
+        {...register("confirmPassword", {
+          required: "Confirm Password is required",
+          validate: {
+            matchesPassword: (v) =>
+              v === getValues("password") ||
+              "Password and Confirm Password needs to match",
+          },
+        })}
       />
+      {errors.confirmPassword && (
+        <div>
+          <p role="alert" className="error-text">
+            {errors.confirmPassword.message}
+          </p>
+        </div>
+      )}
 
       {errors.root && (
         <div>

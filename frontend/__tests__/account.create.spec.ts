@@ -104,7 +104,9 @@ test("submission fails with rate limit exception should display root error messa
 test("password is blank should display password error", async ({ page }) => {
   await page.getByLabel("Password", { exact: true }).clear()
   await page.getByRole("button", { name: "Create Account" }).click()
-  await expect(page.getByText("Password is required")).toBeVisible()
+  await expect(
+    page.getByText("Password is required", { exact: true })
+  ).toBeVisible()
 })
 
 test("invalid password min length should display password error", async ({
@@ -121,5 +123,37 @@ test("invalid password min length should display password error", async ({
   await page.getByLabel("Password", { exact: true }).fill("12345678")
   await expect(
     page.getByText("Password needs to have min length of 8 characters")
+  ).not.toBeVisible()
+})
+
+test("confirm password is blank should display confirm password error", async ({
+  page,
+}) => {
+  await page.getByLabel("Confirm Password").clear()
+  await page.getByRole("button", { name: "Create Account" }).click()
+  await expect(page.getByText("Confirm Password is required")).toBeVisible()
+})
+
+test("confirm password that does not match password displays error", async ({
+  page,
+}) => {
+  await page
+    .getByLabel("Confirm Password", { exact: true })
+    .fill("test_password")
+  await page.getByLabel("Password", { exact: true }).fill("12345678")
+  await page.getByRole("button", { name: "Create Account" }).click()
+  await expect(
+    page.getByText("Password and Confirm Password needs to match", {
+      exact: true,
+    })
+  ).toBeVisible()
+
+  await page.getByLabel("Confirm Password", { exact: true }).fill("test12345")
+  await page.getByLabel("Password", { exact: true }).fill("test12345")
+  await page.getByRole("button", { name: "Create Account" }).click()
+  await expect(
+    page.getByText("Password and Confirm Password needs to match", {
+      exact: true,
+    })
   ).not.toBeVisible()
 })
