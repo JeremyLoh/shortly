@@ -83,3 +83,21 @@ test("create new short url displays QR Code", async ({ page }) => {
     "./playwright-report/test_" + download.suggestedFilename()
   )
 })
+
+test("prevent url shorten that contains application url", async ({ page }) => {
+  const invalidUrl = "http://" + HOMEPAGE_URL
+  const expectedErrorMessage =
+    "Could not create short url. You cannot shorten a url that contains the application url"
+  await page.goto(HOMEPAGE_URL)
+  await page.getByTestId("create-new-url-input").fill(invalidUrl)
+  await page.getByTestId("create-new-url-submit-btn").click()
+  await expect(
+    page.getByText(expectedErrorMessage, { exact: true })
+  ).toBeVisible()
+
+  await page.getByTestId("create-new-url-input").fill(invalidUrl + "/test")
+  await page.getByTestId("create-new-url-submit-btn").click()
+  await expect(
+    page.getByText(expectedErrorMessage, { exact: true })
+  ).toBeVisible()
+})
