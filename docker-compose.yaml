@@ -14,8 +14,6 @@ services:
   database:
     container_name: urlShortener
     image: postgres # https://hub.docker.com/_/postgres
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_PASSWORD: todoChangePassword
       POSTGRES_USER: todoChangeUser
@@ -34,9 +32,6 @@ services:
     build: ./backend
     volumes:
       - ./backend:/usr/url-shorten/backend
-    ports:
-      # Map outsidePort:insidePort, making request to outsidePort will call container insidePort
-      - 3000:3000
     depends_on:
       database:
         condition: service_healthy
@@ -44,8 +39,6 @@ services:
     build: ./frontend
     volumes:
       - ./frontend:/usr/url-shorten/frontend
-    ports:
-      - 5173:5173
     depends_on:
       database:
         condition: service_healthy
