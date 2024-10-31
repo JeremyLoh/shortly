@@ -19,6 +19,11 @@ function ShortUrlForm({
   } = useForm<FormFields>()
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
+      if (isSameUrlAsApplication(data.url)) {
+        throw new Error(
+          "You cannot shorten a url that contains the application url"
+        )
+      }
       const json = await createNewUrl(data.url)
       handleCreateUrl(json)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,6 +32,11 @@ function ShortUrlForm({
         message: `Could not create short url. ${error.message}`,
       })
     }
+  }
+  function isSameUrlAsApplication(url: string): boolean {
+    const origin = new URL(url).origin
+    const applicationOrigin = new URL(window.location.href).origin
+    return origin.includes(applicationOrigin)
   }
   function isValidUrl(value: string) {
     const errorMessage =
