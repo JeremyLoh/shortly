@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom"
 import "./ShortUrl.css"
 import { Url } from "../endpoints/createUrl"
+import QrCode from "./QrCode"
 
 function ShortUrl({ url }: { url: Url }) {
+  const shortCodeUrl = `${window.location.href}${url.shortCode}`
   return (
     <div className="card">
       <div>
@@ -14,20 +16,17 @@ function ShortUrl({ url }: { url: Url }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {`${window.location.href}${url.shortCode}`}
+            {shortCodeUrl}
           </Link>
           <br />
           <button
             className="copy-short-url-btn"
-            onClick={() =>
-              navigator.clipboard.writeText(
-                `${window.location.href}${url.shortCode}`
-              )
-            }
+            onClick={() => navigator.clipboard.writeText(shortCodeUrl)}
           >
             Copy Link
           </button>
         </p>
+        <QrCode url={shortCodeUrl} />
       </div>
       <hr className="divider" />
       <p className="text-right">
