@@ -201,3 +201,5 @@ GET /api/auth/status
 ```
 
 The endpoint returns a `200 OK` status code when cookie is valid. `404` status is returned during failure or cookie is invalid
+
+https://roadmap.sh/projects/url-shortening-service
