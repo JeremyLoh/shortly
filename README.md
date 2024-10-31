@@ -1,8 +1,9 @@
 # URL Shortener
 
-Create a RESTful API that allows users to shorten long URLs. The API should provide endpoints to create, retrieve, update, and delete short URLs. It should also provide statistics on the number of times a short URL has been accessed.
+![url shortener homepage](./url-shortener-homepage.png)
+![url shortener error page](./url-shortener-error-page.png)
 
-![high level application feature](https://assets.roadmap.sh/guest/url-shortener-architecture-u72mu.png)
+Create a RESTful API that allows users to shorten long URLs. The API should provide endpoints to create, retrieve, update, and delete short URLs. It should also provide statistics on the number of times a short URL has been accessed.
 
 # Running Application (using Docker) (frontend, backend and database)
 
@@ -28,6 +29,7 @@ docker compose up
 # References
 
 1. https://snyk.io/blog/choosing-the-best-node-js-docker-image/
+2. Making sure that only reverse proxy is accessible. Create docker compose with all of the services. Don't expose any ports except for the reverse proxy. All the other containers will be accessible via their internal ports from the reverse proxy container using the container name - https://www.reddit.com/r/docker/comments/10padx3/restrict_access_to_services_only_through_nginx/
 
 # Requirements
 
@@ -40,6 +42,8 @@ API should allow users to perform the following operations:
 - Get statistics on the short URL (e.g number of times accessed)
 
 You can optionally setup a minimal frontend to interact with the API and setup redirects for the short URLs to the original URLs
+
+![high level application feature](https://assets.roadmap.sh/guest/url-shortener-architecture-u72mu.png)
 
 **For this project, the backend endpoints have been appended with /api** (e.g. `POST /shorten` becomes `POST /api/shorten`)
 
