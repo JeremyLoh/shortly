@@ -1,0 +1,16 @@
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.qr-code-container button {
+  margin-top: 0.5rem;
+  background-color: #2563eb;
+  color: whitesmoke;
+}
+.qr-code-container button:hover {
+  background-color: #1d4ed8;
+}

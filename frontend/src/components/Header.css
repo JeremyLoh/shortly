@@ -2,13 +2,23 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1mm dotted #888;
+  border-bottom: 1mm dotted #1e40af;
   margin: 1rem 0;
-  width: 100%;
+  width: 80%;
   max-width: 70ch;
 }
 
 nav {
   display: flex;
   column-gap: 1rem;
+}
+
+/* https://css-tricks.com/snippets/css/media-queries-for-standard-devices/ */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+  header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-bottom: 0.5rem;
+  }
 }
