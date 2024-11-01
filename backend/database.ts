@@ -1,3 +1,4 @@
+import "dotenv/config"
 import pg from "pg"
 import {
   getBlackbookFeed,
@@ -6,13 +7,15 @@ import {
 } from "./malicious_urls/feeds.js"
 import malicious from "./model/malicious.js"
 
+// Remove .env file values ENV='PROD', PGUSER, PGHOST, PGDATABASE, PGPASSWORD, PGPORT for testing in local
 // https://github.com/brianc/node-postgres/issues/3060
 const pool = new pg.Pool({
-  host: "urlShortener", // name of postgresql container (in docker compose)
-  port: 5432,
-  user: process.env.POSTGRES_USER || "todoChangeUser",
-  password: process.env.POSTGRES_PASSWORD || "todoChangePassword",
-  database: "urlShortener",
+  host: process.env.PGHOST || "urlShortener", // name of postgresql container (in docker compose)
+  port: Number(process.env.PGPORT) || 5432,
+  user: process.env.PGUSER || "todoChangeUser",
+  password: process.env.PGPASSWORD || "todoChangePassword",
+  database: process.env.PGDATABASE || "urlShortener",
+  ...(process.env.ENV === "PROD" ? { ssl: true } : {}),
 })
 
 async function setupDatabase(pool: pg.Pool) {
