@@ -1,4 +1,5 @@
 import "dotenv/config"
+import cors from "cors"
 import express from "express"
 import session from "express-session"
 import connectPgSimple from "connect-pg-simple"
@@ -15,6 +16,16 @@ async function setupApp() {
   const app = express()
   // https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
   app.set("trust proxy", 1) // Trust first proxy (reverse proxy)
+  if (process.env.ENV === "PROD") {
+    // https://stackoverflow.com/questions/71948888/cors-why-do-i-get-successful-preflight-options-but-still-get-cors-error-with-p
+    app.use(
+      cors({
+        origin: process.env.FRONTEND_ORIGIN, // Access-Control-Allow-Origin, allow only frontend origin
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true, // Access-Control-Allow-Credentials for cookies
+      })
+    )
+  }
   const pgSession = connectPgSimple(session)
   app.use(
     session({
