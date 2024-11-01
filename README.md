@@ -7,11 +7,47 @@ Create a RESTful API that allows users to shorten long URLs. The API should prov
 
 # Running Application (using Docker) (frontend, backend and database)
 
-1. Create `.env` file in `backend/` directory. Replace `???` with a random value with at least 32 bytes of entropy - https://expressjs.com/en/resources/middleware/session.html
+1. 1. Create `.env` file in `frontend/` directory with `VITE_PROD_BACKEND_URL='???'` if needed (not required for local testing) - https://vite.dev/guide/env-and-mode#env-files
 
-   ```
-   BACKEND_SESSION_SECRET="???"
-   ```
+```
+PROD_URL='???'
+```
+
+2. Create `.env` file in `backend/` directory. Replace `???` with a random value with at least 32 bytes of entropy - https://expressjs.com/en/resources/middleware/session.html
+
+It should be quoted in single quotes - https://forums.docker.com/t/warn-0000-the-he-variable-is-not-set-defaulting-to-a-blank-string/137212
+
+```
+BACKEND_SESSION_SECRET='???'
+
+# Add below for connecting to prod db! https://neon.tech/docs/get-started-with-neon/connect-neon
+ENV='PROD'
+PGUSER='????'
+PGHOST='????'
+PGDATABASE='????'
+PGPASSWORD='????'
+PGPORT='5432'
+```
+
+- E.g. connection database string contains role, password, hostname and database name
+
+```
+postgresql://fake:TESTPASSSS@aa-aaaa-????????-123456.c-east-1.eee.test.tech/dbname
+             ^    ^         ^                                               ^
+       role -|    |         |- hostname                                     |- database
+                  |
+                  |- password
+```
+
+`.env` file example
+
+```
+PGUSER=fake
+PGHOST=aa-aaaa-????????-123456.c-east-1.eee.test.tech
+PGDATABASE=dbname
+PGPASSWORD=TESTPASSSS
+PGPORT=5432
+```
 
 2. Install docker on your system
 3. Navigate to the project root directory where the `docker-compose.yaml` file is present

@@ -19,6 +19,34 @@ It should be quoted in single quotes - https://forums.docker.com/t/warn-0000-the
 
 ```
 BACKEND_SESSION_SECRET='???'
+
+# Add below for connecting to prod db! https://neon.tech/docs/get-started-with-neon/connect-neon
+ENV='PROD'
+PGUSER='????'
+PGHOST='????'
+PGDATABASE='????'
+PGPASSWORD='????'
+PGPORT='5432'
+```
+
+- E.g. connection database string contains role, password, hostname and database name
+
+```
+postgresql://fake:TESTPASSSS@aa-aaaa-????????-123456.c-east-1.eee.test.tech/dbname
+             ^    ^         ^                                               ^
+       role -|    |         |- hostname                                     |- database
+                  |
+                  |- password
+```
+
+`.env` file example
+
+```
+PGUSER=fake
+PGHOST=aa-aaaa-????????-123456.c-east-1.eee.test.tech
+PGDATABASE=dbname
+PGPASSWORD=TESTPASSSS
+PGPORT=5432
 ```
 
 2. Install docker on your system

@@ -1,4 +1,5 @@
 import ky from "ky"
+import { baseUrl } from "./constant"
 
 interface User {
   id: string
@@ -6,7 +7,7 @@ interface User {
 
 async function login(username: string, password: string): Promise<User> {
   try {
-    const response = await ky.post("/api/auth/login", {
+    const response = await ky.post(baseUrl + "/api/auth/login", {
       json: { username, password },
       retry: { limit: 0 },
     })
@@ -36,7 +37,7 @@ async function logout(
     ? { signal: abortController.signal }
     : {}
   try {
-    const response = await ky.post("/api/auth/logout", {
+    const response = await ky.post(baseUrl + "/api/auth/logout", {
       retry: { limit: 0 },
       ...signalParam,
     })
@@ -69,7 +70,7 @@ async function createAccount(
     ? { signal: abortController.signal }
     : {}
   try {
-    const response = await ky.post("/api/auth/users", {
+    const response = await ky.post(baseUrl + "/api/auth/users", {
       json: { username, password },
       retry: { limit: 0 },
       ...signalParam,
