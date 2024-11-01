@@ -27,6 +27,7 @@ PGHOST='????'
 PGDATABASE='????'
 PGPASSWORD='????'
 PGPORT='5432'
+FRONTEND_ORIGIN='???'
 ```
 
 - E.g. connection database string contains role, password, hostname and database name
