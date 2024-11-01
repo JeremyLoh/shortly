@@ -1,4 +1,5 @@
 import ky from "ky"
+import { baseUrl } from "./constant"
 
 interface Url {
   id: string
@@ -10,7 +11,7 @@ interface Url {
 
 async function createNewUrl(url: string): Promise<Url> {
   try {
-    const response = await ky.post("/api/shorten", {
+    const response = await ky.post(baseUrl + "/api/shorten", {
       json: { url },
       retry: { limit: 0 },
     })

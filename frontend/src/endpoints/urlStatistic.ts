@@ -1,4 +1,5 @@
 import ky from "ky"
+import { baseUrl } from "./constant"
 
 interface UrlStat {
   id: string
@@ -14,7 +15,7 @@ async function getUrlStat(shortCode: string): Promise<UrlStat> {
     throw new Error("Short Code cannot be blank")
   }
   try {
-    const response = await ky.get(`/api/shorten/${shortCode}/stats`, {
+    const response = await ky.get(baseUrl + `/api/shorten/${shortCode}/stats`, {
       retry: { limit: 0 },
     })
     if (!response.ok) {
