@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { UrlStat } from "../endpoints/urlStatistic"
+import { UrlStat } from "../../../../endpoints/urlStatistic.ts"
 import "./UrlStatCard.css"
 
 function UrlStatCard({ urlStat }: { urlStat: UrlStat }) {

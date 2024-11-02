@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { redirect } from "react-router-dom"
-import { useAuth } from "../hooks/useAuth"
-import Footer from "../components/Footer"
-import Header from "../components/Header"
+import { useAuth } from "../features/auth/hooks/useAuth.tsx"
+import Footer from "../components/Footer/Footer.tsx"
+import Header from "../components/Header/Header.tsx"
 
 function LogoutPage() {
   const userAuth = useAuth()

@@ -1,10 +1,10 @@
 import { useState } from "react"
 import "./App.css"
-import ShortUrlForm from "./components/ShortUrlForm"
+import ShortUrlForm from "./features/createUrl/components/ShortUrlForm/ShortUrlForm.tsx"
 import { Url } from "./endpoints/createUrl"
-import ShortUrl from "./components/ShortUrl"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import ShortUrlCard from "./features/createUrl/components/ShortUrlCard/ShortUrlCard.tsx"
+import Header from "./components/Header/Header.tsx"
+import Footer from "./components/Footer/Footer.tsx"
 
 function App() {
   const [url, setUrl] = useState<Url | null>(null)
@@ -18,7 +18,7 @@ function App() {
             setUrl(url)
           }}
         />
-        {url && <ShortUrl url={url} />}
+        {url && <ShortUrlCard url={url} />}
       </div>
       <Footer />
     </>

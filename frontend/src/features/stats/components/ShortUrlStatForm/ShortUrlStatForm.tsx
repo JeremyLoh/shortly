@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import "./ShortUrlStatForm.css"
-import { getUrlStat, UrlStat } from "../endpoints/urlStatistic"
+import { getUrlStat, UrlStat } from "../../../../endpoints/urlStatistic.ts"
 
 type FormFields = {
   url: string

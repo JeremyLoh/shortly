@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import "./ShortUrlForm.css"
-import { createNewUrl, Url } from "../endpoints/createUrl"
+import { createNewUrl, Url } from "../../../../endpoints/createUrl.ts"
 
 type FormFields = {
   url: string

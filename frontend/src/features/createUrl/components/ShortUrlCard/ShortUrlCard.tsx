@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom"
-import "./ShortUrl.css"
-import { Url } from "../endpoints/createUrl"
-import QrCode from "./QrCode"
+import "./ShortUrlCard.css"
+import { Url } from "../../../../endpoints/createUrl.ts"
+import QrCode from "../../../../components/QrCode/QrCode.tsx"
 
-function ShortUrl({ url }: { url: Url }) {
+function ShortUrlCard({ url }: { url: Url }) {
   const shortCodeUrl = `${window.location.href}${url.shortCode}`
   return (
     <div className="card">
       <div>
         <h2 className="text-center">Your New Short Url 🎯</h2>
         <p className="text-center">
-          Short Url{" "}
           <Link
             to={`/${url.shortCode}`}
             target="_blank"
@@ -42,4 +41,4 @@ function ShortUrl({ url }: { url: Url }) {
   )
 }
 
-export default ShortUrl
+export default ShortUrlCard
