@@ -7,10 +7,10 @@ import NotFoundPage from "./pages/NotFoundPage.tsx"
 import RedirectUrlPage from "./pages/RedirectUrlPage.tsx"
 import { redirectLoader } from "./pages/RedirectUrlLoader.tsx"
 import UrlStatsPage from "./pages/UrlStatsPage.tsx"
-import LoginPage from "./pages/LoginPage.tsx"
+import LoginPage from "./features/login/pages/LoginPage.tsx"
 import LogoutPage from "./pages/LogoutPage.tsx"
 import AuthProvider from "./features/auth/AuthProvider.tsx"
-import CreateAccountPage from "./pages/CreateAccountPage.tsx"
+import CreateAccountPage from "./features/createAccount/pages/CreateAccountPage.tsx"
 
 const router = createBrowserRouter([
   {

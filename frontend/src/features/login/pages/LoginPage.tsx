@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
-import Footer from "../components/Footer/Footer.tsx"
-import Header from "../components/Header/Header.tsx"
-import LoginForm from "../features/login/components/LoginForm/LoginForm.tsx"
-import { useAuth } from "../features/auth/hooks/useAuth.tsx"
+import Footer from "../../../components/Footer/Footer.tsx"
+import Header from "../../../components/Header/Header.tsx"
+import LoginForm from "../components/LoginForm/LoginForm.tsx"
+import { useAuth } from "../../auth/hooks/useAuth.tsx"
 
 function LoginPage() {
   const auth = useAuth()

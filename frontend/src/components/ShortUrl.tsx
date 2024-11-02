@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import "./ShortUrl.css"
 import { Url } from "../endpoints/createUrl"
-import QrCode from "./QrCode"
+import QrCode from "./QrCode/QrCode.tsx"
 
 function ShortUrl({ url }: { url: Url }) {
   const shortCodeUrl = `${window.location.href}${url.shortCode}`
