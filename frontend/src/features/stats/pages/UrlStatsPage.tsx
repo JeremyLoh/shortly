@@ -1,9 +1,9 @@
-import Header from "../components/Header/Header.tsx"
-import Footer from "../components/Footer/Footer.tsx"
-import ShortUrlStatForm from "../components/ShortUrlStatForm"
-import { UrlStat } from "../endpoints/urlStatistic"
 import { useState } from "react"
-import UrlStatCard from "../components/UrlStatCard"
+import Header from "../../../components/Header/Header.tsx"
+import Footer from "../../../components/Footer/Footer.tsx"
+import ShortUrlStatForm from "../components/ShortUrlStatForm/ShortUrlStatForm.tsx"
+import UrlStatCard from "../components/UrlStatCard/UrlStatCard.tsx"
+import { UrlStat } from "../../../endpoints/urlStatistic.ts"
 
 function UrlStatsPage() {
   const [urlStat, setUrlStat] = useState<UrlStat>()
