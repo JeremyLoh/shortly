@@ -1,13 +1,5 @@
-import ky from "ky"
 import { Params, redirect } from "react-router-dom"
-
-type UrlResponse = {
-  id: string
-  url: string
-  shortCode: string
-  createdAt: string
-  updatedAt: string | null
-}
+import { getRedirectUrl } from "../endpoints/redirectUrl"
 
 // https://stackoverflow.com/questions/75324193/react-router-6-how-to-strongly-type-the-params-option-in-route-loader
 export async function redirectLoader({
@@ -16,14 +8,12 @@ export async function redirectLoader({
   params: Params<"shortCode">
 }) {
   try {
-    const response = await ky.get("/api/shorten/" + params.shortCode, {
-      retry: { limit: 0 },
-    })
-    if (!response.ok) {
+    const shortCode = params.shortCode
+    if (!shortCode) {
       return redirect("/error")
     }
-    const data: UrlResponse = await response.json()
-    return { url: data.url }
+    const url = await getRedirectUrl(shortCode)
+    return { url }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response.status === 429) {
