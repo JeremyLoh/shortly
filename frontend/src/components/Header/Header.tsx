@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import "./Header.css"
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../../features/auth/hooks/useAuth.tsx"
 
 function Header() {
   const auth = useAuth()

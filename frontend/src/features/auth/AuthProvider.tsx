@@ -1,7 +1,7 @@
 import { createContext, useMemo, useCallback } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import useLocalStorage from "./useLocalStorage"
-import { login, logout, User } from "../endpoints/user"
+import useLocalStorage from "../../hooks/useLocalStorage.tsx"
+import { login, logout, User } from "../../endpoints/user.ts"
 
 type LogoutResponseType = {
   error: string

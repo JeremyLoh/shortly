@@ -1,5 +1,5 @@
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+import Header from "../components/Header/Header.tsx"
+import Footer from "../components/Footer/Footer.tsx"
 import ShortUrlStatForm from "../components/ShortUrlStatForm"
 import { UrlStat } from "../endpoints/urlStatistic"
 import { useState } from "react"

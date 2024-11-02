@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import CreateAccountForm from "../components/CreateAccountForm"
-import Footer from "../components/Footer"
-import Header from "../components/Header"
+import Footer from "../components/Footer/Footer.tsx"
+import Header from "../components/Header/Header.tsx"
 import { createAccount } from "../endpoints/user"
 import { useNavigate } from "react-router-dom"
 

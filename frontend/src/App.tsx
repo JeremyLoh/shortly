@@ -3,8 +3,8 @@ import "./App.css"
 import ShortUrlForm from "./components/ShortUrlForm"
 import { Url } from "./endpoints/createUrl"
 import ShortUrl from "./components/ShortUrl"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import Header from "./components/Header/Header.tsx"
+import Footer from "./components/Footer/Footer.tsx"
 
 function App() {
   const [url, setUrl] = useState<Url | null>(null)
