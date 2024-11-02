@@ -3,7 +3,7 @@ import { populateMaliciousFeeds } from "../database.js"
 
 // https://github.com/kelektiv/node-cron?tab=readme-ov-file#cronjob-class
 const refreshMaliciousUrlsJob = CronJob.from({
-  cronTime: "1 0 * * *", // run every day at 12:01 AM
+  cronTime: "1 0 * * 0", // run once a week on sunday at 12:01 AM
   onTick: async function () {
     console.log(
       `Cron job triggered at ${new Date().toString()} to get new malicious url feed`
