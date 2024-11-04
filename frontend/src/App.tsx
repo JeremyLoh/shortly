@@ -5,7 +5,7 @@ import { Url } from "./endpoints/createUrl"
 import ShortUrlCard from "./features/createUrl/components/ShortUrlCard/ShortUrlCard.tsx"
 import Header from "./components/Header/Header.tsx"
 import Footer from "./components/Footer/Footer.tsx"
-import AccountActions from "./features/account/components/AccountActions.tsx/AccountActions.tsx"
+import AccountActions from "./features/account/history/components/AccountActions.tsx/AccountActions.tsx"
 
 function App() {
   const [url, setUrl] = useState<Url | null>(null)

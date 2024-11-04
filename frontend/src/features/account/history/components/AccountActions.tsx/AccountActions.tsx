@@ -1,6 +1,6 @@
 import "./AccountActions.css"
 import { Link } from "react-router-dom"
-import { useAuth } from "../../../auth/hooks/useAuth"
+import { useAuth } from "../../../../auth/hooks/useAuth"
 
 function AccountActions() {
   const auth = useAuth()

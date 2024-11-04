@@ -31,6 +31,7 @@ Favicon generated from https://favicon.io/emoji-favicons/robot
    - https://github.com/sindresorhus/ky?tab=readme-ov-file#cancellation
 5. Handling React useEffect firing twice due to Strict Mode - https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
 6. check two TextField have the same value with react-hook-form - https://stackoverflow.com/questions/63096634/check-two-textfield-have-the-same-value-with-react-hook-form
+7. Protected Routes in React Router - https://www.angularminds.com/blog/protected-routes-in-react-router-authentication-and-authorization
 
 # React + TypeScript + Vite
 
