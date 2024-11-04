@@ -1,31 +1,9 @@
-import { test, expect, Page } from "@playwright/test"
-import { HOMEPAGE_URL } from "./constants"
-
-async function mockLoginEndpoint(page: Page) {
-  await page.route("*/**/api/auth/users", async (route) => {
-    const request = route.request()
-    expect(request.method()).toBe("POST")
-    await route.fulfill({
-      status: 201,
-      json: "Created",
-    })
-  })
-}
-
-async function mockLoginRateLimitExceededEndpoint(
-  page: Page,
-  timeoutInSeconds: number
-) {
-  await page.route("*/**/api/auth/users", async (route) => {
-    const request = route.request()
-    expect(request.method()).toBe("POST")
-    await route.fulfill({
-      status: 429,
-      headers: { "retry-after": `${timeoutInSeconds}` },
-      json: "Too many requests, please try again later.",
-    })
-  })
-}
+import { test, expect } from "@playwright/test"
+import { HOMEPAGE_URL } from "../constants"
+import {
+  mockCreateAccountSuccessEndpoint,
+  mockLoginRateLimitExceededEndpoint,
+} from "./accountMocks"
 
 test.beforeEach(async ({ page }) => {
   await page.goto(HOMEPAGE_URL + "/register")
@@ -33,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test("should create new account", async ({ page }) => {
-  await mockLoginEndpoint(page)
+  await mockCreateAccountSuccessEndpoint(page)
 
   await expect(
     page.getByRole("heading", { name: "Create a new account" })
