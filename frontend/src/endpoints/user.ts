@@ -3,6 +3,7 @@ import { baseUrl } from "./constant"
 
 interface User {
   id: string
+  username: string
 }
 
 async function login(username: string, password: string): Promise<User> {
@@ -14,7 +15,7 @@ async function login(username: string, password: string): Promise<User> {
     if (response.status !== 200) {
       throw new Error("Invalid username / password")
     }
-    return response.json()
+    return { ...response.json(), username }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response.status === 401) {
