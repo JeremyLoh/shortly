@@ -25,24 +25,27 @@ async function setupDatabase(pool: pg.Pool) {
       url VARCHAR(2048) UNIQUE NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`)
+    await pool.query(`CREATE TABLE IF NOT EXISTS "users" (
+      id BIGSERIAL PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      hashed_password TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )`)
+    // one to many table between user => url(s). Foreign key should be INTEGER instead of SERIAL
     await pool.query(`CREATE TABLE IF NOT EXISTS "urls" (
       id BIGSERIAL PRIMARY KEY,
+      user_id BIGINT DEFAULT NULL,
       url VARCHAR(2048) NOT NULL,
       short_code CHAR(7) UNIQUE NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-      updated_at TIMESTAMPTZ
+      updated_at TIMESTAMPTZ,
+      FOREIGN KEY (user_id) REFERENCES "users" (id)
     )`)
     await pool.query(`CREATE TABLE IF NOT EXISTS "stats" (
       id BIGSERIAL PRIMARY KEY,
       url_id BIGSERIAL,
       access_count INTEGER NOT NULL DEFAULT 0,
       FOREIGN KEY (url_id) REFERENCES "urls"(id)
-    )`)
-    await pool.query(`CREATE TABLE IF NOT EXISTS "users" (
-      id BIGSERIAL PRIMARY KEY,
-      username VARCHAR(255) UNIQUE NOT NULL,
-      hashed_password TEXT NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`)
     await setupIndexes(pool)
   } catch (error) {}
