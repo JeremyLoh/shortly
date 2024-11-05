@@ -92,6 +92,7 @@ Column naming convention (lowercase with underscores)
 14. Passport js always returning 500 internal error - https://stackoverflow.com/questions/29580522/passport-js-always-returning-500-internal-error
 15. node-postgres: how to execute "WHERE col IN (<dynamic value list>)" query? - https://stackoverflow.com/questions/10720420/node-postgres-how-to-execute-where-col-in-dynamic-value-list-query
 16. For url LIKE query matching https://www.postgresql.org/docs/current/indexes-opclass.html - https://stackoverflow.com/questions/1566717/postgresql-like-query-performance-variations/13452528#13452528
+17. Foreign Key cannot be defined as SERIAL. Use INTEGER type instead (e.g. BIGINT to replace foreign key of BIGSERIAL)!! - https://stackoverflow.com/questions/28558920/postgresql-foreign-key-syntax
 
 # References (Testing)
 

@@ -30,7 +30,6 @@ describe("Malicious API to check urls", () => {
 
   beforeEach(async () => {
     maliciousUrls = []
-    await pool.query("DELETE FROM users")
     vi.mock("../../middleware/rateLimiter.js", () => {
       return {
         default: {
@@ -50,7 +49,6 @@ describe("Malicious API to check urls", () => {
   })
 
   afterEach(async () => {
-    await pool.query("DELETE FROM users")
     vi.restoreAllMocks()
     maliciousUrls.forEach(async (url) => await removeMockMaliciousUrl(url))
   })
