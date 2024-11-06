@@ -38,7 +38,8 @@ router.post(
       return
     }
     try {
-      const entry = await createNewUrl(url)
+      // @ts-ignore
+      const entry = await createNewUrl(url, req.user?.id)
       res.status(201).send(entry)
     } catch (error: any) {
       res.status(500).send({ error: error.message || "Could not create url" })
