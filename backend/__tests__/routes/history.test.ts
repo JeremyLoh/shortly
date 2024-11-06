@@ -134,6 +134,18 @@ describe("History API", () => {
       expect(historyResponse.status).toBe(400)
     })
 
+    test("should reject page param that is a negative number", async () => {
+      const password = "12345678"
+      await createAccount(username, password)
+      const loginResponse = await loginAccount(username, password)
+      const historyResponse = await request(app)
+        .post("/api/account/history")
+        .set("cookie", loginResponse.headers["set-cookie"])
+        .send({ id: loginResponse.body.id })
+        .query({ page: "-1" })
+      expect(historyResponse.status).toBe(400)
+    })
+
     test("should return paginated list of created short urls when user is logged in", async () => {
       const password = "12345678"
       await createAccount(username, password)

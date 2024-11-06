@@ -18,17 +18,18 @@ router.post(
       res.sendStatus(400)
       return
     }
-    if (req.user && req.session.cookie) {
-      try {
-        const page = req.query && req.query.page ? req.query.page : "1"
-        // @ts-ignore
-        const rows = await getUrlHistory(req.user.id, page, "10")
-        res.status(200).json({ urls: rows })
-      } catch (error) {
-        res.sendStatus(400)
-      }
-    } else {
+    const isLoggedInUser = req.user && req.session.cookie
+    if (!isLoggedInUser) {
       res.sendStatus(404)
+      return
+    }
+    const page = req.query && req.query.page ? req.query.page : "1"
+    try {
+      // @ts-ignore
+      const rows = await getUrlHistory(req.user.id, page, "10")
+      res.status(200).json({ urls: rows })
+    } catch (error) {
+      res.sendStatus(500)
     }
   }
 )
