@@ -1,4 +1,4 @@
-import { expect, Page } from "@playwright/test"
+import { BrowserContext, expect, Page } from "@playwright/test"
 
 async function mockLoginRateLimitExceededEndpoint(
   page: Page,
@@ -26,7 +26,10 @@ async function mockCreateAccountSuccessEndpoint(page: Page) {
   })
 }
 
-async function mockLoginSuccessAuthResponse(page, browserContext) {
+async function mockLoginSuccessAuthResponse(
+  page: Page,
+  browserContext: BrowserContext
+) {
   await page.route("*/**/api/auth/login", async (route) => {
     const request = route.request()
     expect(request.method()).toBe("POST")
@@ -52,7 +55,7 @@ async function mockLoginSuccessAuthResponse(page, browserContext) {
   })
 }
 
-async function mockLogoutSuccessResponse(page) {
+async function mockLogoutSuccessResponse(page: Page) {
   await page.route("*/**/api/auth/logout", async (route) => {
     const request = route.request()
     expect(request.method()).toBe("POST")

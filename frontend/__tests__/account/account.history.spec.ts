@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test"
 import { HOMEPAGE_URL } from "../constants"
 import { mockLoginSuccessAuthResponse } from "./accountMocks"
 
-async function navigateToLoginPage(page) {
+async function navigateToLoginPage(page: Page) {
   await page.goto(HOMEPAGE_URL)
   await page.getByRole("link", { name: "Login" }).click()
 }
