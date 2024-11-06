@@ -18,6 +18,7 @@ function getMockMiddleware() {
 
 describe("Auth API", () => {
   let app: Express
+  let usernames: string[] = []
 
   beforeAll(async () => {
     app = await setupApp()
@@ -25,7 +26,8 @@ describe("Auth API", () => {
   })
 
   beforeEach(async () => {
-    await pool.query("DELETE FROM users")
+    await pool.query("DELETE FROM users WHERE username = ANY($1)", [usernames])
+    usernames = []
     vi.mock("../../middleware/rateLimiter.js", () => {
       return {
         default: {
@@ -44,7 +46,7 @@ describe("Auth API", () => {
   })
 
   afterEach(async () => {
-    await pool.query("DELETE FROM users")
+    await pool.query("DELETE FROM users WHERE username = ANY($1)", [usernames])
     vi.restoreAllMocks()
   })
 
@@ -55,7 +57,9 @@ describe("Auth API", () => {
     })
 
     test("should accept login with account that exists with correct credentials", async () => {
-      const username = "test_username00"
+      const username = "auth.test.ts_test_username00"
+      usernames.push(username)
+
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
@@ -77,7 +81,9 @@ describe("Auth API", () => {
     })
 
     test("should reject login with account with incorrect credentials", async () => {
-      const username = "test_username0"
+      const username = "auth.test.ts_test_username01"
+      usernames.push(username)
+
       const password = "12345678"
       const incorrectPassword = "incorrectPassword"
       const createAccountResponse = await request(app)
@@ -94,7 +100,9 @@ describe("Auth API", () => {
     })
 
     test("should reject login with account with missing password", async () => {
-      const username = "test_username2"
+      const username = "auth.test.ts_test_username02"
+      usernames.push(username)
+
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
@@ -129,7 +137,9 @@ describe("Auth API", () => {
   describe("POST /api/auth/logout", () => {
     // https://github.com/ladjs/supertest/issues/665
     test("should logout user that is currently logged in", async () => {
-      const username = "test_username"
+      const username = "auth.test.ts_test_username04"
+      usernames.push(username)
+
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
@@ -158,7 +168,9 @@ describe("Auth API", () => {
 
   describe("POST /api/auth/users", () => {
     test("should create new account with username that does not exist", async () => {
-      const username = "test_username"
+      const username = "auth.test.ts_test_username90"
+      usernames.push(username)
+
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
@@ -167,7 +179,9 @@ describe("Auth API", () => {
     })
 
     test("should not create account with username that already exists", async () => {
-      const username = "test_username"
+      const username = "auth.test.ts_test_username560"
+      usernames.push(username)
+
       const password = "12345678"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
@@ -188,7 +202,9 @@ describe("Auth API", () => {
 
   describe("GET /api/auth/status", () => {
     test("should receive user auth status of HTTP 200 based on given valid cookie", async () => {
-      const username = "test_username"
+      const username = "auth.test.ts_test_username030"
+      usernames.push(username)
+
       const password = "123456789"
       const createAccountResponse = await request(app)
         .post("/api/auth/users")
