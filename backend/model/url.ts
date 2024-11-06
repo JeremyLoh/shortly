@@ -1,16 +1,23 @@
 import pool from "../database.js"
 import { generateId } from "./id.js"
 
-async function createNewUrl(url: string) {
+async function createNewUrl(url: string, userId: string | null) {
   const shortCode = generateId(7)
   const client = await pool.connect()
   try {
     await client.query("BEGIN")
-    const insertedRow = await client.query(
-      `INSERT INTO urls (url, short_code) VALUES ($1, $2)
+    const insertedRow =
+      userId == null
+        ? await client.query(
+            `INSERT INTO urls (url, short_code) VALUES ($1, $2)
       RETURNING id, url, short_code AS "shortCode", created_at AS "createdAt", updated_at AS "updatedAt"`,
-      [url, shortCode]
-    )
+            [url, shortCode]
+          )
+        : await client.query(
+            `INSERT INTO urls (url, short_code, user_id) VALUES ($1, $2, $3)
+      RETURNING id, url, short_code AS "shortCode", created_at AS "createdAt", updated_at AS "updatedAt"`,
+            [url, shortCode, userId]
+          )
     if (!insertedRow || insertedRow.rowCount !== 1) {
       await client.query("ROLLBACK")
       throw new Error("Could not create new url entry")
