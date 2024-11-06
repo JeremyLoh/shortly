@@ -73,6 +73,14 @@ describe("History API", () => {
       expect(loginResponse.status).toBe(200)
       return loginResponse
     }
+    async function createUrl(cookie: any, expectedUrl: string) {
+      const createResponse = await request(app)
+        .post("/api/shorten")
+        .set("cookie", cookie)
+        .set("Accept", "application/json")
+        .send({ url: expectedUrl })
+      return createResponse.body
+    }
 
     test("should reject if no login session is present in request", async () => {
       const response = await request(app)
@@ -98,13 +106,10 @@ describe("History API", () => {
       await createAccount(username, password)
       const loginResponse = await loginAccount(username, password)
       const expectedUrl = "http://example.com"
-      const createResponse = await request(app)
-        .post("/api/shorten")
-        .set("cookie", loginResponse.headers["set-cookie"])
-        .set("Accept", "application/json")
-        .send({ url: expectedUrl })
-      const expectedCreateUrl = createResponse.body
-
+      const expectedCreateUrl = await createUrl(
+        loginResponse.headers["set-cookie"],
+        expectedUrl
+      )
       const historyResponse = await request(app)
         .post("/api/account/history")
         .set("cookie", loginResponse.headers["set-cookie"])
@@ -113,6 +118,56 @@ describe("History API", () => {
       expect(historyResponse.body).toEqual(
         expect.objectContaining({
           urls: expect.arrayContaining([expectedCreateUrl]),
+        })
+      )
+    })
+
+    test("should reject page param that is not a number", async () => {
+      const password = "12345678"
+      await createAccount(username, password)
+      const loginResponse = await loginAccount(username, password)
+      const historyResponse = await request(app)
+        .post("/api/account/history")
+        .set("cookie", loginResponse.headers["set-cookie"])
+        .send({ id: loginResponse.body.id })
+        .query({ page: "abc" })
+      expect(historyResponse.status).toBe(400)
+    })
+
+    test("should return paginated list of created short urls when user is logged in", async () => {
+      const password = "12345678"
+      await createAccount(username, password)
+      const loginResponse = await loginAccount(username, password)
+      const createdUrls = []
+      for (let i = 0; i < 11; i++) {
+        const expectedCreateUrl = await createUrl(
+          loginResponse.headers["set-cookie"],
+          "http://example" + i + ".com"
+        )
+        createdUrls.push(expectedCreateUrl)
+      }
+
+      // expect 10 urls for first page, 1 url for second page
+      const firstPageHistoryResponse = await request(app)
+        .post("/api/account/history")
+        .set("cookie", loginResponse.headers["set-cookie"])
+        .send({ id: loginResponse.body.id })
+      expect(firstPageHistoryResponse.status).toBe(200)
+      expect(firstPageHistoryResponse.body).toEqual(
+        expect.objectContaining({
+          urls: expect.arrayContaining(createdUrls.slice(0, 10)),
+        })
+      )
+      // expect only last url to be present for page 2
+      const secondPageHistoryResponse = await request(app)
+        .post("/api/account/history")
+        .set("cookie", loginResponse.headers["set-cookie"])
+        .send({ id: loginResponse.body.id })
+        .query({ page: "2" })
+      expect(secondPageHistoryResponse.status).toBe(200)
+      expect(secondPageHistoryResponse.body).toEqual(
+        expect.objectContaining({
+          urls: expect.arrayContaining(createdUrls.slice(10, 11)),
         })
       )
     })
