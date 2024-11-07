@@ -68,9 +68,46 @@ async function mockLogoutSuccessResponse(page: Page) {
   })
 }
 
+async function mockHistoryEmptyResponse(page: Page) {
+  await page.route("*/**/api/account/history", async (route) => {
+    const request = route.request()
+    expect(request.method()).toBe("POST")
+    await route.fulfill({
+      status: 200,
+      json: { urls: [] },
+    })
+  })
+}
+
+async function mockHistoryOneUrlResponse(
+  page: Page,
+  data: { url: string; shortCode: string }
+) {
+  await page.route("*/**/api/account/history", async (route) => {
+    const request = route.request()
+    expect(request.method()).toBe("POST")
+    await route.fulfill({
+      status: 200,
+      json: {
+        urls: [
+          {
+            id: "1",
+            url: data.url,
+            shortCode: data.shortCode,
+            createdAt: "2024-11-06T15:26:11.314Z",
+            updatedAt: "2024-11-06T15:56:41.514Z",
+          },
+        ],
+      },
+    })
+  })
+}
+
 export {
   mockLoginRateLimitExceededEndpoint,
   mockCreateAccountSuccessEndpoint,
   mockLoginSuccessAuthResponse,
   mockLogoutSuccessResponse,
+  mockHistoryEmptyResponse,
+  mockHistoryOneUrlResponse,
 }

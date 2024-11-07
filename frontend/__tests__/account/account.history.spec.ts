@@ -1,6 +1,10 @@
 import { test, expect, Page } from "@playwright/test"
 import { HOMEPAGE_URL } from "../constants"
-import { mockLoginSuccessAuthResponse } from "./accountMocks"
+import {
+  mockHistoryEmptyResponse,
+  mockHistoryOneUrlResponse,
+  mockLoginSuccessAuthResponse,
+} from "./accountMocks"
 
 async function navigateToLoginPage(page: Page) {
   await page.goto(HOMEPAGE_URL)
@@ -34,6 +38,7 @@ test("show history link and welcome message on homepage after login", async ({
 test("navigate from homepage to history page on history link click", async ({
   page,
 }) => {
+  await mockHistoryEmptyResponse(page)
   await login(page, "test_username")
   await page.getByRole("link", { name: "History" }).click()
   await expect(page.getByText("History", { exact: true })).toBeVisible()
@@ -44,6 +49,33 @@ test("logged out user should see 404 error when accessing /history route", async
   page,
 }) => {
   await page.goto(HOMEPAGE_URL + "/history")
+  await expect(page.getByText("Error - 404 Not Found")).toBeVisible()
   expect(page.url()).not.toContain("/history")
   expect(page.url()).toContain("/error")
+})
+
+test("shows empty history page when user has not created any short urls", async ({
+  page,
+}) => {
+  await mockHistoryEmptyResponse(page)
+  await login(page, "test_username")
+  await page.getByRole("link", { name: "History" }).click()
+  await expect(page.getByText("History", { exact: true })).toBeVisible()
+  await expect(
+    page.getByText("You have not created any short urls")
+  ).toBeVisible()
+})
+
+test("shows history page with one created url", async ({ page }) => {
+  const expectedData = { url: "https://github.com/", shortCode: "abcdef2" }
+  await mockHistoryOneUrlResponse(page, expectedData)
+  await login(page, "test_username")
+  await page.getByRole("link", { name: "History" }).click()
+  await expect(page.getByText("History", { exact: true })).toBeVisible()
+  await expect(
+    page.getByText("You have not created any short urls")
+  ).not.toBeVisible()
+  await expect(page.getByText(expectedData.url)).toBeVisible()
+  await expect(page.getByText(expectedData.shortCode)).toBeVisible()
+  await expect(page.getByText("Never Updated")).not.toBeVisible()
 })

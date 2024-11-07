@@ -12,6 +12,7 @@ import LogoutPage from "./pages/LogoutPage.tsx"
 import AuthProvider from "./features/auth/AuthProvider.tsx"
 import CreateAccountPage from "./features/createAccount/pages/CreateAccountPage.tsx"
 import AccountHistoryPage from "./features/account/history/pages/AccountHistoryPage.tsx"
+import { accountHistoryLoader } from "./features/account/history/pages/AccountHistoryLoader.tsx"
 import ProtectedRoute from "./pages/ProtectedRoute.tsx"
 
 const router = createBrowserRouter([
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
           {
             path: "/history",
             element: <AccountHistoryPage />,
+            loader: accountHistoryLoader,
             errorElement: <NotFoundPage errorMessage="404 Not Found" />,
           },
         ],
