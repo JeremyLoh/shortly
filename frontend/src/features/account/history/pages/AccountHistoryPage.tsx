@@ -8,6 +8,12 @@ import UrlCard from "../components/UrlCard/UrlCard"
 function AccountHistoryPage() {
   const navigate = useNavigate()
   const { urls, page, total } = useLoaderData() as AccountHistoryData
+  function handlePreviousNavigation() {
+    navigate(`/history?page=${page - 1}`)
+  }
+  function handleNextNavigation() {
+    navigate(`/history?page=${page + 1}`)
+  }
   return (
     <>
       <Header />
@@ -16,8 +22,8 @@ function AccountHistoryPage() {
         page={page}
         total={total}
         itemsPerPage={10}
-        handlePreviousNavigation={() => navigate(`/history?page=${page - 1}`)}
-        handleNextNavigation={() => navigate(`/history?page=${page + 1}`)}
+        handlePreviousNavigation={handlePreviousNavigation}
+        handleNextNavigation={handleNextNavigation}
       />
       {urls.length > 0 ? (
         urls.map((history) => (
