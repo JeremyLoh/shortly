@@ -74,7 +74,7 @@ async function mockHistoryEmptyResponse(page: Page) {
     expect(request.method()).toBe("POST")
     await route.fulfill({
       status: 200,
-      json: { urls: [] },
+      json: { urls: [], total: "0" },
     })
   })
 }
@@ -98,6 +98,43 @@ async function mockHistoryOneUrlResponse(
             updatedAt: "2024-11-06T15:56:41.514Z",
           },
         ],
+        total: "1",
+      },
+    })
+  })
+}
+
+async function mockHistoryMultiplePageUrlResponse(
+  page: Page,
+  itemsPerPage: number,
+  data: Array<{ url: string; shortCode: string }>
+) {
+  const count = data.length
+  const urls = data.map((d, index) => ({
+    id: `${index + 1}`,
+    url: d.url,
+    shortCode: d.shortCode,
+    createdAt: "2024-11-06T15:26:11.314Z",
+    updatedAt: "2024-11-06T15:56:41.514Z",
+  }))
+  await page.route("*/**/api/account/history", async (route) => {
+    const request = route.request()
+    expect(request.method()).toBe("POST")
+    const postData = request.postData() as string | null
+    if (postData == null) {
+      throw new Error(
+        "Invalid post data given to mock endpoint for mockHistoryTwoPageUrlResponse"
+      )
+    }
+    // request.postData() returns a json string
+    const page = parseInt(JSON.parse(postData).page)
+    const startIndex = Math.max(0, page - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    await route.fulfill({
+      status: 200,
+      json: {
+        urls: urls.slice(startIndex, endIndex),
+        total: `${count}`,
       },
     })
   })
@@ -110,4 +147,5 @@ export {
   mockLogoutSuccessResponse,
   mockHistoryEmptyResponse,
   mockHistoryOneUrlResponse,
+  mockHistoryMultiplePageUrlResponse,
 }

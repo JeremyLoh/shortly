@@ -11,6 +11,7 @@ type UrlHistory = {
 
 type AccountHistoryResponse = {
   urls: Array<UrlHistory>
+  total: string
 }
 
 async function getAccountCreatedUrls(

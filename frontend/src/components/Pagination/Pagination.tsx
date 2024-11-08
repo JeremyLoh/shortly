@@ -2,12 +2,16 @@ import "./Pagination.css"
 
 type PaginationProps = {
   page: number
+  total: number
+  itemsPerPage: number
   handlePreviousNavigation: () => void
   handleNextNavigation: () => void
 }
 
 function Pagination({
   page,
+  total,
+  itemsPerPage,
   handlePreviousNavigation,
   handleNextNavigation,
 }: PaginationProps) {
@@ -21,7 +25,11 @@ function Pagination({
         Previous
       </button>
       <button className="active-tab">{page}</button>
-      <button className="next-nav-btn" onClick={handleNextNavigation}>
+      <button
+        className="next-nav-btn"
+        onClick={handleNextNavigation}
+        disabled={page >= Math.ceil(total / itemsPerPage)}
+      >
         Next
       </button>
     </div>

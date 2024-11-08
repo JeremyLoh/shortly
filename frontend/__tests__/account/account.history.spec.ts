@@ -3,6 +3,7 @@ import { HOMEPAGE_URL } from "../constants"
 import {
   mockHistoryEmptyResponse,
   mockHistoryOneUrlResponse,
+  mockHistoryMultiplePageUrlResponse,
   mockLoginSuccessAuthResponse,
 } from "./accountMocks"
 
@@ -87,6 +88,61 @@ test("shows previous and next buttons on history page", async ({ page }) => {
   await page.getByRole("link", { name: "History" }).click()
   await expect(page.getByText("History", { exact: true })).toBeVisible()
   await expect(page.getByRole("button", { name: "Previous" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Next" })).toBeVisible()
+})
+
+test("disable previous and next buttons for one url", async ({ page }) => {
+  const expectedData = { url: "https://github.com/", shortCode: "abcdef2" }
+  await mockHistoryOneUrlResponse(page, expectedData)
+  await login(page, "test_username")
+  await page.getByRole("link", { name: "History" }).click()
+  await expect(page.getByText("History", { exact: true })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Previous" })).toBeVisible()
   await expect(page.getByRole("button", { name: "Previous" })).toBeDisabled()
   await expect(page.getByRole("button", { name: "Next" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Next" })).toBeDisabled()
+})
+
+test("navigate to next page for 11 urls", async ({ page }) => {
+  const itemsPerPage = 10
+  const data = [
+    { url: "https://github.com/", shortCode: "1bcdef2" },
+    { url: "https://youtube.com/", shortCode: "2bcdef2" },
+    {
+      url: "https://www.youtube.com/watch?v=MIzNRcUz3Bk",
+      shortCode: "3bcdef3",
+    },
+    { url: "https://example.com/", shortCode: "4bcdef4" },
+    { url: "https://haveibeenpwned.com/", shortCode: "5bcdef5" },
+    { url: "https://developer.mozilla.org/en-US/", shortCode: "6bcdef6" },
+    {
+      url: "https://www.youtube.com/watch?v=bq-xWdJrBJ0",
+      shortCode: "7bcdef7",
+    },
+    {
+      url: "https://tailwindcss.com/docs/customizing-colors",
+      shortCode: "8bcdef8",
+    },
+    {
+      url: "https://www.youtube.com/watch?v=z0nZAXyF2BU",
+      shortCode: "9bcdef9",
+    },
+    { url: "https://vitest.dev/", shortCode: "abcdefa" },
+    { url: "https://vitest.dev/guide/", shortCode: "bdddefb" },
+  ]
+  await mockHistoryMultiplePageUrlResponse(page, itemsPerPage, data)
+  await login(page, "test_username")
+  await page.getByRole("link", { name: "History" }).click()
+  await expect(page.getByText("History", { exact: true })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Previous" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Previous" })).toBeDisabled()
+  await expect(page.getByRole("button", { name: "Next" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Next" })).not.toBeDisabled()
+
+  await page.getByRole("button", { name: "Next" }).click()
+
+  await expect(
+    page.getByRole("button", { name: "Previous" })
+  ).not.toBeDisabled()
+  await expect(page.getByRole("button", { name: "Next" })).toBeDisabled()
 })
