@@ -26,8 +26,8 @@ router.post(
     const page = req.query && req.query.page ? req.query.page : "1"
     try {
       // @ts-ignore
-      const rows = await getUrlHistory(req.user.id, page, "10")
-      res.status(200).json({ urls: rows })
+      const { urls, total } = await getUrlHistory(req.user.id, page, "10")
+      res.status(200).json({ urls, total })
     } catch (error) {
       res.sendStatus(500)
     }

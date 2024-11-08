@@ -98,7 +98,9 @@ describe("History API", () => {
         .set("cookie", loginResponse.headers["set-cookie"])
         .send({ id: loginResponse.body.id })
       expect(response.status).toBe(200)
-      expect(response.body).toEqual(expect.objectContaining({ urls: [] }))
+      expect(response.body).toEqual(
+        expect.objectContaining({ urls: [], total: "0" })
+      )
     })
 
     test("should return one user created short url when user is logged in", async () => {
@@ -118,6 +120,7 @@ describe("History API", () => {
       expect(historyResponse.body).toEqual(
         expect.objectContaining({
           urls: expect.arrayContaining([expectedCreateUrl]),
+          total: "1",
         })
       )
     })
@@ -168,6 +171,7 @@ describe("History API", () => {
       expect(firstPageHistoryResponse.body).toEqual(
         expect.objectContaining({
           urls: expect.arrayContaining(createdUrls.slice(0, 10)),
+          total: "11",
         })
       )
       // expect only last url to be present for page 2
@@ -180,6 +184,7 @@ describe("History API", () => {
       expect(secondPageHistoryResponse.body).toEqual(
         expect.objectContaining({
           urls: expect.arrayContaining(createdUrls.slice(10, 11)),
+          total: "11",
         })
       )
     })

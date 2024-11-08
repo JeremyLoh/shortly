@@ -16,7 +16,11 @@ async function getUrlHistory(
       OFFSET $3`,
       [userId, resultPerPage, offset]
     )
-    return response.rows
+    const countResponse = await client.query(
+      `SELECT COUNT(*) FROM urls WHERE user_id = $1`,
+      [userId]
+    )
+    return { urls: response.rows, total: countResponse.rows[0].count }
   } catch (error) {
   } finally {
     client.release()
