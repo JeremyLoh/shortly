@@ -79,3 +79,14 @@ test("shows history page with one created url", async ({ page }) => {
   await expect(page.getByText(expectedData.shortCode)).toBeVisible()
   await expect(page.getByText("Never Updated")).not.toBeVisible()
 })
+
+test("shows previous and next buttons on history page", async ({ page }) => {
+  const expectedData = { url: "https://github.com/", shortCode: "abcdef2" }
+  await mockHistoryOneUrlResponse(page, expectedData)
+  await login(page, "test_username")
+  await page.getByRole("link", { name: "History" }).click()
+  await expect(page.getByText("History", { exact: true })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Previous" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Previous" })).toBeDisabled()
+  await expect(page.getByRole("button", { name: "Next" })).toBeVisible()
+})

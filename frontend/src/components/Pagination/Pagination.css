@@ -1,0 +1,27 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100%;
+  width: 80%;
+  max-width: 70ch;
+}
+
+.pagination button {
+  border-radius: 0px;
+  border: 2px solid #e5e5e5;
+  font-size: 1rem;
+}
+.pagination button:disabled {
+  cursor: default;
+}
+
+.active-tab {
+  color: #2563eb;
+  background-color: #dbeafe;
+}
+
+.previous-nav-btn:hover:enabled,
+.next-nav-btn:hover:enabled {
+  background-color: #e5e5e5;
+}
