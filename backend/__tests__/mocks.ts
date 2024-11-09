@@ -15,5 +15,6 @@ export function getRateLimiterMocks() {
     createAccountLimiter: getMockMiddleware(),
     checkLoginStatusLimiter: getMockMiddleware(),
     checkMaliciousUrlLimiter: getMockMiddleware(),
+    getAccountHistoryUrlLimiter: getMockMiddleware(),
   }
 }

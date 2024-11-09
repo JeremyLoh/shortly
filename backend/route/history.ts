@@ -1,16 +1,18 @@
 import { Router } from "express"
-import { getUrlHistory } from "../model/history.js"
 import {
   query,
   Result,
   ValidationError,
   validationResult,
 } from "express-validator"
+import { getUrlHistory } from "../model/history.js"
+import rateLimiter from "../middleware/rateLimiter.js"
 
 const router = Router()
 
 router.post(
   "/api/account/history",
+  rateLimiter.getAccountHistoryUrlLimiter,
   query("page").optional().isInt({ min: 1 }),
   async (req, res) => {
     const result: Result<ValidationError> = validationResult(req)
