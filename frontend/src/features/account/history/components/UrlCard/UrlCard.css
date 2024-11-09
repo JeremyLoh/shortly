@@ -1,0 +1,30 @@
+.url-card {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 70ch;
+  padding: 1rem;
+  margin: 1rem;
+  row-gap: 0.4rem;
+  color: white;
+  background-color: #1e40af;
+  /* Github #55 - https://getcssscan.com/css-box-shadow-examples */
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+
+.url-card p {
+  margin: 0;
+}
+.url-card a {
+  color: #f5f5f5;
+  text-decoration: underline;
+}
+
+.card-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.card-row-title {
+  width: 20%;
+}

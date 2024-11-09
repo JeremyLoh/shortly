@@ -1,3 +1,5 @@
+// Mocks need to be imported before vitest import!
+import { getRateLimiterMocks } from "../mocks.js"
 import {
   afterEach,
   assert,
@@ -9,14 +11,10 @@ import {
   vi,
 } from "vitest"
 import request from "supertest"
-import { Express, NextFunction, Request, Response } from "express"
+import { Express } from "express"
 import setupApp from "../../server.js"
 import pool, { populateMaliciousFeeds, setupDatabase } from "../../database.js"
 import maliciousModel from "../../model/malicious.js"
-
-function getMockMiddleware() {
-  return (req: Request, res: Response, next: NextFunction) => next()
-}
 
 describe("Malicious API to check urls", () => {
   let app: Express
@@ -32,17 +30,7 @@ describe("Malicious API to check urls", () => {
     maliciousUrls = []
     vi.mock("../../middleware/rateLimiter.js", () => {
       return {
-        default: {
-          readShortUrlLimiter: getMockMiddleware(),
-          createShortUrlLimiter: getMockMiddleware(),
-          updateShortUrlLimiter: getMockMiddleware(),
-          deleteShortUrlLimiter: getMockMiddleware(),
-          loginAccountLimiter: getMockMiddleware(),
-          logoutAccountLimiter: getMockMiddleware(),
-          createAccountLimiter: getMockMiddleware(),
-          checkLoginStatusLimiter: getMockMiddleware(),
-          checkMaliciousUrlLimiter: getMockMiddleware(),
-        },
+        default: getRateLimiterMocks(),
       }
     })
     maliciousUrls.forEach(async (url) => await removeMockMaliciousUrl(url))

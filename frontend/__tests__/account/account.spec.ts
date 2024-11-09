@@ -1,48 +1,13 @@
-import { test, expect } from "@playwright/test"
-import { HOMEPAGE_URL } from "./constants"
+import { test, expect, Page } from "@playwright/test"
+import { HOMEPAGE_URL } from "../constants"
+import {
+  mockLoginSuccessAuthResponse,
+  mockLogoutSuccessResponse,
+} from "./accountMocks"
 
-async function navigateToLoginPage(page) {
+async function navigateToLoginPage(page: Page) {
   await page.goto(HOMEPAGE_URL)
   await page.getByRole("link", { name: "Login" }).click()
-}
-
-async function mockLoginAuthResponse(page, browserContext) {
-  await page.route("*/**/api/auth/login", async (route) => {
-    const request = route.request()
-    expect(request.method()).toBe("POST")
-    const mockUserResponseJson = {
-      id: "12",
-    }
-    const mockCookieHeader =
-      "connect.sid=s%2testCookie123456789abcdefyaac22033.97sirrrarrdseewreerrjtt3tteeeaabbbggiedefabc; Path=/; Expires=Mon, 21 Oct 2024 06:40:22 GMT; HttpOnly"
-    await route.fulfill({
-      status: 200,
-      json: mockUserResponseJson,
-      headers: { "set-cookie": mockCookieHeader },
-    })
-    await browserContext.addCookies([
-      {
-        name: "connect.sid",
-        value:
-          "s%2testCookie123456789abcdefyaac22033.97sirrrarrdseewreerrjtt3tteeeaabbbggiedefabc",
-        domain: "localhost",
-        path: "/",
-      },
-    ])
-  })
-}
-
-async function mockLogoutSuccessResponse(page) {
-  await page.route("*/**/api/auth/logout", async (route) => {
-    const request = route.request()
-    expect(request.method()).toBe("POST")
-    const mockCookieHeader =
-      "connect.sid=s%2testCookie123456789abcdefyaac22033.97sirrrarrdseewreerrjtt3tteeeaabbbggiedefabc; Path=/; Expires=Mon, 21 Oct 2024 06:40:22 GMT; HttpOnly"
-    await route.fulfill({
-      status: 200,
-      headers: { "set-cookie": mockCookieHeader },
-    })
-  })
 }
 
 test.beforeEach(async ({ page }) => {
@@ -94,7 +59,7 @@ test("login to existing account, redirect to homepage and header login link shou
   browser,
 }) => {
   const browserContext = await browser.newContext()
-  await mockLoginAuthResponse(page, browserContext)
+  await mockLoginSuccessAuthResponse(page, browserContext)
   expect(page.url()).toContain("/login")
   await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()
   await page.getByLabel("username").fill("test_username")
@@ -112,7 +77,7 @@ test("click logout header link redirects to logout page", async ({
   browser,
 }) => {
   const browserContext = await browser.newContext()
-  await mockLoginAuthResponse(page, browserContext)
+  await mockLoginSuccessAuthResponse(page, browserContext)
   await mockLogoutSuccessResponse(page)
 
   await expect(page.getByRole("heading", { name: "Login" })).toBeVisible()

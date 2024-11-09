@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test"
+import { test, expect, Page } from "@playwright/test"
 import { HOMEPAGE_URL } from "./constants"
 
-async function mockStatsResponse(page, { shortCode, url, accessCount }) {
+async function mockStatsResponse(page: Page, { shortCode, url, accessCount }) {
   await page.route(`*/**/api/shorten/${shortCode}/stats`, async (route) => {
     const request = route.request()
     expect(request.method()).toBe("GET")

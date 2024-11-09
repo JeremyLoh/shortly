@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test"
+import { test, expect, Page } from "@playwright/test"
 import { HOMEPAGE_URL } from "./constants"
 
-function assertErrorPageShown(page) {
+function assertErrorPageShown(page: Page) {
   expect(page.getByText("Error - 404 Not Found")).toBeVisible()
   expect(page.getByText("An error has occured, to continue:")).toBeVisible()
   expect(page.getByText("Return to the homepage.")).toBeVisible()
