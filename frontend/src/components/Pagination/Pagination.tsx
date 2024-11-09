@@ -6,6 +6,7 @@ type PaginationProps = {
   itemsPerPage: number
   handlePreviousNavigation: () => void
   handleNextNavigation: () => void
+  handlePageItemNavigation: (navPage: number) => void
 }
 
 function Pagination({
@@ -14,7 +15,9 @@ function Pagination({
   itemsPerPage,
   handlePreviousNavigation,
   handleNextNavigation,
+  handlePageItemNavigation,
 }: PaginationProps) {
+  const totalPages = Math.ceil(total / itemsPerPage)
   return (
     <div className="pagination">
       <button
@@ -24,11 +27,29 @@ function Pagination({
       >
         Previous
       </button>
-      <button className="active-tab">{page}</button>
+      <div className="page-item-container">
+        {Array(totalPages)
+          .fill(0)
+          .map((_, index) => {
+            return (
+              <button
+                key={`tab-${index}`}
+                className={
+                  index + 1 === page
+                    ? "active-tab pagination-page-item"
+                    : "pagination-page-item"
+                }
+                onClick={() => handlePageItemNavigation(index + 1)}
+              >
+                {index + 1}
+              </button>
+            )
+          })}
+      </div>
       <button
         className="next-nav-btn"
         onClick={handleNextNavigation}
-        disabled={page >= Math.ceil(total / itemsPerPage)}
+        disabled={page >= totalPages}
       >
         Next
       </button>

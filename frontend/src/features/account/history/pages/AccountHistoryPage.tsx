@@ -14,6 +14,12 @@ function AccountHistoryPage() {
   function handleNextNavigation() {
     navigate(`/history?page=${page + 1}`)
   }
+  function handlePageItemNavigation(navPage: number) {
+    if (navPage === page) {
+      return
+    }
+    navigate(`/history?page=${navPage}`)
+  }
   return (
     <>
       <Header />
@@ -24,6 +30,7 @@ function AccountHistoryPage() {
         itemsPerPage={10}
         handlePreviousNavigation={handlePreviousNavigation}
         handleNextNavigation={handleNextNavigation}
+        handlePageItemNavigation={handlePageItemNavigation}
       />
       {urls.length > 0 ? (
         urls.map((history) => (

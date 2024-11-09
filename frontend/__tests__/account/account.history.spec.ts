@@ -138,6 +138,8 @@ test("navigate to next page for 11 urls", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Previous" })).toBeDisabled()
   await expect(page.getByRole("button", { name: "Next" })).toBeVisible()
   await expect(page.getByRole("button", { name: "Next" })).not.toBeDisabled()
+  await expect(page.getByRole("button", { name: "1" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "2" })).toBeVisible()
 
   await page.getByRole("button", { name: "Next" }).click()
 
@@ -145,4 +147,45 @@ test("navigate to next page for 11 urls", async ({ page }) => {
     page.getByRole("button", { name: "Previous" })
   ).not.toBeDisabled()
   await expect(page.getByRole("button", { name: "Next" })).toBeDisabled()
+})
+
+test("navigate to page using page item button for 11 urls", async ({
+  page,
+}) => {
+  const itemsPerPage = 10
+  const data = [
+    { url: "https://github.com/", shortCode: "1bcdef2" },
+    { url: "https://youtube.com/", shortCode: "2bcdef2" },
+    { url: "https://github.com/", shortCode: "3bcdef3" },
+    { url: "https://example.com/", shortCode: "4bcdef4" },
+    { url: "https://haveibeenpwned.com/", shortCode: "5bcdef5" },
+    { url: "https://developer.mozilla.org/en-US/", shortCode: "6bcdef6" },
+    { url: "https://github.com/", shortCode: "7bcdef7" },
+    { url: "https://github.com/", shortCode: "8bcdef8" },
+    { url: "https://github.com/", shortCode: "9bcdef9" },
+    { url: "https://vitest.dev/", shortCode: "abcdefa" },
+    { url: "https://vitest.dev/guide/", shortCode: "bdddefb" },
+  ]
+  await mockHistoryMultiplePageUrlResponse(page, itemsPerPage, data)
+  await login(page, "test_username")
+  await page.getByRole("link", { name: "History" }).click()
+  await expect(page.getByText("History", { exact: true })).toBeVisible()
+  await expect(page.getByRole("button", { name: "1" })).toBeVisible()
+  await expect(page.getByRole("button", { name: "2" })).toBeVisible()
+  await expect(page.getByText(data[9].url)).toBeVisible()
+  await expect(page.getByText(data[9].shortCode)).toBeVisible()
+  await expect(page.getByText(data[10].url)).not.toBeVisible()
+  await expect(page.getByText(data[10].shortCode)).not.toBeVisible()
+
+  await page.getByRole("button", { name: "2" }).click()
+
+  await expect(
+    page.getByRole("button", { name: "Previous" })
+  ).not.toBeDisabled()
+  await expect(page.getByRole("button", { name: "Next" })).toBeDisabled()
+  await expect(page.getByRole("button", { name: "2" })).toHaveClass(
+    /active-tab/
+  )
+  await expect(page.getByText(data[10].url)).toBeVisible()
+  await expect(page.getByText(data[10].shortCode)).toBeVisible()
 })
