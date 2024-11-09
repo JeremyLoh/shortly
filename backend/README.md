@@ -116,3 +116,5 @@ Column naming convention (lowercase with underscores)
      .get("/api/auth/status")
      .set("Cookie", [...header["set-cookie"]])
    ```
+
+6. Mock imports need to be before vitest imports (vitest hoists the mock calls) (e.g. for rate limiter mocks) - https://stackoverflow.com/questions/65554910/jest-referenceerror-cannot-access-before-initialization

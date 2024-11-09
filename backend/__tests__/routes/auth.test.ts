@@ -1,3 +1,5 @@
+// Mocks need to be imported before vitest import!
+import { getRateLimiterMocks } from "../mocks.js"
 import setupApp from "../../server.js"
 import {
   afterEach,
@@ -8,13 +10,9 @@ import {
   test,
   vi,
 } from "vitest"
-import { NextFunction, Request, Response, Express } from "express"
+import { Express } from "express"
 import request from "supertest"
 import pool, { setupDatabase } from "../../database.js"
-
-function getMockMiddleware() {
-  return (req: Request, res: Response, next: NextFunction) => next()
-}
 
 describe("Auth API", () => {
   let app: Express
@@ -30,17 +28,7 @@ describe("Auth API", () => {
     usernames = []
     vi.mock("../../middleware/rateLimiter.js", () => {
       return {
-        default: {
-          readShortUrlLimiter: getMockMiddleware(),
-          createShortUrlLimiter: getMockMiddleware(),
-          updateShortUrlLimiter: getMockMiddleware(),
-          deleteShortUrlLimiter: getMockMiddleware(),
-          loginAccountLimiter: getMockMiddleware(),
-          logoutAccountLimiter: getMockMiddleware(),
-          createAccountLimiter: getMockMiddleware(),
-          checkLoginStatusLimiter: getMockMiddleware(),
-          checkMaliciousUrlLimiter: getMockMiddleware(),
-        },
+        default: getRateLimiterMocks(),
       }
     })
   })
