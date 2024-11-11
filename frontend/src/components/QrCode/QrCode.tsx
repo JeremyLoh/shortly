@@ -4,9 +4,10 @@ import { QRCodeSVG } from "qrcode.react"
 
 type QrCodeProps = {
   url: string
+  size: number
 }
 
-function QrCode({ url }: QrCodeProps) {
+function QrCode({ url, size }: QrCodeProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [error, setError] = useState<string>()
 
@@ -47,7 +48,7 @@ function QrCode({ url }: QrCodeProps) {
         ref={svgRef}
         value={url}
         level="M"
-        size={128}
+        size={size}
         bgColor="#FFFFFF"
       />
       <button onClick={handleDownload} data-testid="download-qr-code">

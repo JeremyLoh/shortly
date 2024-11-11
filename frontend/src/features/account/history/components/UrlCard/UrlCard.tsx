@@ -1,3 +1,4 @@
+import QrCode from "../../../../../components/QrCode/QrCode"
 import "./UrlCard.css"
 
 type UrlCardProps = {
@@ -11,6 +12,9 @@ function UrlCard(props: UrlCardProps) {
   const shortUrl = new URL(window.location.href).origin + "/" + props.shortCode
   return (
     <div className="url-card">
+      <div className="url-card-qr-code-container">
+        <QrCode url={props.url} size={100} />
+      </div>
       <div className="card-row">
         <a
           className="text-center url-card-title"

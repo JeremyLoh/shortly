@@ -17,6 +17,12 @@
   text-decoration: underline;
 }
 
+.url-card-qr-code-container {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+}
+
 .url-card-title {
   padding: 1rem;
 }
