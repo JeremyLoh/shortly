@@ -1,19 +1,28 @@
 #footer {
   display: flex;
-  justify-content: flex-end;
-  column-gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.5rem;
   margin-top: auto;
-  padding: 0.4rem 1rem;
+  padding: 0.8rem 1rem;
   width: 100%;
   background-color: #0414a7;
   color: #e0e2f4;
 }
 
-#footer a {
+#footer-kofi-button {
+  display: flex;
+  align-items: center;
+}
+#footer-kofi-button:hover {
+  background-color: transparent;
+}
+
+#footer-github-link {
   color: #e0e2f4;
   padding: 0 0.2rem;
 }
-#footer a:hover {
+#footer-github-link:hover {
   background-color: #e0e2f4;
   color: #0414a7;
 }
