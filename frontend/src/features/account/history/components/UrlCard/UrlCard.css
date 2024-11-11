@@ -24,7 +24,7 @@
 }
 
 .url-card-title {
-  padding: 1rem;
+  padding-bottom: 1rem;
 }
 
 .text-center {
@@ -34,6 +34,7 @@
 .card-row {
   display: flex;
   flex-direction: column;
+  align-items: center;
   word-break: break-all;
 }
 

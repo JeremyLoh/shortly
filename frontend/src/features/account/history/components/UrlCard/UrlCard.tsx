@@ -1,5 +1,6 @@
 import QrCode from "../../../../../components/QrCode/QrCode"
 import "./UrlCard.css"
+import { VscLink } from "react-icons/vsc"
 
 type UrlCardProps = {
   url: string
@@ -16,6 +17,7 @@ function UrlCard(props: UrlCardProps) {
         <QrCode url={props.url} size={100} />
       </div>
       <div className="card-row">
+        <VscLink size="2em" />
         <a
           className="text-center url-card-title"
           target="_blank"
