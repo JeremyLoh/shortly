@@ -1,0 +1,7 @@
+.url-history-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30ch, 1fr));
+  grid-gap: 2em;
+  width: 80%;
+  margin: 2rem 0;
+}

@@ -3,7 +3,7 @@ import { AccountHistoryData } from "./AccountHistoryLoader"
 import Header from "../../../../components/Header/Header"
 import Footer from "../../../../components/Footer/Footer"
 import Pagination from "../../../../components/Pagination/Pagination"
-import UrlCard from "../components/UrlCard/UrlCard"
+import UrlHistoryView from "../components/UrlHistoryView/UrlHistoryView"
 
 function AccountHistoryPage() {
   const navigate = useNavigate()
@@ -33,15 +33,7 @@ function AccountHistoryPage() {
         handlePageItemNavigation={handlePageItemNavigation}
       />
       {urls.length > 0 ? (
-        urls.map((history) => (
-          <UrlCard
-            key={history.id}
-            url={history.url}
-            shortCode={history.shortCode}
-            createdAt={history.createdAt}
-            updatedAt={history.updatedAt}
-          />
-        ))
+        <UrlHistoryView urls={urls} />
       ) : (
         <p>You have not created any short urls</p>
       )}

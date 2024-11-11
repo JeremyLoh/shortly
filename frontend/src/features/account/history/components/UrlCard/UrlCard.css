@@ -1,10 +1,7 @@
 .url-card {
   display: flex;
   flex-direction: column;
-  width: 80%;
-  max-width: 70ch;
   padding: 1rem;
-  margin: 1rem;
   row-gap: 0.4rem;
   color: white;
   background-color: #1e40af;
@@ -20,11 +17,25 @@
   text-decoration: underline;
 }
 
+.url-card-title {
+  padding: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .card-row {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  word-break: break-all;
 }
-.card-row-title {
-  width: 20%;
+
+/* https://css-tricks.com/snippets/css/media-queries-for-standard-devices/ */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+  .card-row {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
 }

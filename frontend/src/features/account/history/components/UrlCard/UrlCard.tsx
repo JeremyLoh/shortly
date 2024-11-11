@@ -12,23 +12,27 @@ function UrlCard(props: UrlCardProps) {
   return (
     <div className="url-card">
       <div className="card-row">
-        <p className="card-row-title">Short Url</p>
-        <a target="_blank" rel="noopener noreferrer" href={shortUrl}>
+        <a
+          className="text-center url-card-title"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={shortUrl}
+        >
           {shortUrl}
         </a>
       </div>
       <div className="card-row">
-        <p className="card-row-title">Url</p>
+        <p>Url</p>
         <a target="_blank" rel="noopener noreferrer" href={props.url}>
           {props.url}
         </a>
       </div>
       <div className="card-row">
-        <p className="card-row-title">Created At</p>
+        <p>Created At</p>
         <p>{new Date(props.createdAt).toDateString()}</p>
       </div>
       <div className="card-row">
-        <p className="card-row-title">Updated At</p>
+        <p>Updated At</p>
         <p>
           {props.updatedAt != null
             ? new Date(props.updatedAt).toDateString()
