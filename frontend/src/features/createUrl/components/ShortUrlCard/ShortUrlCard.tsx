@@ -25,7 +25,7 @@ function ShortUrlCard({ url }: { url: Url }) {
             Copy Link
           </button>
         </p>
-        <QrCode url={shortCodeUrl} />
+        <QrCode url={shortCodeUrl} size={128} />
       </div>
       <hr className="divider" />
       <p className="text-right">
