@@ -1,6 +1,7 @@
 import "./QrCode.css"
 import { useRef, useState } from "react"
 import { QRCodeSVG } from "qrcode.react"
+import { FaDownload } from "react-icons/fa"
 
 type QrCodeProps = {
   url: string
@@ -52,7 +53,8 @@ function QrCode({ url, size }: QrCodeProps) {
         bgColor="#FFFFFF"
       />
       <button onClick={handleDownload} data-testid="download-qr-code">
-        Download QR Code
+        <FaDownload />
+        Download
       </button>
       {error && (
         <p role="alert" className="error-text">
