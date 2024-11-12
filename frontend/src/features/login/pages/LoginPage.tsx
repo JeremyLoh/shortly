@@ -20,7 +20,7 @@ function LoginPage() {
       <p>
         Don't have an account?{" "}
         <Link to="/register" data-testid="loginPage-register-link">
-          Register
+          <b>Register</b>
         </Link>
       </p>
       <Footer />

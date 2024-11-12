@@ -12,9 +12,9 @@
 }
 
 #link-stat-form button[type="submit"] {
-  background-color: #7dd3fc;
+  background-color: var(--primary-color);
 }
 
 #link-stat-form button[type="submit"]:hover {
-  background-color: #38bdf8;
+  filter: brightness(0.9);
 }

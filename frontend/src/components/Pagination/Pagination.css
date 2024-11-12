@@ -9,8 +9,8 @@
 }
 
 .pagination button {
-  border-radius: 0px;
-  border: 2px solid #e5e5e5;
+  background-color: var(--secondary-color);
+  border: none;
   font-size: 1rem;
 }
 .pagination button:disabled {
@@ -25,15 +25,15 @@
 }
 
 .page-item-container .active-tab {
-  color: #2563eb;
-  background-color: #dbeafe;
+  color: var(--text-color);
+  background-color: var(--accent-color);
 }
 .page-item-container .active-tab:hover {
-  background-color: #dbeafe;
+  filter: brightness(0.9);
 }
 
 .previous-nav-btn:hover:enabled,
 .next-nav-btn:hover:enabled,
 .pagination-page-item:hover {
-  background-color: #e5e5e5;
+  filter: brightness(0.9);
 }

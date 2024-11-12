@@ -3,23 +3,24 @@
   flex-direction: column;
   padding: 1rem;
   row-gap: 0.4rem;
-  color: white;
-  background-color: #1e40af;
-  /* Github #55 - https://getcssscan.com/css-box-shadow-examples */
-  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+  color: var(--text-color);
+  background-color: var(--secondary-color);
+  /* Airbnb #76 - https://getcssscan.com/css-box-shadow-examples */
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  border-top: 3mm dotted var(--primary-color);
 }
 
 .url-card p {
   margin: 0;
 }
 .url-card a {
-  color: #f5f5f5;
+  color: var(--link-color);
   text-decoration: underline;
 }
 
 .url-card-qr-code-container {
   padding: 1rem;
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 8px;
 }
 

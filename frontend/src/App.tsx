@@ -14,7 +14,7 @@ function App() {
       <Header />
       <div className="content">
         <AccountActions />
-        <h3>Create a new short URL</h3>
+        <h2>Create a new short URL</h2>
         <ShortUrlForm
           handleCreateUrl={(url) => {
             setUrl(url)

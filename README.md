@@ -1,13 +1,35 @@
 # URL Shortener
 
-![url shortener homepage](./url-shortener-homepage.png)
-![url shortener error page](./url-shortener-error-page.png)
+Url Shortener with the following features:
 
-Create a RESTful API that allows users to shorten long URLs. The API should provide endpoints to create, retrieve, update, and delete short URLs. It should also provide statistics on the number of times a short URL has been accessed.
+- Shortening urls
+  - Prevent url shortening of the current website
+- QR Code representing the short url
+- Rate limiting of backend APIs
+- Authentication using username/password login
+- History of created urls (for logged in users)
+- Statistic of created url
+- CRON job that runs weekly to fetch known malicious links and prevent users from creating short urls that link to these domains
+
+Deployed frontend and backend on [render.com](https://render.com/)
+
+PostgreSQL backend on [neon.tech](https://neon.tech/)
+
+### Tech Stack
+
+- TypeScript
+- Express
+- React
+- PostgreSQL
+- Testing - Vitest (backend) and Playwright (frontend)
+
+![url shortener home page](./url-shortener-homepage.png)
+![url shortener history page](./url-shortener-history.png)
+![url shortener error page](./url-shortener-error-page.png)
 
 # Running Application (using Docker) (frontend, backend and database)
 
-1. 1. Create `.env` file in `frontend/` directory with `VITE_PROD_BACKEND_URL='???'` if needed (not required for local testing) - https://vite.dev/guide/env-and-mode#env-files
+1. Create `.env` file in `frontend/` directory with `VITE_PROD_BACKEND_URL='???'` if needed (not required for local testing) - https://vite.dev/guide/env-and-mode#env-files
 
 ```
 PROD_URL='???'
@@ -50,11 +72,11 @@ PGPASSWORD=TESTPASSSS
 PGPORT=5432
 ```
 
-2. Install docker on your system
-3. Navigate to the project root directory where the `docker-compose.yaml` file is present
-4. Run `docker compose up`
-5. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
-6. To access the frontend app, you should visit the reverseProxy (e.g. `localhost:8080/`. The reverse proxy port defined in `docker-compose.yaml`
+3. Install docker on your system
+4. Navigate to the project root directory where the `docker-compose.yaml` file is present
+5. Run `docker compose up`
+6. To access the backend app, it is running on the port defined in `docker-compose.yaml` => 13000. A request can be made to this port on localhost (for local testing)
+7. To access the frontend app, you should visit the reverseProxy (e.g. `localhost:8080/`. The reverse proxy port defined in `docker-compose.yaml`
 
 You can clean up docker images / containers etc using `docker system prune` (e.g. that are exited)
 
@@ -67,22 +89,6 @@ docker compose up
 
 1. https://snyk.io/blog/choosing-the-best-node-js-docker-image/
 2. Making sure that only reverse proxy is accessible. Create docker compose with all of the services. Don't expose any ports except for the reverse proxy. All the other containers will be accessible via their internal ports from the reverse proxy container using the container name - https://www.reddit.com/r/docker/comments/10padx3/restrict_access_to_services_only_through_nginx/
-
-# Requirements
-
-API should allow users to perform the following operations:
-
-- Create a new short URL
-- Retrieve an original URL from a short URL
-- Update an existing short URL
-- Delete an existing short URL
-- Get statistics on the short URL (e.g number of times accessed)
-
-You can optionally setup a minimal frontend to interact with the API and setup redirects for the short URLs to the original URLs
-
-![high level application feature](https://assets.roadmap.sh/guest/url-shortener-architecture-u72mu.png)
-
-**For this project, the backend endpoints have been appended with /api** (e.g. `POST /shorten` becomes `POST /api/shorten`)
 
 # API Endpoints
 
@@ -242,5 +248,3 @@ GET /api/auth/status
 ```
 
 The endpoint returns a `200 OK` status code when cookie is valid. `404` status is returned during failure or cookie is invalid
-
-https://roadmap.sh/projects/url-shortening-service

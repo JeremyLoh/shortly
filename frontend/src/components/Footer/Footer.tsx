@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import "./Footer.css"
-import Kofi from "/public/kofi1.webp"
+import Kofi from "/kofi1.webp"
 
 function Footer() {
   return (

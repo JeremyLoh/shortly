@@ -1,11 +1,13 @@
 .card {
   display: flex;
   flex-direction: column;
-  background-color: #e2e8f0;
+  background-color: var(--secondary-color);
   padding: 1rem;
-  margin: 1rem 0;
+  margin: 2rem 0;
   border-radius: 8px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  /* Airbnb #77 https://getcssscan.com/css-box-shadow-examples */
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  border-bottom: 2mm dotted var(--primary-color);
 }
 
 .card p,
@@ -24,13 +26,8 @@
 
 .copy-short-url-btn {
   margin-top: 1rem;
-  background-color: #fafafa;
+  background-color: var(--accent-color);
 }
 .copy-short-url-btn:hover {
-  background-color: #e5e5e5;
-}
-
-.divider {
-  border: 1px solid #0369a1;
-  width: 100%;
+  filter: brightness(0.9);
 }
