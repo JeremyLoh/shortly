@@ -6,8 +6,8 @@
   margin-top: auto;
   padding: 0.8rem 1rem;
   width: 100%;
-  background-color: #0414a7;
-  color: #e0e2f4;
+  background-color: var(--accent-color);
+  color: var(--text-color);
 }
 
 #footer-kofi-button {
@@ -19,10 +19,10 @@
 }
 
 #footer-github-link {
-  color: #e0e2f4;
+  color: var(--text-color);
   padding: 0 0.2rem;
 }
 #footer-github-link:hover {
-  background-color: #e0e2f4;
-  color: #0414a7;
+  background-color: var(--text-color);
+  color: var(--accent-color);
 }

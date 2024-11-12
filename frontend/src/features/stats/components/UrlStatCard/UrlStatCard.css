@@ -1,7 +1,7 @@
 .url-stat-card {
   display: flex;
   flex-direction: column;
-  background-color: #f1f5f9;
+  background-color: var(--secondary-color);
   margin: 1rem;
   padding: 1rem;
   width: 80%;
@@ -10,9 +10,10 @@
 }
 
 .url-stat-card hr {
-  border: 1px solid #888;
+  border-top: none;
+  border-bottom: 2mm dotted var(--primary-color);
   width: 100%;
-  margin: 0;
+  margin-bottom: 1rem 0;
 }
 
 .url-stat-card p {

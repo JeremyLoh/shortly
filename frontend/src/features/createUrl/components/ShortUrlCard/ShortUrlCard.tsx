@@ -27,7 +27,6 @@ function ShortUrlCard({ url }: { url: Url }) {
         </p>
         <QrCode url={shortCodeUrl} size={128} />
       </div>
-      <hr className="divider" />
       <p className="text-right">
         Redirect Url{" "}
         <Link to={url.url} target="_blank" rel="noopener noreferrer">

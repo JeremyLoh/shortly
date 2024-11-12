@@ -9,6 +9,16 @@
 }
 
 :root {
+  /* https://www.realtimecolors.com/?colors=15090d-faf3f5-f294b3-d4d4d8-75c3c2&fonts=Inter-Inter */
+  --text-color: #15090d;
+  --background-color: #faf3f5;
+  --primary-color: #f294b3;
+  --secondary-color: #d4d4d8;
+  --accent-color: #75c3c2;
+  --error-color: #a80b0b;
+  --success-color: #0e5d3c;
+  --link-color: #6b1a35;
+
   box-sizing: border-box;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -26,11 +36,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--link-color);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  filter: brightness(0.3);
 }
 
 #root {
@@ -62,7 +72,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--accent-color);
 }
 button:focus,
 button:focus-visible {
@@ -71,13 +81,13 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--text-color);
+    background-color: var(--background-color);
   }
   a:hover {
-    color: #747bff;
+    filter: brightness(0.3);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--primary-color);
   }
 }

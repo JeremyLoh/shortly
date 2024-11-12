@@ -6,28 +6,32 @@
 }
 
 .short-url-form label {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .short-url-form input {
   font-size: 1.2rem;
-  padding: 0.2em;
+  padding: 1em;
 }
 
 .short-url-form button[type="submit"] {
+  font-weight: bold;
   padding: 1rem;
+  margin: 0.5rem 0;
   border-radius: 8px;
-  background-color: #0ea5e9;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 .short-url-form button[type="submit"]:hover {
-  background-color: #0284c7;
+  filter: brightness(0.9);
 }
 
 .error-border {
-  border: 1mm solid #ef4444;
+  border: 1mm solid var(--error-color);
 }
 .error-text {
-  color: #ef4444;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--error-color);
   margin: 0;
 }
