@@ -29,8 +29,10 @@ async function setupApp() {
           frontendOrigin + "/",
           frontendOrigin + "/stats",
           frontendOrigin + "/login",
+          frontendOrigin + "/logout",
           frontendOrigin + "/register",
           frontendOrigin + "/history",
+          new RegExp("^" + frontendOrigin + "\\/.{7}"),
         ], // Access-Control-Allow-Origin, allow only frontend origin
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true, // Access-Control-Allow-Credentials for cookies
