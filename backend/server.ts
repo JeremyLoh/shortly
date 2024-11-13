@@ -24,7 +24,16 @@ async function setupApp() {
     // https://stackoverflow.com/questions/71948888/cors-why-do-i-get-successful-preflight-options-but-still-get-cors-error-with-p
     app.use(
       cors({
-        origin: [new RegExp(`^${frontendOrigin}/.*`)], // Access-Control-Allow-Origin, allow only frontend origin
+        origin: [
+          frontendOrigin,
+          frontendOrigin + "/",
+          frontendOrigin + "/stats",
+          frontendOrigin + "/login",
+          frontendOrigin + "/logout",
+          frontendOrigin + "/register",
+          frontendOrigin + "/history",
+          new RegExp("^" + frontendOrigin + "\\/.{7}"),
+        ], // Access-Control-Allow-Origin, allow only frontend origin
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true, // Access-Control-Allow-Credentials for cookies
       })
