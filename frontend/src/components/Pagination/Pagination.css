@@ -10,6 +10,7 @@
 
 .pagination button {
   background-color: var(--secondary-color);
+  color: var(--text-color);
   border: none;
   font-size: 1rem;
 }

@@ -9,25 +9,10 @@
 }
 
 :root {
-  /* https://www.realtimecolors.com/?colors=15090d-faf3f5-f294b3-d4d4d8-75c3c2&fonts=Inter-Inter */
-  --text-color: #15090d;
-  --background-color: #faf3f5;
-  --primary-color: #f294b3;
-  --secondary-color: #d4d4d8;
-  --accent-color: #75c3c2;
-  --error-color: #a80b0b;
-  --success-color: #0e5d3c;
-  --link-color: #6b1a35;
-
   box-sizing: border-box;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -40,7 +25,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  filter: brightness(0.3);
+  filter: brightness(0.7);
 }
 
 #root {
@@ -70,6 +55,7 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+  background-color: var(--primary-color);
 }
 button:hover {
   border-color: var(--accent-color);
@@ -81,13 +67,32 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: var(--text-color);
+    /* https://www.realtimecolors.com/?colors=15090d-faf3f5-f294b3-d4d4d8-75c3c2&fonts=Inter-Inter */
+    --text-color: #15090d;
+    --background-color: #faf3f5;
+    --primary-color: #f294b3;
+    --secondary-color: #d4d4d8;
+    --accent-color: #75c3c2;
+    --error-color: #a80b0b;
+    --success-color: #0e5d3c;
+    --link-color: #9f244d;
     background-color: var(--background-color);
+    color: var(--text-color);
   }
-  a:hover {
-    filter: brightness(0.3);
-  }
-  button {
-    background-color: var(--primary-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* https://www.realtimecolors.com/?colors=e6eaed-090e11-0069b3-303870-1d4ed8&fonts=Inter-Inter */
+    --text-color: #e6eaed;
+    --background-color: #090e11;
+    --primary-color: #0069b3;
+    --secondary-color: #303870;
+    --accent-color: #1d4ed8;
+    --error-color: #dc2626;
+    --success-color: #22c55e;
+    --link-color: #e6f0f7;
+    background-color: var(--background-color);
+    color: var(--text-color);
   }
 }
