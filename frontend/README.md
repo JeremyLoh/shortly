@@ -1,3 +1,20 @@
+# Deploying frontend application to production
+
+### Rewrite the static site frontend to fetch the index page, before loading what the user requested
+
+https://docs.render.com/redirects-rewrites
+
+**Rewrite** - Does not redirect the browser. Instead, your site serves the content from the rule’s destination at the original path. The browser can’t detect that content was served from a different path or URL.
+
+Create a rewrite rule if:
+
+You want to serve the same content from multiple paths.
+Your static site uses a framework with [client-side routing](https://facebook.github.io/create-react-app/docs/deployment#serving-apps-with-client-side-routing) (such as [react-router](https://github.com/ReactTraining/react-router) or [Vue Router](https://router.vuejs.org/)), and you’ll handle all requests from a single path like /index.html.
+
+## Solution => For Frontend Application => Rewrite EVERY url to root `/*` => `/`
+
+Fixing the 'cannot GET /URL' error on refresh with React Router (or how client side routers work) - https://ui.dev/react-router-cannot-get-url-refresh
+
 # Running Frontend Application (using Docker)
 
 1. Create `.env` file in `frontend/` directory with `VITE_PROD_BACKEND_URL='???'` if needed (not required for local testing) - https://vite.dev/guide/env-and-mode#env-files
