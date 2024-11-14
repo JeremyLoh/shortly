@@ -13,6 +13,7 @@
 
 #link-stat-form button[type="submit"] {
   background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
 #link-stat-form button[type="submit"]:hover {
