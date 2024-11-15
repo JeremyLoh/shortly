@@ -15,6 +15,7 @@ function ShortUrlForm({
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>()
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
@@ -26,6 +27,7 @@ function ShortUrlForm({
       }
       const json = await createNewUrl(data.url)
       handleCreateUrl(json)
+      reset()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError("root", {
