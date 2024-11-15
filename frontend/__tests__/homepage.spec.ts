@@ -50,6 +50,7 @@ test("create new short url with mocked backend API", async ({ page }) => {
   await expect(page.getByText("/" + shortCode)).toBeVisible()
   await expect(page.getByText(`Redirect Url ${url}`)).toBeVisible()
   await expect(page.getByText("Created At")).toBeVisible()
+  await expect(page.getByTestId("create-new-url-input")).toHaveValue("")
 })
 
 test("create new short url displays QR Code", async ({ page }) => {
