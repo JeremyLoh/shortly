@@ -8,7 +8,7 @@
 
 #create-account-form input {
   font-size: 1rem;
-  padding: 0.2em;
+  padding: 0.5rem;
 }
 
 #create-account-form button[type="submit"] {
