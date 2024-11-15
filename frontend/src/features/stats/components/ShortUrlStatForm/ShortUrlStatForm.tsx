@@ -35,7 +35,7 @@ function ShortUrlStatForm({
     }
   }
   return (
-    <div>
+    <>
       <form id="link-stat-form" onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="url">Short Url</label>
         <input
@@ -48,6 +48,16 @@ function ShortUrlStatForm({
             maxLength: { value: 2048, message: "Max length is 2048" },
           })}
         />
+        {errors.url && (
+          <p role="alert" className="error-text">
+            {errors.url.message}
+          </p>
+        )}
+        {errors.root && (
+          <p role="alert" className="error-text">
+            {errors.root.message}
+          </p>
+        )}
         <button
           disabled={isSubmitting}
           type="submit"
@@ -56,17 +66,7 @@ function ShortUrlStatForm({
           {isSubmitting ? "Loading" : "Search"}
         </button>
       </form>
-      {errors.url && (
-        <p role="alert" className="error-text">
-          {errors.url.message}
-        </p>
-      )}
-      {errors.root && (
-        <p role="alert" className="error-text">
-          {errors.root.message}
-        </p>
-      )}
-    </div>
+    </>
   )
 }
 
