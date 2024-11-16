@@ -20,8 +20,9 @@ function Footer() {
         rel="noopener noreferrer"
       >
         <img
+          width="140"
           height="36"
-          style={{ border: "0px", height: "36px" }}
+          style={{ border: "0px", height: "36px", width: "140px" }}
           src={Kofi}
           alt="Buy Me a Coffee at ko-fi.com"
         />
