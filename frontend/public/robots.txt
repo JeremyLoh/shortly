@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /history
+
+User-agent: GPTBot
+User-agent: Baiduspider
+Disallow: /
