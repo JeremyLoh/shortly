@@ -6,6 +6,25 @@ test("has title", async ({ page }) => {
   await expect(page).toHaveTitle(/URL Shortener/)
 })
 
+test("displays feature section on homepage", async ({ page }) => {
+  await page.goto(HOMEPAGE_URL)
+  await expect(page.getByText("Easy to use")).toBeVisible()
+  await expect(
+    page.getByText("Just enter your long link and create your shortened link!")
+  ).toBeVisible()
+
+  // E.g TODO https://www.shorturl.at/
+  await expect(page.getByText("Safe")).toBeVisible()
+  await expect(
+    page.getByText("Stop malicious links from being shortened")
+  ).toBeVisible()
+
+  await expect(page.getByText("History")).toBeVisible()
+  await expect(
+    page.getByText("Create an account to view created short urls")
+  ).toBeVisible()
+})
+
 test("navigate to stats page", async ({ page }) => {
   await page.goto(HOMEPAGE_URL)
   await expect(page.getByTestId("header-stats-link")).toHaveText("Stats")
