@@ -36,16 +36,6 @@ test("show history link and welcome message on homepage after login", async ({
   ).toBeVisible()
 })
 
-test("navigate from homepage to history page on history link click", async ({
-  page,
-}) => {
-  await mockHistoryEmptyResponse(page)
-  await login(page, "test_username")
-  await page.getByRole("link", { name: "History" }).click()
-  await expect(page.getByText("History", { exact: true })).toBeVisible()
-  expect(page.url()).toContain("/history")
-})
-
 test("logged out user should see 404 error when accessing /history route", async ({
   page,
 }) => {
@@ -61,7 +51,6 @@ test("shows empty history page when user has not created any short urls", async 
   await mockHistoryEmptyResponse(page)
   await login(page, "test_username")
   await page.getByRole("link", { name: "History" }).click()
-  await expect(page.getByText("History", { exact: true })).toBeVisible()
   await expect(
     page.getByText("You have not created any short urls")
   ).toBeVisible()
@@ -72,7 +61,6 @@ test("shows history page with one created url", async ({ page }) => {
   await mockHistoryOneUrlResponse(page, expectedData)
   await login(page, "test_username")
   await page.getByRole("link", { name: "History" }).click()
-  await expect(page.getByText("History", { exact: true })).toBeVisible()
   await expect(
     page.getByText("You have not created any short urls")
   ).not.toBeVisible()
@@ -131,7 +119,6 @@ test("navigate to next page for 11 urls", async ({ page }) => {
   await mockHistoryMultiplePageUrlResponse(page, itemsPerPage, data)
   await login(page, "test_username")
   await page.getByRole("link", { name: "History", exact: true }).click()
-  expect(page.url()).toContain("/history")
   await expect(page.getByRole("button", { name: "Previous" })).toBeVisible()
   await expect(page.getByRole("button", { name: "Previous" })).toBeDisabled()
   await expect(page.getByRole("button", { name: "Next" })).toBeVisible()

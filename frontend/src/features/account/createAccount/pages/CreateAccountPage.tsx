@@ -1,8 +1,8 @@
 import { useRef } from "react"
 import CreateAccountForm from "../components/CreateAccountForm/CreateAccountForm.tsx"
-import Footer from "../../../components/Footer/Footer.tsx"
-import Header from "../../../components/Header/Header.tsx"
-import { createAccount } from "../../../endpoints/user.ts"
+import Footer from "../../../../components/Footer/Footer.tsx"
+import Header from "../../../../components/Header/Header.tsx"
+import { createAccount } from "../../../../endpoints/user.ts"
 import { useNavigate } from "react-router-dom"
 
 function CreateAccountPage() {
