@@ -13,7 +13,6 @@ test("displays feature section on homepage", async ({ page }) => {
     page.getByText("Just enter your long link and create your shortened link!")
   ).toBeVisible()
 
-  // E.g TODO https://www.shorturl.at/
   await expect(page.getByText("Safe")).toBeVisible()
   await expect(
     page.getByText("Stop malicious links from being shortened")
