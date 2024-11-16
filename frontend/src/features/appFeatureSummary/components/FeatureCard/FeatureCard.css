@@ -1,0 +1,28 @@
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--secondary-color);
+  transition: all 0.3s;
+}
+.feature-card:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-8px);
+}
+
+.feature-card p {
+  margin: 0;
+}
+
+.feature-card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding-bottom: 1rem;
+}
+
+.feature-card-description {
+  font-size: 0.9rem;
+}
